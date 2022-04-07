@@ -1,0 +1,56 @@
+{
+    "name": "barn2/edd-eu-vat",
+    "description": "Easy Digital Downloads EU VAT plugin for WordPress.",
+    "type": "wordpress-plugin",
+    "license": "GPL-3.0",
+    "authors": [
+        {
+            "name": "Barn2 Plugins",
+            "email": "support@barn2.co.uk"
+        }
+    ],
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "git@bitbucket.org:barn2plugins/php-standards.git"
+        },
+        {
+            "type": "vcs",
+            "url": "git@bitbucket.org:barn2plugins/setup-wizard.git"
+        }
+    ],
+    "require-dev": {
+        "barn2/php-standards": "dev-master",
+        "bamarni/composer-bin-plugin": "^1.4",
+        "barn2/setup-wizard": "^0.4.0",
+        "symfony/var-dumper": "^5.4"
+    },
+    "scripts": {
+		"no-dev": "composer update --prefer-dist --no-dev",
+        "install-scoper": [
+			"composer bin php-scoper config minimum-stability dev",
+			"composer bin php-scoper config prefer-stable true",
+			"composer bin php-scoper require --dev humbug/php-scoper"
+		],
+		"scoper": "php-scoper add-prefix --config .scoper.inc.php --output-dir dependencies/"
+    },
+    "autoload": {
+        "psr-4": {
+            "Barn2\\Plugin\\EDD_VAT\\": "src",
+            "Barn2\\VAT_Lib\\": "lib",
+            "WPTRT\\AdminNotices\\": "lib/vendor/admin-notices/src"
+        },
+        "classmap": [
+            "dependencies/src"
+        ]
+    },
+    "config": {
+        "allow-plugins": {
+            "bamarni/composer-bin-plugin": true,
+            "composer/installers": true,
+            "dealerdirect/phpcodesniffer-composer-installer": true
+        }
+    }
+}

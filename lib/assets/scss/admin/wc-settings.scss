@@ -1,0 +1,28 @@
+
+.barn2-plugins-settings {
+
+	.setting-image-size {
+
+		.separator {
+			display: inline-block;
+			font-size: 1.2em;
+			padding-left: 4px;
+			padding-right: 4px;
+		}
+
+		.suffix {
+			padding-left: 8px;
+		}
+
+		.separator, .suffix {
+			padding-top: 9px;
+		}
+
+		@media screen and (min-width: 783px) {
+			.separator, .suffix {
+				padding-top: 4px;
+			}
+		}
+	}
+
+}

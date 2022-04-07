@@ -1,0 +1,44 @@
+
+.edd-vat-number-wrap {
+    display: flex;
+
+    .edd-vat-number-input,
+    .edd-vat-check-button {
+        height: auto !important;
+        max-height: 45px;
+        margin-top: 0 !important;
+        margin-bottom: 0 !important;
+    }
+
+    .edd-vat-number-input {
+        max-width: 250px;
+        flex-shrink: 2;
+        display: inline-block;
+    }
+
+    .edd-vat-check-button {
+        flex-shrink: 1;
+        padding-top: 0.5em;
+        padding-bottom: 0.5em;
+        margin-left: 0.3em;
+    }
+
+    .edd-loading-ajax {
+        margin-left: 10px;
+        margin-top: 0.6em;
+    }
+
+}
+
+.edd-vat-check-result {
+    margin: 10px 0;
+    display: block;
+
+    &.edd-vat-check-success {
+        color: green;
+    }
+
+    &.edd-vat-check-error {
+        color: red;
+    }
+}

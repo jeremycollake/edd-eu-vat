@@ -1,0 +1,16 @@
+{
+  "files": [
+	  "readme.txt",
+	  "edd-eu-vat.php",
+	  "license.txt"
+  ],
+  "folders": [
+	  "assets",
+	  "dependencies",
+	  "languages",
+	  "lib",
+	  "src",
+	  "vendor",
+	  "views"
+  ]
+}
