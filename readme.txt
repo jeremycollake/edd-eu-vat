@@ -4,7 +4,7 @@ Tags: easy digital downloads, edd, vat, checkout, tax
 Requires at least: 5.0
 Tested up to: 5.9
 Requires PHP: 7.2
-Stable tag: 1.5.4
+Stable tag: 1.5.5
 License: GPL-3.0
 License URI: https://www.gnu.org/licenses/gpl.html
 
@@ -22,6 +22,15 @@ This plugin extends the Easy Digital Downloads plugin with EU VAT support.
 1. Enter your license key under Downloads -> Settings -> Extensions -> EU VAT.
 
 == Changelog ==
+
+= 1.5.5 =
+Release date 15 April 2022
+
+ * Tweak: added "EU MOSS Number" (EU code) as selectable country under the EU Vat settings panel.
+ * Tweak: added "Northern Ireland" (XI code) as selectable country under the EU Vat settings panel.
+ * Tweak: use the EDD Store country name in invoices and receipts when the "EU Moss Number" country is selected.
+ * Fix: make sure that the trader address property exists when checking consultation number.
+ * Dev: added edd_vat_invoice_address_country_code filter.
 
 = 1.5.4 =
 Release date 24 March 2022

@@ -132,7 +132,7 @@ class VAT_Checker_API {
 			// 3 dashes are returned in name and address field if VAT number is invalid.
 			if ( $response->name && '---' !== $response->name ) {
 				$result->name = $response->name;
-			} elseif ( $response->traderName && '---' !== $response->traderName ) {
+			} elseif ( isset( $response->traderName ) && '---' !== $response->traderName ) {
 				$result->name = $response->traderName;
 			}
 
@@ -141,7 +141,7 @@ class VAT_Checker_API {
 			if ( $response->address && '---' !== $response->address ) {
 				$address   = explode( "\n", $response->address );
 				$address[] = $country_code;
-			} elseif ( $response->traderAddress && '---' !== $response->traderAddress ) {
+			} elseif ( isset( $response->traderAddress ) && '---' !== $response->traderAddress ) {
 				$address   = explode( "\n", $response->traderAddress );
 				$address[] = $country_code;
 			}

@@ -23,6 +23,31 @@ class Purchase_Receipt implements Registerable, Service {
 	public function register() {
 		add_action( 'edd_payment_receipt_after', [ $this, 'add_vat_note' ], 999, 1 );
 		add_filter( 'do_shortcode_tag', [ $this, 'add_vat_addresses' ], 10, 2 );
+		add_filter( 'edd_vat_invoice_address_country_code', [ $this, 'maybe_parse_country_code' ], 10 );
+	}
+
+	/**
+	 * When the "EU" option is selected under the "Country" dropdown
+	 * in Downloads → Settings → Extensions → EU VAT - fallback
+	 * to the EDD Store country code setting.
+	 *
+	 * The "EU" country code is a special code used to validate VAT
+	 * details from the VIES api, however when using this code
+	 * some address details (like invoices) will display "EU Moss Number" as country.
+	 *
+	 * For this reason we fallback to the store's country code.
+	 *
+	 * @param string $code
+	 * @return string
+	 */
+	public function maybe_parse_country_code( $code ) {
+
+		if ( $code === 'EU' ) {
+			$code = edd_get_shop_country();
+		}
+
+		return $code;
+
 	}
 
 	/**

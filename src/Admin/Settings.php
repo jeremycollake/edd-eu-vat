@@ -2,6 +2,7 @@
 
 namespace Barn2\Plugin\EDD_VAT\Admin;
 
+use Barn2\Plugin\EDD_VAT\Util as EDD_VATUtil;
 use Barn2\VAT_Lib\Registerable,
 	Barn2\VAT_Lib\Service,
 	Barn2\VAT_Lib\Util,
@@ -204,7 +205,7 @@ class Settings implements Registerable, Service {
 					'name'        => __( 'Country', 'edd-eu-vat' ),
 					'desc'        => __( 'Select the country of your company\'s registered VAT address.', 'edd-eu-vat' ),
 					'type'        => 'select',
-					'options'     => edd_get_country_list(),
+					'options'     => EDD_VATUtil::get_country_list(),
 					'chosen'      => true,
 					'placeholder' => __( 'Select a country', 'edd-eu-vat' ),
 					'std'         => edd_get_shop_country(),

@@ -190,7 +190,7 @@ class Util {
 			'line2'   => edd_get_option( 'edd_vat_address_line_2' ),
 			'city'    => edd_get_option( 'edd_vat_address_city' ),
 			'zip'     => edd_get_option( 'edd_vat_address_code' ),
-			'country' => edd_get_option( 'edd_vat_address_country' ),
+			'country' => apply_filters( 'edd_vat_invoice_address_country_code', edd_get_option( 'edd_vat_address_country' ) ),
 		];
 
 		$company_vat->formatted_address = self::format_edd_address( $company_vat->address );
@@ -241,6 +241,46 @@ class Util {
 	 */
 	public static function is_edd_active() {
 		return class_exists( '\Easy_Digital_Downloads' );
+	}
+
+	/**
+	 * Inserts a new key/value after the key in the array.
+	 *
+	 * @param string $key The key to insert after.
+	 * @param array $array An array to insert in to.
+	 * @param string $new_key The key to insert.
+	 * @param mixed $new_value An value to insert.
+	 *
+	 * @return array|bool The new array if the key exists, FALSE otherwise.
+	 */
+	public static function array_insert_after( $key, array &$array, $new_key, $new_value ) {
+		if ( array_key_exists( $key, $array ) ) {
+			$new = [];
+			foreach ( $array as $k => $value ) {
+				$new[ $k ] = $value;
+				if ( $k === $key ) {
+					$new[ $new_key ] = $new_value;
+				}
+			}
+			return $new;
+		}
+		return false;
+	}
+
+	/**
+	 * Get the list of countries plus our custom ones.
+	 *
+	 * @return array
+	 */
+	public static function get_country_list() {
+
+		$countries = edd_get_country_list();
+
+		$countries = self::array_insert_after( 'GB', $countries, 'EU', __( 'EU MOSS Number' ) );
+		$countries = self::array_insert_after( 'IE', $countries, 'XI', __( 'Northern Ireland' ) );
+
+		return $countries;
+
 	}
 
 }

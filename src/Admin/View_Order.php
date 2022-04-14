@@ -83,11 +83,11 @@ class View_Order implements Registerable, Service {
 	 * @param int|string $payment_id
 	 */
 	public function updated_edited_purchase( $payment_id ) {
-		$vat_number              = filter_input( INPUT_POST, 'edd-payment-vat-number', FILTER_SANITIZE_STRING );
-		$vat_number_valid        = filter_input( INPUT_POST, 'edd-payment-vat-number-valid', FILTER_VALIDATE_BOOLEAN );
-		$vat_reverse_charged     = filter_input( INPUT_POST, 'edd-payment-vat-reverse-charged', FILTER_VALIDATE_BOOLEAN );
-		$vat_company_name        = filter_input( INPUT_POST, 'edd-payment-vat-company-name', FILTER_SANITIZE_STRING );
-		$vat_company_address     = filter_input( INPUT_POST, 'edd-payment-vat-company-address', FILTER_SANITIZE_STRING );
+		$vat_number              = isset( $_POST['edd-payment-vat-number'] ) ? sanitize_text_field( $_POST['edd-payment-vat-number'] ) : '';
+		$vat_number_valid        = isset( $_POST['edd-payment-vat-number-valid'] ) ? true : false;
+		$vat_reverse_charged     = isset( $_POST['edd-payment-vat-reverse-charged'] ) ? true : false;
+		$vat_company_name        = isset( $_POST['edd-payment-vat-company-name'] ) ? sanitize_text_field( $_POST['edd-payment-vat-company-name'] ) : '';
+		$vat_company_address     = isset( $_POST['edd-payment-vat-company-address'] ) ? sanitize_text_field( $_POST['edd-payment-vat-company-address'] ) : '';
 		$vat_consultation_number = isset( $_POST['edd-payment-vat-consultation-number'] ) ? sanitize_text_field( $_POST['edd-payment-vat-consultation-number'] ) : '';
 
 		// Store the data on the payment meta
