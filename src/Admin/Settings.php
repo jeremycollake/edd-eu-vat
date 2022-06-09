@@ -208,6 +208,8 @@ class Settings implements Registerable, Service {
 					'options'     => EDD_VATUtil::get_country_list(),
 					'chosen'      => true,
 					'placeholder' => __( 'Select a country', 'edd-eu-vat' ),
+					'tooltip_title' => __( 'Country setup', 'edd-eu-vat' ),
+					'tooltip_desc' => __( 'Select the country that issued your company’s VAT number. If you are based in Northern Ireland and have a VAT number beginning with XI then you should select “Northern Ireland”. If your VAT number begins with EU then you should select “EU MOSS Number”', 'edd-eu-vat' ),
 					'std'         => edd_get_shop_country(),
 					'data'        => [
 						'nonce' => wp_create_nonce( 'edd-country-field-nonce' )

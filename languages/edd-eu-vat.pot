@@ -2,9 +2,9 @@
 # This file is distributed under the GNU General Public License v3.0.
 msgid ""
 msgstr ""
-"Project-Id-Version: Easy Digital Downloads - EU VAT 1.5.3\n"
+"Project-Id-Version: Easy Digital Downloads - EU VAT 1.5.5\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/edd-eu-vat\n"
-"POT-Creation-Date: 2022-03-22 09:56:47+00:00\n"
+"POT-Creation-Date: 2022-06-08 14:01:06+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -19,7 +19,7 @@ msgid "%s setup wizard"
 msgstr ""
 
 #: dependencies/src/Setup_Wizard.php:617 dependencies/src/Setup_Wizard.php:625
-#: dependencies/src/Setup_Wizard.php:660 src/Admin/Settings.php:261
+#: dependencies/src/Setup_Wizard.php:660 src/Admin/Settings.php:264
 #: vendor/barn2/setup-wizard/src/Setup_Wizard.php:744
 #: vendor/barn2/setup-wizard/src/Setup_Wizard.php:746
 #: vendor/barn2/setup-wizard/src/Setup_Wizard.php:785
@@ -34,7 +34,7 @@ msgid ""
 msgstr ""
 
 #: dependencies/src/Setup_Wizard.php:639 dependencies/src/Setup_Wizard.php:672
-#: src/Admin/Settings.php:88 vendor/barn2/setup-wizard/src/Setup_Wizard.php:758
+#: src/Admin/Settings.php:89 vendor/barn2/setup-wizard/src/Setup_Wizard.php:758
 #: vendor/barn2/setup-wizard/src/Setup_Wizard.php:807
 msgid ""
 "Warning: This will overwrite your existing settings for %s. Are you sure "
@@ -42,16 +42,23 @@ msgid ""
 msgstr ""
 
 #: dependencies/src/Steps/Cross_Selling.php:66
-#: src/Admin/Wizard/Steps/Upsell.php:79
+#: src/Admin/Wizard/Steps/Upsell.php:72
 #: vendor/barn2/setup-wizard/src/Steps/Cross_Selling.php:84
 msgid ""
 "Something went wrong while retrieving the list of products. Please try "
 "again later."
 msgstr ""
 
+#: dependencies/src/Steps/Ready.php:23
+#: vendor/barn2/setup-wizard/src/Steps/Ready.php:22
+msgid "Finished!"
+msgstr ""
+
 #: dependencies/src/Steps/Welcome.php:25
+#: dependencies/src/Steps/Welcome_Free.php:23
 #: src/Admin/Wizard/Steps/License_Verification.php:22
 #: vendor/barn2/setup-wizard/src/Steps/Welcome.php:25
+#: vendor/barn2/setup-wizard/src/Steps/Welcome_Free.php:23
 msgid "Welcome"
 msgstr ""
 
@@ -79,7 +86,9 @@ msgid "You are not allowed to retrieve license details."
 msgstr ""
 
 #: dependencies/src/Steps/Welcome.php:65
+#: dependencies/src/Steps/Welcome_Free.php:40
 #: vendor/barn2/setup-wizard/src/Steps/Welcome.php:83
+#: vendor/barn2/setup-wizard/src/Steps/Welcome_Free.php:43
 msgid "You are not allowed to validate your license."
 msgstr ""
 
@@ -300,7 +309,7 @@ msgid "The registered address for your company"
 msgstr ""
 
 #: src/Admin/Email_Tags.php:100 src/Integrations/EDD_Invoices.php:186
-#: src/Integrations/EDD_PDF_Invoices.php:92 src/Purchase_Receipt.php:49
+#: src/Integrations/EDD_PDF_Invoices.php:92 src/Purchase_Receipt.php:74
 #: views/invoices/invoice-additional-info.php:40
 #: views/payment-postbox-vat.php:71
 msgid "VAT reverse charged"
@@ -322,7 +331,7 @@ msgstr ""
 msgid "Indicator"
 msgstr ""
 
-#: src/Admin/Export/Batch_VAT_Payments_Export.php:41 src/Admin/Settings.php:204
+#: src/Admin/Export/Batch_VAT_Payments_Export.php:41 src/Admin/Settings.php:205
 #: src/Admin/Wizard/Steps/Company_Information.php:64
 msgid "Country"
 msgstr ""
@@ -344,126 +353,138 @@ msgstr ""
 msgid "VAT Number"
 msgstr ""
 
-#: src/Admin/Settings.php:108 src/Admin/Settings.php:124
+#: src/Admin/Settings.php:109 src/Admin/Settings.php:125
 msgid "EU VAT"
 msgstr ""
 
-#: src/Admin/Settings.php:132
+#: src/Admin/Settings.php:133
 msgid "Order Details Page"
 msgstr ""
 
-#: src/Admin/Settings.php:133
+#: src/Admin/Settings.php:134
 msgid "Include VAT information on the order details page."
 msgstr ""
 
-#: src/Admin/Settings.php:138
+#: src/Admin/Settings.php:139
 msgid "Reverse Charge in Home Country?"
 msgstr ""
 
-#: src/Admin/Settings.php:139
+#: src/Admin/Settings.php:140
 msgid ""
 "If your store is based in the EU, check this to reverse charge VAT for "
 "customers with a valid VAT number who are in your home country."
 msgstr ""
 
-#: src/Admin/Settings.php:144
+#: src/Admin/Settings.php:145
 msgid "Show website address?"
 msgstr ""
 
-#: src/Admin/Settings.php:145
+#: src/Admin/Settings.php:146
 msgid ""
 "Check this box if you would like your website address to be shown on the "
 "invoice."
 msgstr ""
 
-#: src/Admin/Settings.php:150 src/Admin/Wizard/Steps/Company_Information.php:22
+#: src/Admin/Settings.php:151 src/Admin/Wizard/Steps/Company_Information.php:22
 #: src/Admin/Wizard/Steps/Company_Information.php:24
 msgid "Company Information"
 msgstr ""
 
-#: src/Admin/Settings.php:151
+#: src/Admin/Settings.php:152
 msgid ""
 "The following information about your company will be displayed on the order "
 "details page and purchase receipt email."
 msgstr ""
 
-#: src/Admin/Settings.php:156 src/Admin/Wizard/Steps/Company_Information.php:35
+#: src/Admin/Settings.php:157 src/Admin/Wizard/Steps/Company_Information.php:35
 msgid "Company Name"
 msgstr ""
 
-#: src/Admin/Settings.php:157 src/Admin/Wizard/Steps/Company_Information.php:36
+#: src/Admin/Settings.php:158 src/Admin/Wizard/Steps/Company_Information.php:36
 msgid "Enter your company name."
 msgstr ""
 
-#: src/Admin/Settings.php:162
+#: src/Admin/Settings.php:163
 msgid "Company Email"
 msgstr ""
 
-#: src/Admin/Settings.php:163
+#: src/Admin/Settings.php:164
 msgid "Enter the email address that will appear on the invoice."
 msgstr ""
 
-#: src/Admin/Settings.php:168 src/Admin/Wizard/Steps/Company_Information.php:41
+#: src/Admin/Settings.php:169 src/Admin/Wizard/Steps/Company_Information.php:41
 msgid "EU VAT Number"
 msgstr ""
 
-#: src/Admin/Settings.php:169 src/Admin/Wizard/Steps/Company_Information.php:42
+#: src/Admin/Settings.php:170 src/Admin/Wizard/Steps/Company_Information.php:42
 msgid "Enter the registered EU VAT number of your company."
 msgstr ""
 
-#: src/Admin/Settings.php:174 src/Admin/Wizard/Steps/Company_Information.php:47
+#: src/Admin/Settings.php:175 src/Admin/Wizard/Steps/Company_Information.php:47
 msgid "UK VAT Number"
 msgstr ""
 
-#: src/Admin/Settings.php:175 src/Admin/Wizard/Steps/Company_Information.php:48
+#: src/Admin/Settings.php:176 src/Admin/Wizard/Steps/Company_Information.php:48
 msgid "Enter the registered UK VAT number of your company."
 msgstr ""
 
-#: src/Admin/Settings.php:180 src/Admin/Wizard/Steps/Company_Information.php:53
+#: src/Admin/Settings.php:181 src/Admin/Wizard/Steps/Company_Information.php:53
 msgid "Address Line 1"
 msgstr ""
 
-#: src/Admin/Settings.php:181 src/Admin/Wizard/Steps/Company_Information.php:54
+#: src/Admin/Settings.php:182 src/Admin/Wizard/Steps/Company_Information.php:54
 msgid "Enter line 1 of your company's registered VAT address."
 msgstr ""
 
-#: src/Admin/Settings.php:186 src/Admin/Wizard/Steps/Company_Information.php:59
+#: src/Admin/Settings.php:187 src/Admin/Wizard/Steps/Company_Information.php:59
 msgid "Address Line 2"
 msgstr ""
 
-#: src/Admin/Settings.php:187 src/Admin/Wizard/Steps/Company_Information.php:60
+#: src/Admin/Settings.php:188 src/Admin/Wizard/Steps/Company_Information.php:60
 msgid "Enter line 2 of your company's registered VAT address if required."
 msgstr ""
 
-#: src/Admin/Settings.php:192 src/Admin/Wizard/Steps/Company_Information.php:74
+#: src/Admin/Settings.php:193 src/Admin/Wizard/Steps/Company_Information.php:74
 msgid "City / State"
 msgstr ""
 
-#: src/Admin/Settings.php:193 src/Admin/Wizard/Steps/Company_Information.php:75
+#: src/Admin/Settings.php:194 src/Admin/Wizard/Steps/Company_Information.php:75
 msgid "Enter the city / state of your company's registered VAT address."
 msgstr ""
 
-#: src/Admin/Settings.php:198 src/Admin/Wizard/Steps/Company_Information.php:80
+#: src/Admin/Settings.php:199 src/Admin/Wizard/Steps/Company_Information.php:80
 msgid "Zip / Postal Code"
 msgstr ""
 
-#: src/Admin/Settings.php:199 src/Admin/Wizard/Steps/Company_Information.php:81
+#: src/Admin/Settings.php:200 src/Admin/Wizard/Steps/Company_Information.php:81
 msgid "Enter the zip / postal code of your company's registered VAT address."
 msgstr ""
 
-#: src/Admin/Settings.php:205 src/Admin/Wizard/Steps/Company_Information.php:65
+#: src/Admin/Settings.php:206 src/Admin/Wizard/Steps/Company_Information.php:65
 msgid "Select the country of your company's registered VAT address."
 msgstr ""
 
-#: src/Admin/Settings.php:209 src/Admin/Wizard/Steps/Company_Information.php:69
+#: src/Admin/Settings.php:210 src/Admin/Wizard/Steps/Company_Information.php:69
 msgid "Select a country"
 msgstr ""
 
-#: src/Admin/Settings.php:256
+#: src/Admin/Settings.php:211
+msgid "Country setup"
+msgstr ""
+
+#: src/Admin/Settings.php:212
+msgid ""
+"Select the country that issued your company’s VAT number. If you are based "
+"in Northern Ireland and have a VAT number beginning with XI then you should "
+"select “Northern Ireland”. If your VAT number begins with EU then you "
+"should select “EU MOSS Number”"
+msgstr ""
+
+#: src/Admin/Settings.php:259
 msgid "Documentation"
 msgstr ""
 
-#: src/Admin/Settings.php:257
+#: src/Admin/Settings.php:260
 msgid "Support"
 msgstr ""
 
@@ -534,16 +555,11 @@ msgstr ""
 msgid "More"
 msgstr ""
 
-#: src/Admin/Wizard/Steps/Upsell.php:27
-#. translators: %1$s: URL to All Access Pass page %2$s: URL to the KB about the
-#. upgrading process
-msgid ""
-"Enhance your store with these fantastic plugins from Barn2, or get them all "
-"by upgrading to an <a href=\"%1$s\" target=\"_blank\">All Access Pass<a/>! "
-"<a href=\"%2$s\" target=\"_blank\">(learn how here)</a>"
+#: src/Admin/Wizard/Steps/Upsell.php:24
+msgid "Enhance your store with these fantastic plugins from Barn2."
 msgstr ""
 
-#: src/Admin/Wizard/Steps/Upsell.php:32
+#: src/Admin/Wizard/Steps/Upsell.php:25
 msgid "Extra features"
 msgstr ""
 
@@ -598,7 +614,7 @@ msgid ""
 msgstr ""
 
 #: src/Integrations/EDD_Invoices.php:192
-#: src/Integrations/EDD_PDF_Invoices.php:95 src/Purchase_Receipt.php:53
+#: src/Integrations/EDD_PDF_Invoices.php:95 src/Purchase_Receipt.php:78
 #: views/invoices/invoice-additional-info.php:49
 #. translators: %s is the VAT tax rate
 #. translators: %s is the VAT tax rate.
@@ -608,7 +624,7 @@ msgid "VAT charged at %s%%"
 msgstr ""
 
 #: src/Integrations/EDD_Invoices.php:220
-#: src/Integrations/EDD_PDF_Invoices.php:77 src/Purchase_Receipt.php:136
+#: src/Integrations/EDD_PDF_Invoices.php:77 src/Purchase_Receipt.php:161
 #. translators: %s is the VAT number
 #. translators: %s: VAT number
 #. translators: %s is the VAT number
@@ -616,7 +632,7 @@ msgid "VAT number: %s"
 msgstr ""
 
 #: src/Integrations/EDD_Invoices.php:224
-#: src/Integrations/EDD_PDF_Invoices.php:82 src/Purchase_Receipt.php:140
+#: src/Integrations/EDD_PDF_Invoices.php:82 src/Purchase_Receipt.php:165
 #. translators: %s is the registered company name
 #. translators: %s: Company Name
 #. translators: %s is the registered company name
@@ -624,7 +640,7 @@ msgid "Company name: %s"
 msgstr ""
 
 #: src/Integrations/EDD_Invoices.php:228
-#: src/Integrations/EDD_PDF_Invoices.php:87 src/Purchase_Receipt.php:144
+#: src/Integrations/EDD_PDF_Invoices.php:87 src/Purchase_Receipt.php:169
 #. translators: %s is the registered company address
 #. translators: %s: Company Address
 #. translators: %s is the registered company address
@@ -632,7 +648,7 @@ msgid "Address: %s"
 msgstr ""
 
 #: src/Integrations/EDD_Invoices.php:234
-#: src/Integrations/EDD_PDF_Invoices.php:126 src/Purchase_Receipt.php:160
+#: src/Integrations/EDD_PDF_Invoices.php:126 src/Purchase_Receipt.php:185
 #: views/payment-postbox-vat.php:52
 msgid "VAT Details"
 msgstr ""
@@ -650,22 +666,36 @@ msgid ""
 "installed in order to validate EU VAT numbers."
 msgstr ""
 
-#: src/Purchase_Receipt.php:154
+#: src/Purchase_Receipt.php:179
 msgid "Billed To"
 msgstr ""
 
-#: src/Purchase_Receipt.php:185
+#: src/Purchase_Receipt.php:210
 #. translators: %s is the VAT number
 msgid "EU VAT number: %s"
 msgstr ""
 
-#: src/Purchase_Receipt.php:190
+#: src/Purchase_Receipt.php:215
 #. translators: %s is the VAT number
 msgid "UK VAT number: %s"
 msgstr ""
 
-#: src/Purchase_Receipt.php:197
+#: src/Purchase_Receipt.php:222
 msgid "Sold By"
+msgstr ""
+
+#: src/Util.php:279
+msgid "EU MOSS Number"
+msgstr ""
+
+#: src/Util.php:280
+msgid "Northern Ireland"
+msgstr ""
+
+#: src/VAT_Checker_API.php:156
+msgid ""
+"Something went wrong while making a Soap request. Please check the server "
+"logs."
 msgstr ""
 
 #: views/checkout-vat-field.php:23

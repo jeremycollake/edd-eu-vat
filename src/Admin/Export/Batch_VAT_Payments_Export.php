@@ -39,7 +39,6 @@ class Batch_VAT_Payments_Export extends \EDD_Batch_Export {
 	public function csv_cols() {
 		$cols = [
 			'country'  => __( 'Country', 'edd-eu-vat' ),
-			'currency'  => __( 'Currency', 'edd-eu-vat' ),
 			'vat_rate' => __( 'Standard VAT Rate', 'edd-eu-vat' ),
 			'amount'   => __( 'Value of Items (Excluding VAT)', 'edd-eu-vat' ),
 			'vat'      => __( 'VAT', 'edd-eu-vat' ),
@@ -108,13 +107,10 @@ class Batch_VAT_Payments_Export extends \EDD_Batch_Export {
 				}
 
 				$country_name = edd_get_country_name( $payment->address['country'] );
-				$country_currency_compound_key = $country_name . "_" . $payment->currency;
 
 				// create new country key
-				if ( ! isset( $data[ $country_currency_compound_key ] ) ) {
-					$data[ $country_currency_compound_key ] = [
-						'country'	   => $country_name,
-						'currency'     => $payment->currency,
+				if ( ! isset( $data[ $country_name ] ) ) {
+					$data[ $country_name ] = [
 						'amount_total' => 0,
 						'vat_total'    => 0,
 						'vat_rate'     => sprintf( '%s%%', $vat_rates[ $payment->address['country'] ] )
@@ -124,12 +120,10 @@ class Batch_VAT_Payments_Export extends \EDD_Batch_Export {
 				$payment_total = apply_filters( 'edd_vat_export_vat_amount_total', ( $payment->total - $payment->tax - $no_tax_fees ), $payment->ID, $payment );
 				$payment_vat   = apply_filters( 'edd_vat_export_vat_tax', $payment->tax, $payment->ID, $payment );
 
-				$data[ $country_currency_compound_key ] = [		
-					'country'	   => $data[ $country_currency_compound_key ]['country'],
-					'currency'     => $data[ $country_currency_compound_key ]['currency'],
-					'amount_total' => $data[ $country_currency_compound_key ]['amount_total'] + $payment_total,
-					'vat_total'    => $data[ $country_currency_compound_key ]['vat_total'] + $payment_vat,
-					'vat_rate'     => $data[ $country_currency_compound_key ]['vat_rate']
+				$data[ $country_name ] = [
+					'amount_total' => $data[ $country_name ]['amount_total'] + $payment_total,
+					'vat_total'    => $data[ $country_name ]['vat_total'] + $payment_vat,
+					'vat_rate'     => $data[ $country_name ]['vat_rate']
 				];
 			}
 
@@ -160,13 +154,12 @@ class Batch_VAT_Payments_Export extends \EDD_Batch_Export {
 			ksort( $final_data );
 			$data = [];
 
-			foreach ( $final_data as $row ) {
+			foreach ( $final_data as $country => $row ) {
 				$data[] = [
-					'country'  => $row['country'],
-					'currency' => $row['currency'],
-					'vat_rate' => $row['vat_rate'],					
-					'amount'   => html_entity_decode( edd_format_amount( $row['amount_total'] ) ),
-					'vat'      => html_entity_decode( edd_format_amount( $row['vat_total'] ) )
+					'country'  => $country,
+					'vat_rate' => $row['vat_rate'],
+					'amount'   => html_entity_decode( edd_currency_symbol( edd_get_option( 'currency', 'USD' ) ) . edd_format_amount( $row['amount_total'] ) ),
+					'vat'      => html_entity_decode( edd_currency_symbol( edd_get_option( 'currency', 'USD' ) ) . edd_format_amount( $row['vat_total'] ) )
 				];
 			}
 
@@ -254,21 +247,22 @@ class Batch_VAT_Payments_Export extends \EDD_Batch_Export {
 	private function add_step_data_to_cache( $step_data, $cache_key ) {
 		$saved_data = get_option( $cache_key );
 
-		foreach ( $step_data as $country_currency_compound_key => $row ) {
+		foreach ( $step_data as $country_name => $data ) {
 			// create new country key
-			if ( ! isset( $saved_data[ $country_currency_compound_key ] ) ) {
-				$saved_data[ $country_currency_compound_key ] = [
-					'country'      => $row['country'],
-					'currency'     => $row['currency'],
-					'vat_rate'     => $row['vat_rate'],
+			if ( ! isset( $saved_data[ $country_name ] ) ) {
+				$saved_data[ $country_name ] = [
 					'amount_total' => 0,
-					'vat_total'    => 0
+					'vat_total'    => 0,
+					'vat_rate'     => '',
 				];
 			}
 
-			// add the step data
-			$saved_data[ $country_currency_compound_key ]['amount_total'] += $step_data[ $country_currency_compound_key ]['amount_total'];
-			$saved_data[ $country_currency_compound_key ]['vat_total'] += $step_data[ $country_currency_compound_key ]['vat_total'];			
+			// add or initiate the data
+			$saved_data[ $country_name ] = [
+				'amount_total' => $saved_data[ $country_name ]['amount_total'] + $step_data[ $country_name ]['amount_total'],
+				'vat_total'    => $saved_data[ $country_name ]['vat_total'] + $step_data[ $country_name ]['vat_total'],
+				'vat_rate'     => $step_data[ $country_name ]['vat_rate']
+			];
 		}
 
 		update_option( $cache_key, $saved_data );

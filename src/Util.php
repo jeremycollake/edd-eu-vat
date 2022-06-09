@@ -276,8 +276,8 @@ class Util {
 
 		$countries = edd_get_country_list();
 
-		$countries = self::array_insert_after( 'GB', $countries, 'EU', __( 'EU MOSS Number' ) );
-		$countries = self::array_insert_after( 'IE', $countries, 'XI', __( 'Northern Ireland' ) );
+		$countries = self::array_insert_after( 'GB', $countries, 'EU', __( 'EU MOSS Number', 'edd-eu-vat' ) );
+		$countries = self::array_insert_after( 'IE', $countries, 'XI', __( 'Northern Ireland', 'edd-eu-vat' ) );
 
 		return $countries;
 

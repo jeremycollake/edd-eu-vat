@@ -2,9 +2,9 @@
 Contributors: andykeith, barn2media
 Tags: easy digital downloads, edd, vat, checkout, tax
 Requires at least: 5.0
-Tested up to: 5.9
+Tested up to: 6.0
 Requires PHP: 7.2
-Stable tag: 1.5.5
+Stable tag: 1.5.6
 License: GPL-3.0
 License URI: https://www.gnu.org/licenses/gpl.html
 
@@ -22,6 +22,16 @@ This plugin extends the Easy Digital Downloads plugin with EU VAT support.
 1. Enter your license key under Downloads -> Settings -> Extensions -> EU VAT.
 
 == Changelog ==
+
+= 1.5.6 =
+Release date 08 June 2022
+
+ * Tweak: added tooltip to the country selection field in the plugin's settings panel.
+ * Tweak: updated barn2 libraries.
+ * Tweak: updated language files.
+ * Dev: tested up to WordPress 6.0.
+
+<!--more-->
 
 = 1.5.5 =
 Release date 15 April 2022
@@ -47,8 +57,6 @@ Release date 22 March 2022
  * Dev: updated setup wizard library
  * Dev: updated barn2 library
  * Dev: tested up to WordPress 5.9.2 and Easy Digital Downloads 2.11.6.
-
-<!--more-->
 
 = 1.5.2 =
 Release date 12 January 2022
