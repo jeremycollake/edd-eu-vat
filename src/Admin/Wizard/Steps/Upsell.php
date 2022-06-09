@@ -21,14 +21,7 @@ class Upsell extends Cross_Selling {
 	public function __construct() {
 		parent::__construct();
 		$this->set_name( esc_html__( 'More', 'edd-eu-vat' ) );
-		$this->set_description(
-			sprintf(
-				// translators: %1$s: URL to All Access Pass page %2$s: URL to the KB about the upgrading process
-				__( 'Enhance your store with these fantastic plugins from Barn2, or get them all by upgrading to an <a href="%1$s" target="_blank">All Access Pass<a/>! <a href="%2$s" target="_blank">(learn how here)</a>', 'edd-eu-vat' ),
-				'https://barn2.com/wordpress-plugins/bundles/',
-				'https://barn2.com/kb/how-to-upgrade-license/'
-			)
-		);
+		$this->set_description( __( 'Enhance your store with these fantastic plugins from Barn2.', 'edd-eu-vat' ) );
 		$this->set_title( esc_html__( 'Extra features', 'edd-eu-vat' ) );
 	}
 

@@ -15,6 +15,7 @@ return array(
     'Barn2\\Plugin\\EDD_VAT\\Dependencies\\Barn2\\Setup_Wizard\\Steps\\Cross_Selling' => $baseDir . '/dependencies/src/Steps/Cross_Selling.php',
     'Barn2\\Plugin\\EDD_VAT\\Dependencies\\Barn2\\Setup_Wizard\\Steps\\Ready' => $baseDir . '/dependencies/src/Steps/Ready.php',
     'Barn2\\Plugin\\EDD_VAT\\Dependencies\\Barn2\\Setup_Wizard\\Steps\\Welcome' => $baseDir . '/dependencies/src/Steps/Welcome.php',
+    'Barn2\\Plugin\\EDD_VAT\\Dependencies\\Barn2\\Setup_Wizard\\Steps\\Welcome_Free' => $baseDir . '/dependencies/src/Steps/Welcome_Free.php',
     'Barn2\\Plugin\\EDD_VAT\\Dependencies\\Barn2\\Setup_Wizard\\Util' => $baseDir . '/dependencies/src/Util.php',
     'Composer\\InstalledVersions' => $vendorDir . '/composer/InstalledVersions.php',
 );

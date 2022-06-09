@@ -43,6 +43,7 @@ class ComposerStaticInitb53b1d7dccb74c2441043b8923e40f80
         'Barn2\\Plugin\\EDD_VAT\\Dependencies\\Barn2\\Setup_Wizard\\Steps\\Cross_Selling' => __DIR__ . '/../..' . '/dependencies/src/Steps/Cross_Selling.php',
         'Barn2\\Plugin\\EDD_VAT\\Dependencies\\Barn2\\Setup_Wizard\\Steps\\Ready' => __DIR__ . '/../..' . '/dependencies/src/Steps/Ready.php',
         'Barn2\\Plugin\\EDD_VAT\\Dependencies\\Barn2\\Setup_Wizard\\Steps\\Welcome' => __DIR__ . '/../..' . '/dependencies/src/Steps/Welcome.php',
+        'Barn2\\Plugin\\EDD_VAT\\Dependencies\\Barn2\\Setup_Wizard\\Steps\\Welcome_Free' => __DIR__ . '/../..' . '/dependencies/src/Steps/Welcome_Free.php',
         'Barn2\\Plugin\\EDD_VAT\\Dependencies\\Barn2\\Setup_Wizard\\Util' => __DIR__ . '/../..' . '/dependencies/src/Util.php',
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
     );
