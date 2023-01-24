@@ -37,17 +37,29 @@ class EDD_Invoices implements Registerable, Service {
 
 		add_filter( 'edd_template_paths', [ $this, 'register_template_stack' ] );
 
-		add_action( 'edd_invoices_after_company_details', [ $this, 'add_company_details' ] );
+		$this->disable_default_templates();
 
-		if ( ! is_admin() ) {
-			add_filter( 'edd_get_option_edd-invoices-company-name', [ $this, 'get_company_name' ], 10, 3 );
-			add_filter( 'edd_get_option_edd-invoices-company-address', [ $this, 'get_company_address' ], 10, 3 );
-			add_filter( 'edd_get_option_edd-invoices-tax', [ $this, 'get_company_vat' ], 10, 3 );
-		}
+		add_action( 'edd_invoices_invoice_contacts', [ $this, 'invoice_contacts' ] );
+		add_action( 'edd_invoices_after_company_details', [ $this, 'add_company_details' ] );
 
 		add_action( 'edd_invoices_invoice_items_table', [ $this, 'add_additional_info' ], 15 );
 		add_action( 'edd_invoices_after_customer_details', [ $this, 'add_customer_vat' ] );
 
+	}
+
+	/**
+	 * Disable the original EDD Invoices templates actions.
+	 *
+	 * @return void
+	 */
+	public function disable_default_templates() {
+		add_action(
+			'after_setup_theme',
+			function() {
+				remove_action( 'edd_invoices_invoice_contacts', 'edd_invoices_do_invoice_contacts' );
+				remove_action( 'edd_invoices_invoice_additional_info', 'edd_invoices_invoice_do_additional_info' );
+			}
+		);
 	}
 
 	/**
@@ -58,12 +70,6 @@ class EDD_Invoices implements Registerable, Service {
 	 * @return array
 	 */
 	public function register_template_stack( $paths ) {
-		$invoices_plugin_version = EDD_INVOICES_VERSION;
-
-		if ( version_compare( $invoices_plugin_version, '1.3.2', '>=') ) {
-			return $paths;
-		}
-
 		$paths[59] = edd_eu_vat()->get_template_path() . 'invoices/';
 
 		return $paths;
@@ -77,7 +83,11 @@ class EDD_Invoices implements Registerable, Service {
 	 * @return void
 	 */
 	public function invoice_contacts( $order ) {
-		edd_get_template_part( 'invoice-contacts' );
+		if ( Util::is_eu_payment( $order->id ) ) {
+			edd_get_template_part( 'eu-invoice-contacts' );
+		} else {
+			edd_get_template_part( 'invoice-contacts' );
+		}
 	}
 
 	/**
@@ -114,7 +124,8 @@ class EDD_Invoices implements Registerable, Service {
 			</div>
 			<?php endif; ?>
 		</article>
-		<?php endif;
+			<?php
+		endif;
 	}
 
 	/**
@@ -180,7 +191,10 @@ class EDD_Invoices implements Registerable, Service {
 			return;
 		}
 
-		if ( Util::is_eu_payment( $order->ID ) && ( $payment_vat->is_reverse_charged || $order->tax > 0 ) ) : ?>
+		$tax_rate = version_compare( EDD_VERSION, '3.0.0', '>=' ) ? $order->tax_rate : $order->tax_rate * 100;
+
+		if ( Util::is_eu_payment( $order->ID ) && ( $payment_vat->is_reverse_charged || $order->tax > 0 ) ) :
+			?>
 			<div class="invoice-element">
 			<?php if ( $payment_vat->is_reverse_charged ) : ?>
 				<?php esc_html_e( 'VAT reverse charged', 'edd-eu-vat' ); ?>
@@ -190,13 +204,14 @@ class EDD_Invoices implements Registerable, Service {
 						sprintf(
 						/* translators: %s is the VAT tax rate */
 							__( 'VAT charged at %s%%', 'edd-eu-vat' ),
-							$order->tax_rate * 100
+							$tax_rate
 						)
 					);
 				?>
 			<?php endif; ?>
 			</div>
-		<?php endif;
+			<?php
+		endif;
 	}
 
 	/**
@@ -212,7 +227,7 @@ class EDD_Invoices implements Registerable, Service {
 			return;
 		}
 
-		$payment_vat = Util::get_payment_vat( $order->ID );
+		$payment_vat         = Util::get_payment_vat( $order->ID );
 		$billed_to_vat_lines = [];
 
 		if ( ! empty( $payment_vat->vat_number ) ) {
@@ -229,12 +244,14 @@ class EDD_Invoices implements Registerable, Service {
 			}
 		}
 
-		if ( ! empty( $billed_to_vat_lines ) ) : ?>
+		if ( ! empty( $billed_to_vat_lines ) ) :
+			?>
 			<p class="edd-eu-vat-receipt-customer-vat">
 				<strong><?php esc_html_e( 'VAT Details', 'edd-eu-vat' ); ?></strong><br/>
 				<?php echo wp_kses( implode( '<br/>', $billed_to_vat_lines ), [ 'br' => [] ] ); ?>
 			</p>
-		<?php endif;
+			<?php
+		endif;
 	}
 
 }

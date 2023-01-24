@@ -1,14 +1,15 @@
 <?php
+
 namespace Barn2\VAT_Lib\Plugin;
 
-use Barn2\VAT_Lib\Registerable,
-	Barn2\VAT_Lib\Util,
-	Barn2\VAT_Lib\Plugin\License\EDD_Licensing,
-	Barn2\VAT_Lib\Plugin\License\Plugin_License,
-	Barn2\VAT_Lib\Plugin\Admin\Plugin_Updater,
-	Barn2\VAT_Lib\Plugin\License\Admin\License_Key_Setting,
-	Barn2\VAT_Lib\Plugin\License\Admin\License_Notices,
-	Barn2\VAT_Lib\Plugin\License\License_Checker;
+use Barn2\VAT_Lib\Plugin\Admin\Plugin_Updater;
+use Barn2\VAT_Lib\Plugin\License\Admin\License_Key_Setting;
+use Barn2\VAT_Lib\Plugin\License\Admin\License_Notices;
+use Barn2\VAT_Lib\Plugin\License\EDD_Licensing;
+use Barn2\VAT_Lib\Plugin\License\License_Checker;
+use Barn2\VAT_Lib\Plugin\License\Plugin_License;
+use Barn2\VAT_Lib\Registerable;
+use Barn2\VAT_Lib\Util;
 
 /**
  * Extends Simple_Plugin to add additional functions for premium plugins (i.e. with a license key).
@@ -23,12 +24,27 @@ class Premium_Plugin extends Simple_Plugin implements Registerable, Licensed_Plu
 
 	private $services = [];
 
+	/**
+	 * Constructs a new premium plugin with the supplied plugin data.
+	 *
+	 * @param array  $data                 {
+	 * @type int     $id                   (required) The plugin ID. This should be the EDD Download ID.
+	 * @type string  $name                 (required) The plugin name.
+	 * @type string  $version              (required) The plugin version, e.g. '1.2.3'.
+	 * @type string  $file                 (required) The main plugin __FILE__.
+	 * @type boolean $is_woocommerce       true if this is a WooCommerce plugin.
+	 * @type boolean $is_edd               true if this is an EDD plugin.
+	 * @type string  $documentation_path   The path to the plugin documentation, relative to https://barn2.com
+	 * @type string  $settings_path        The plugin settings path, relative to /wp-admin
+	 * @type string  $license_setting_path The license setting path, relative to /wp-admin. Only specify if different to $settings_path.
+	 * @type string  $legacy_db_prefix     Legacy DB prefix. Only for older plugins which migrated from the previous license system.
+	 *                                     }
+	 */
 	public function __construct( array $data ) {
 		parent::__construct( array_merge( [
-			'item_id'              => 0,
 			'license_setting_path' => '',
 			'legacy_db_prefix'     => ''
-				], $data
+		], $data
 		) );
 
 		$this->data['license_setting_path'] = ltrim( $this->data['license_setting_path'], '/' );
@@ -42,16 +58,6 @@ class Premium_Plugin extends Simple_Plugin implements Registerable, Licensed_Plu
 
 	public function register() {
 		Util::register_services( $this->services );
-	}
-
-	/**
-	 * Get the item ID for the plugin, usually the EDD Download ID.
-	 *
-	 * @return int The item ID
-	 * @deprecated since 1.2 Replaced by Simple_Plugin::get_id()
-	 */
-	public function get_item_id() {
-		return (int) $this->data['item_id'];
 	}
 
 	public function get_license() {

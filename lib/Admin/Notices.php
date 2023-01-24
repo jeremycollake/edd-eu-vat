@@ -12,10 +12,19 @@ namespace Barn2\VAT_Lib\Admin;
  */
 class Notices extends \WPTRT\AdminNotices\Notices {
 
+	/**
+	 * Constructor.
+	 */
 	public function __construct() {
 		add_filter( 'wptrt_admin_notices_allowed_html', [ __CLASS__, 'filter_allowed_html' ] );
 	}
 
+	/**
+	 * Filter allowed html in notices.
+	 *
+	 * @param array $allowed_html
+	 * @return array
+	 */
 	public static function filter_allowed_html( $allowed_html ) {
 		$allowed_html['a']['target'] = [];
 		return $allowed_html;

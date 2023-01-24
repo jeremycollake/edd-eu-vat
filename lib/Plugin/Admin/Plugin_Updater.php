@@ -1,9 +1,11 @@
 <?php
+
 namespace Barn2\VAT_Lib\Plugin\Admin;
 
-use Barn2\VAT_Lib\Registerable,
-	Barn2\VAT_Lib\Plugin\Licensed_Plugin,
-	Barn2\VAT_Lib\Plugin\License\License_API;
+use Barn2\VAT_Lib\Plugin\License\License_API;
+use Barn2\VAT_Lib\Plugin\Licensed_Plugin;
+use Barn2\VAT_Lib\Registerable;
+use Barn2\VAT_Lib\Util;
 
 /**
  * Handles plugin update checks for our EDD plugins.
@@ -37,9 +39,15 @@ class Plugin_Updater implements Registerable {
 
 	public function register() {
 		if ( is_admin() || ( defined( 'WP_CLI' ) && WP_CLI ) ) {
-			add_filter( 'pre_set_site_transient_update_plugins', [ $this, 'check_update' ] );
+			if ( $this->use_barn2_update_uri() ) {
+				add_filter( 'update_plugins_barn2.com', [ $this, 'update_plugins_barn2_com' ], 10, 3 );
+			} else {
+				add_filter( 'pre_set_site_transient_update_plugins', [ $this, 'check_update' ] );
+			}
+
 			add_filter( 'plugins_api', [ $this, 'get_plugin_details' ], 10, 3 );
 			add_action( 'in_plugin_update_message-' . $this->plugin->get_basename(), [ $this, 'update_available_notice' ], 10, 2 );
+			add_filter( 'plugin_auto_update_setting_html', [ $this, 'auto_update_setting_html' ], 10, 2 );
 		}
 	}
 
@@ -51,14 +59,14 @@ class Plugin_Updater implements Registerable {
 	 * It is reassembled from parts of the native WordPress plugin update code.
 	 * See wp-includes/update.php line 121 for the original wp_update_plugins() function.
 	 *
-	 * @param array   $transient_data Plugin update object built by WordPress.
-	 * @return array Modified update array with custom plugin data.
+	 * @param object $transient_data Plugin update object built by WordPress.
+	 * @return object Modified transient data.
 	 */
 	public function check_update( $transient_data ) {
 		global $pagenow;
 
 		if ( ! is_object( $transient_data ) ) {
-			$transient_data = new \stdClass;
+			$transient_data = new \stdClass();
 		}
 
 		if ( 'plugins.php' == $pagenow && is_multisite() ) {
@@ -68,30 +76,77 @@ class Plugin_Updater implements Registerable {
 		$basename = $this->plugin->get_basename();
 
 		// First check if plugin info already exists in the WP transient.
-		if ( ! empty( $transient_data->response ) && ! empty( $transient_data->response[$basename] ) ) {
+		if ( ! empty( $transient_data->response ) && ! empty( $transient_data->response[ $basename ] ) ) {
 			return $transient_data;
 		}
 
 		$latest_version = $this->get_latest_version();
 
 		if ( false !== $latest_version && isset( $latest_version->new_version ) ) {
+			$update_plugin = $this->format_version_info_for_plugin_update( $latest_version );
+
 			if ( version_compare( $this->plugin->get_version(), $latest_version->new_version, '<' ) ) {
-				$transient_data->response[$basename] = $this->format_version_info_for_plugin_update( $latest_version );
+				$transient_data->response[ $basename ] = $update_plugin;
+			} else {
+				$transient_data->no_update[ $basename ] = $update_plugin;
 			}
 
-			$transient_data->last_checked       = time();
-			$transient_data->checked[$basename] = $this->plugin->get_version();
+			$transient_data->checked[ $basename ] = $this->plugin->get_version();
 		}
 
 		return $transient_data;
 	}
 
 	/**
+	 * A callback function to the `update_plugins_barn2.com` filter.
+	 *
+	 * Starting from version 5.8, WordPress allows handling plugins external to the SVN repository
+	 * the same way it handles those in the SVN repository. Thanks to this new method
+	 * it is not necessary anymore to filter the update_plugins transient.
+	 *
+	 * @param object|boolean $update_plugin Plugin update object for the current plugin.
+	 * @param array          $plugin_data   The associative array with the plugin properties
+	 * @param string         $plugin_file   The basename of the current plugin
+	 * @return object The modified update object with custom plugin data.
+	 */
+	public function update_plugins_barn2_com( $update_plugin, $plugin_data, $plugin_file ) {
+		if ( $plugin_file !== $this->plugin->get_basename() ) {
+			return $update_plugin;
+		}
+
+		$latest_version = $this->get_latest_version();
+
+		if ( ! $latest_version ) {
+			return false;
+		}
+
+		return $this->format_version_info_for_plugin_update( $latest_version );
+	}
+
+	/**
+	 * Determine whether the Update URI property in the plugin header can be used
+	 *
+	 * This check also verifies whether the WP version is 5.8 or later,
+	 * returning `false` otherwise.
+	 *
+	 * @return bool Whether WP is 5.8 or later and the Update URI is defined and contains 'barn2.com'
+	 */
+	public function use_barn2_update_uri() {
+		if ( version_compare( get_bloginfo( 'version' ), '5.8', '<' ) ) {
+			return false;
+		}
+
+		$plugin_data = Util::get_plugin_data( $this->plugin );
+
+		return isset( $plugin_data['UpdateURI'] ) && false !== strpos( $plugin_data['UpdateURI'], 'barn2.com' );
+	}
+
+	/**
 	 * Updates information on the "View version x.x details" page with custom data.
 	 *
-	 * @param mixed   $data
-	 * @param string  $action
-	 * @param object  $args
+	 * @param mixed  $data
+	 * @param string $action
+	 * @param object $args
 	 * @return object $data
 	 */
 	public function get_plugin_details( $data, $action = '', $args = null ) {
@@ -117,11 +172,17 @@ class Plugin_Updater implements Registerable {
 			$settings_link_open  = $license_page ? '<a href="' . esc_url( $license_page ) . '">' : '';
 			$settings_link_close = $license_page ? '</a>' : '';
 
-			printf( ' <em>%s</em>', sprintf(
+			// phpcs:disable WordPress.Security.EscapeOutput
+			printf(
+				' <em>%s</em>',
+				sprintf(
+				/* translators: 1: licence key link start, 2: license key link end */
 					__( 'Activate %1$syour license key%2$s to enable updates.', 'edd-eu-vat' ),
 					$settings_link_open,
 					$settings_link_close
-			) );
+				)
+			);
+			// phpcs:enable WordPress.Security.EscapeOutput
 		}
 	}
 
@@ -132,8 +193,21 @@ class Plugin_Updater implements Registerable {
 	 * @return object The updated version info
 	 */
 	private function format_version_info_for_plugin_update( $version_info ) {
-		unset( $version_info->name, $version_info->homepage, $version_info->version, $version_info->stable_version, $version_info->download_link,
-			$version_info->sections, $version_info->rating, $version_info->num_ratings, $version_info->last_updated );
+		unset(
+			$version_info->name,
+			$version_info->homepage,
+			$version_info->stable_version,
+			$version_info->download_link,
+			$version_info->sections,
+			$version_info->rating,
+			$version_info->num_ratings,
+			$version_info->last_updated
+		);
+
+		// Ensure 'version' is set as WordPress requires this.
+		if ( isset( $version_info->new_version ) ) {
+			$version_info->version = $version_info->new_version;
+		}
 
 		// Make sure the plugin property is set to the plugin's name/location. See issue 1463 on Software Licensing's GitHub repo.
 		$version_info->plugin = $this->plugin->get_basename();
@@ -161,6 +235,37 @@ class Plugin_Updater implements Registerable {
 		return $version_info;
 	}
 
+	/**
+	 * Callback that filters the HTML markup of the auto-updates link.
+	 *
+	 * @param string $html        The original HTML markup
+	 * @param string $plugin_file The basename of the current plugin
+	 * @return string
+	 */
+	function auto_update_setting_html( $html, $plugin_file ) {
+		if ( $plugin_file !== $this->plugin->get_basename() ) {
+			return $html;
+		}
+
+		if ( ! $this->plugin->get_license()->is_valid() || ! apply_filters( 'barn2_plugin_allow_automatic_update', true, $this->plugin ) ) {
+			$html = sprintf(
+				'<em>%s</em>',
+				__( 'Auto-updates unavailable.', 'edd-eu-vat' )
+			);
+		}
+
+		return $html;
+	}
+
+	/**
+	 * Get the latest version data for this plugin.
+	 *
+	 * If successful, the returned object will contain a number of properties, including:
+	 * 'new_version', 'stable_version', 'name', 'slug', 'url', 'last_updated', 'homepage', 'package',
+	 * 'download_link', 'sections', 'banners', and 'icons'.
+	 *
+	 * @return false|object The latest version, or false on failure.
+	 */
 	private function get_latest_version() {
 		// First check the cache.
 		$version_info = $this->get_cached_version_info();

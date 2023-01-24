@@ -2,34 +2,34 @@
 @import "icons";
 
 @mixin reset-form-input {
-	display: inline-block !important;
+	display: inline-block;
 	height: auto;
 	min-height: 0;
 	margin: 0;
 	line-height: normal;
-	font-size: inherit !important;
+	font-size: inherit;
 	font-family: inherit;
 	vertical-align: baseline;
-	float: none !important;
+	float: none;
 	box-sizing: border-box;
 }
 
 @mixin text-field {
-	padding: 0 0.5em !important;
+	padding: 0 0.5em;
 	margin: 0;
-	height: $control-input-height !important;
-	background-color: #f2f2f2 !important;
+	height: $control-input-height;
+	background-color: #f2f2f2;
 	color: #43454b;
 	font-weight: normal;
-	border: 0 !important;
-	box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.125) !important;
+	border: 0;
+	box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.125);
 	-webkit-appearance: none;
 }
 
 @mixin select {
-	width: auto !important;
+	width: auto;
 	font-weight: normal;
-	min-width: 55px !important;
+	min-width: 55px;
 	padding: 0.2em 1em 0.2em 0.5em;
 }
 
@@ -48,11 +48,13 @@
 #{$controls-class} {
 	display: flex;
 	flex-wrap: wrap;
-	justify-content: center;
+	justify-content: flex-start;
 	align-items: center;
+	margin-left: -$control-side-margin;
+	margin-right: -$control-side-margin;
 
 	&.#{$prefix}-above {
-		margin-bottom: 5px;
+		margin-bottom: 4px;
 	}
 
 	&.#{$prefix}-below {
@@ -60,23 +62,28 @@
 	}
 
 	> div {
-		margin: 0 10px $control-bottom-margin;
+		margin: 0 $control-side-margin $control-bottom-margin;
 
 		// Extra class needed to override DataTables
 		#{$wrapper-class} & {
 			float: none;
 			color: inherit;
 			padding: 0;
+
+			@media screen and (max-width: 640px) {
+				margin-top: 0;
+			}
 		}
 	}
 
 	.dataTables_length {
 		margin-top: 1px;
-		margin-bottom: $control-bottom-margin - 1px;
 	}
 
 	@media screen and (min-width: $small-breakpoint) {
 		justify-content: flex-end;
+		margin-left: 0;
+		margin-right: 0;
 
 		> div {
 			margin-left: 25px;
@@ -92,6 +99,12 @@
 		}
 	}
 
+	@media screen and (max-width: $medium-breakpoint - 1) {
+		.dataTables_paginate {
+			margin-top: 0;
+		}
+	}
+
 	label {
 		font-weight: normal;
 		vertical-align: baseline;
@@ -104,14 +117,18 @@
 		@include reset-form-input;
 		@include text-field;
 		min-width: auto;
-		width: auto !important; // TO
+		width: auto; // TO
 		margin-left: 6px;
-		margin-bottom: 0 !important; // TO
+		margin-bottom: 0; // TO
 	}
 
 	select {
 		@include reset-form-input;
 		@include select;
+	}
+
+	#{$wrapper-class} & select {
+		width: auto; // TO
 	}
 
 	.dataTables_length select,
@@ -121,7 +138,7 @@
 	}
 
 	#{$filters-class} {
-		margin-bottom: $control-bottom-margin - 4px;
+		margin-bottom: $control-bottom-margin - 2px;
 		max-width: 100%; // TO
 
 		label {
@@ -130,16 +147,16 @@
 
 		select,
 		.select2-container {
-			margin: 2px 5px 2px 0 !important;
+			margin: 3px 6px 3px 0;
 		}
 	}
 
 	// Select2
 	.select2-container {
-		height: $control-input-height !important;
+		height: $control-input-height;
 		min-height: 0; // TO
 		display: inline-block !important; // TO
-		font-size: inherit !important; // TO
+		font-size: inherit; // TO
 		max-width: 100%; // TO
 
 		.select2-selection:focus {
@@ -148,7 +165,7 @@
 
 		.select2-selection--single {
 			position: relative;
-			height: $control-input-height !important;
+			height: $control-input-height;
 			padding: 0; // TO
 
 			.select2-selection__rendered {
@@ -164,12 +181,8 @@
 				transform: none; // TO
 				border: none; // TO
 
-				b {
-					display: block;
-				}
-
 				&::before, &::after {
-					border: none !important; // TO
+					border: none; // TO
 					content: ''; // TO
 				}
 			}
@@ -190,13 +203,13 @@
 .select2-dropdown.#{$prefix}-dropdown {
 
 	.select2-search--dropdown {
-		padding: 5px !important; // TO
+		padding: 5px; // TO
 
 		.select2-search__field {
 			@include reset-form-input;
 			@include text-field;
 			width: 100%; // TO
-			margin-bottom: 0 !important; // TO
+			margin-bottom: 0; // TO
 		}
 
 		// For themes which add an icon to the search field.
@@ -211,14 +224,14 @@
 
 		> .select2-results__options {
 			max-height: 260px;
-			margin: 0 !important; // TO
-			padding: 0 !important; // TO
-			list-style: none !important; // TO
+			margin: 0; // TO
+			padding: 0; // TO
+			list-style: none; // TO
 		}
 	}
 
 	.select2-results__option {
-		margin: 0 !important; // TO
+		margin: 0; // TO
 		padding: 6px 6px 6px 10px;
 		line-height: normal;
 		display: list-item; // TO
@@ -232,8 +245,9 @@
 // Reset button
 #{$reset-class} {
 	display: inline-block;
-	vertical-align: baseline;
 	margin-left: 20px;
+	position: relative;
+	top: 1px;
 
 	#{$filters-class} & {
 		margin-left: 10px;
@@ -265,17 +279,14 @@
 
 // Table content
 #{$table-class} {
-	display: table !important;
-	table-layout: auto;
 	max-width: 100%;
 	word-break: normal;
-	margin-bottom: 0 !important;
-	visibility: hidden; // displayed by JS
+	margin-bottom: 0;
 	line-height: inherit; // TO
 
 	tr {
 		display: table-row;
-		float: none !important;
+		float: none;
 		margin: 0;
 	}
 
@@ -284,8 +295,7 @@
 		text-align: left;
 		display: table-cell;
 		vertical-align: top;
-		overflow: hidden;
-		float: none !important;
+		float: none;
 		word-break: normal;
 	}
 
@@ -293,21 +303,21 @@
 		line-height: 1.45;
 
 		&.control {
-			width: 2px !important;
+			width: 8px;
 		}
 	}
 
 	td {
 		> *:first-child {
-			margin-top: 0 !important;
+			margin-top: 0;
 		}
 
 		> *:last-child {
-			margin-bottom: 0 !important;
+			margin-bottom: 0;
 		}
 
 		p:last-child {
-			margin-bottom: 0 !important;
+			margin-bottom: 0;
 		}
 
 		&.nowrap {
@@ -315,23 +325,43 @@
 		}
 	}
 
+	.no-data td {
+		// Rows containing no data (i.e. all cells are empty). We set the height manually to approximate the size of rows that contain data.
+		height: 1.6em;
+		box-sizing: content-box;
+	}
+
 	&.nowrap td.child {
 		white-space: normal;
 	}
 
 	// Media
-	video,
-	iframe,
-	object {
-		height: auto;
+	audio {
+		min-width: 250px;
+
+		@media screen and (min-width: $small-breakpoint) {
+			min-width: 300px;
+		}
 	}
 
 	.wp-video {
+		// Videos should be sized according to the column width. This means in responsive rows they will take up the full width
+		// of the child row, but this is a tradeoff to prevent the video from overflowing the table width for large videos.
 		width: auto !important;
+		min-width: 150px;
 	}
 
-	.mejs-container {
-		width: 100% !important;
+	.wp-audio-shortcode {
+		width: auto !important;
+		min-width: 240px;
+	}
+
+	.wp-playlist {
+		min-width: 240px;
+
+		.mejs-container {
+			width: 100% !important;
+		}
 	}
 
 	// Responsive rows
@@ -339,39 +369,66 @@
 		td {
 			text-align: left; // TO
 		}
+	}
 
-		.dtr-details {
-			width: 100%;
-			list-style: none !important; // TO
-			padding: 0 !important; // TO
-		}
+	ul.dtr-details {
+		width: 100%; // TO
+		list-style-type: none;
+		margin: 0;
+		padding: 0; // TO
 
-		.dtr-title {
-			margin: 0 15px 4px 0;
-			vertical-align: top;
-		}
+		& > li {
+			border-bottom: 1px solid #efefef;
+			padding: 14px 0 8px;
+			display: flex;
+			align-content: stretch;
+			flex-wrap: wrap;
 
-		.dtr-data {
-			display: inline-block;
+			@media screen and (min-width: $medium-breakpoint) {
+				flex-wrap: nowrap;
+			}
 
-			figure {
-				width: auto;
-				float: none;
+			&:first-child {
+				padding-top: 0;
+			}
+
+			&:last-child {
+				border-bottom: none;
+			}
+
+			.dtr-title,
+			.dtr-data {
+				vertical-align: top;
+			}
+
+			.dtr-title {
+				flex: 0 1 80px;
+				font-weight: bold;
+				margin: 0 15px 4px 0;
+			}
+
+			.dtr-data {
+				flex: 1 1 auto;
+
+				figure {
+					width: auto;
+					float: none;
+				}
 			}
 		}
 	}
+
 }
 
 table#{$table-class} {
+	display: table;
+	table-layout: auto;
+	visibility: hidden; // displayed by JS
 
 	thead {
 
 		th {
 			padding-left: 10px; // to match header cells
-		}
-
-		.sorting_asc {
-			background-position: 100% 55%;
 		}
 
 	}
@@ -380,7 +437,57 @@ table#{$table-class} {
 		background-color: transparent;
 	}
 
+	// Sort arrows
+	// Disable the before/after icons as these currently don't work correctly, instead use the old pngs.
+	thead > tr > th.sorting:before,
+	thead > tr > th.sorting_asc:before,
+	thead > tr > th.sorting_desc:before,
+	thead > tr > th.sorting_asc_disabled:before,
+	thead > tr > th.sorting_desc_disabled:before,
+	thead > tr > th.sorting:after,
+	thead > tr > th.sorting_asc:after,
+	thead > tr > th.sorting_desc:after,
+	thead > tr > th.sorting_asc_disabled:after,
+	thead > tr > th.sorting_desc_disabled:after {
+		content: "" !important;
+		display: none !important;
+	}
+
+	thead > tr > th.sorting,
+	thead > tr > th.sorting_asc,
+	thead > tr > th.sorting_desc,
+	thead > tr > th.sorting_asc_disabled,
+	thead > tr > th.sorting_desc_disabled {
+		background-repeat: no-repeat;
+		background-position: center right 5px;
+	}
+
+	thead .sorting {
+		background-image: url("../js/datatables/DataTables-1.12.1/images/sort_both.png");
+	}
+
+	thead .sorting_asc {
+		background-image: url("../js/datatables/DataTables-1.12.1/images/sort_asc.png") !important;
+	}
+
+	thead .sorting_desc {
+		background-image: url("../js/datatables/DataTables-1.12.1/images/sort_desc.png") !important;
+	}
+
+	thead .sorting_asc_disabled {
+		background-image: url("../js/datatables/DataTables-1.12.1/images/sort_asc_disabled.png");
+	}
+
+	thead .sorting_desc_disabled {
+		background-image: url("../js/datatables/DataTables-1.12.1/images/sort_desc_disabled.png");
+	}
+
 	// Responsive row
+	&.dtr-inline.collapsed > tbody > tr > td.dtr-control,
+	&.dtr-inline.collapsed > tbody > tr > th.dtr-control {
+		padding-left: 32px;
+	}
+
 	&.dtr-inline.collapsed > tbody > tr > td.dtr-control::before,
 	&.dtr-inline.collapsed > tbody > tr > th.dtr-control::before,
 	&.dtr-column > tbody > tr > td.control::before,
@@ -388,7 +495,7 @@ table#{$table-class} {
 		@include icon;
 		content: "\ea0a"; // plus
 		color: #377837;
-		top: 1.2em;
+		top: 1.3em;
 		font-size: 0.75em;
 		border-radius: 0;
 		border: none;
@@ -414,11 +521,61 @@ table#{$table-class} {
 }
 
 // Responsive modal
-#{$table-class}.dtr-details {
-	visibility: visible;
-	margin: 0;
-}
+div.dtr-modal {
+	z-index: 2000;
 
-.dtr-modal .dtr-modal-close {
-	line-height: 1.2;
+	div.dtr-modal-background {
+		background-color: rgba(0, 0, 0, 0.7);
+	}
+
+	div.dtr-modal-display {
+		background-color: #ffffff;
+		border: none;
+		border-radius: 0;
+		box-shadow: none;
+		max-width: 800px;
+		width: 90%;
+
+		@media screen and (max-width: $medium-breakpoint - 1) {
+			top: 10%;
+			bottom: auto;
+			height: auto;
+			max-height: 80%;
+		}
+
+		@media screen and (min-width: $medium-breakpoint) {
+			width: 65%;
+		}
+	}
+
+	div.dtr-modal-close {
+		border-radius: 50%;
+		background-color: #333333;
+		color: #ffffff;
+		font-size: 30px;
+		height: 38px;
+		width: 38px;
+		line-height: 38px;
+		border: none;
+		top: 10px;
+		right: 10px;
+
+		&:hover {
+			background-color: #555555;
+		}
+	}
+
+	div.dtr-modal-content {
+		padding: 55px 25px 25px;
+
+		@media screen and (min-width: $medium-breakpoint) {
+			padding-left: 35px;
+			padding-right: 35px;
+		}
+
+		#{$table-class} {
+			visibility: visible;
+		}
+	}
+
 }

@@ -8,6 +8,7 @@ use Barn2\Plugin\EDD_VAT\Admin\Wizard\Steps,
 	Barn2\VAT_Lib\Plugin\Licensed_Plugin,
 	Barn2\VAT_Lib\Registerable,
 	Barn2\VAT_Lib\Util as Lib_Util;
+use Barn2\Plugin\EDD_VAT\Dependencies\Barn2\Setup_Wizard\Setup_Wizard as Wizard;
 
 /**
  * Main Setup Wizard Loader
@@ -50,18 +51,6 @@ class Setup_Wizard implements Registerable {
 
 		$wizard->add_edd_api( EDD_Licensing::class );
 		$wizard->add_license_class( Plugin_License::class );
-
-		$script_dependencies = Lib_Util::get_script_dependencies( $this->plugin, 'admin/wizard.min.js' );
-		$wizard->set_non_wc_asset(
-			$plugin->get_dir_url() . 'assets/js/admin/wizard.min.js',
-			$script_dependencies['dependencies'],
-			$script_dependencies['version']
-		);
-
-		$wizard->add_custom_asset(
-			$plugin->get_dir_url() . 'assets/js/admin/wizard-custom.min.js',
-			Lib_Util::get_script_dependencies( $this->plugin, 'admin/wizard-custom.min.js' )
-		);
 
 		$this->wizard = $wizard;
 	}

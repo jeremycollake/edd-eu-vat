@@ -119,6 +119,13 @@ class Util {
 		if ( ! $reverse_charge_in_base_country ) {
 			$base_country = edd_get_option( 'edd_vat_address_country', edd_get_shop_country() );
 			$eu_countries = array_diff( $eu_countries, [ $base_country ] );
+
+			// Exclude GB due to brexit.
+			$edd_vat_country = edd_get_option( 'edd_vat_address_country' );
+
+			if ( $edd_vat_country === 'EU' ) {
+				$eu_countries = array_diff( $eu_countries, [ 'GB' ] );
+			}
 		}
 
 		return apply_filters( 'edd_vat_can_reverse_charge_vat', in_array( $country_code, $eu_countries, true ), $country_code );

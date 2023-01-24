@@ -1,8 +1,9 @@
 <?php
+
 namespace Barn2\VAT_Lib\Admin;
 
-use Barn2\VAT_Lib\Registerable,
-	Barn2\VAT_Lib\Plugin\Plugin;
+use Barn2\VAT_Lib\Plugin\Plugin;
+use Barn2\VAT_Lib\Registerable;
 
 /**
  * Registers the tooltip assets
@@ -16,18 +17,31 @@ use Barn2\VAT_Lib\Registerable,
 class Settings_Scripts implements Registerable {
 
 	/**
-	 * @var Plugin The plugin object.
+	 * The plugin object.
+	 *
+	 * @var Plugin
 	 */
 	private $plugin;
 
+	/**
+	 * Constructor.
+	 *
+	 * @param Plugin $plugin
+	 */
 	public function __construct( Plugin $plugin ) {
 		$this->plugin = $plugin;
 	}
 
+	/**
+	 * {@inheritdoc}
+	 */
 	public function register() {
 		add_action( 'admin_enqueue_scripts', [ $this, 'load_scripts' ], 5 );
 	}
 
+	/**
+	 * Load any scripts required by settings fields.
+	 */
 	public function load_scripts() {
 		if ( ! wp_script_is( 'barn2-tiptip', 'registered' ) ) {
 			wp_register_script(
@@ -36,6 +50,13 @@ class Settings_Scripts implements Registerable {
 				[ 'jquery' ],
 				$this->plugin->get_version(),
 				true
+			);
+
+			wp_register_style(
+				'barn2-tooltip',
+				plugins_url( 'lib/assets/css/admin/tooltip.min.css', $this->plugin->get_file() ),
+				[],
+				$this->plugin->get_version()
 			);
 		}
 	}

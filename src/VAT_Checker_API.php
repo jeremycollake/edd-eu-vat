@@ -130,7 +130,7 @@ class VAT_Checker_API {
 			$result->valid = filter_var( $response->valid, FILTER_VALIDATE_BOOLEAN );
 
 			// 3 dashes are returned in name and address field if VAT number is invalid.
-			if ( $response->name && '---' !== $response->name ) {
+			if ( isset( $response->name ) && '---' !== $response->name ) {
 				$result->name = $response->name;
 			} elseif ( isset( $response->traderName ) && '---' !== $response->traderName ) {
 				$result->name = $response->traderName;
@@ -138,7 +138,7 @@ class VAT_Checker_API {
 
 			$address = [];
 
-			if ( $response->address && '---' !== $response->address ) {
+			if ( isset( $response->address ) && '---' !== $response->address ) {
 				$address   = explode( "\n", $response->address );
 				$address[] = $country_code;
 			} elseif ( isset( $response->traderAddress ) && '---' !== $response->traderAddress ) {
@@ -165,6 +165,8 @@ class VAT_Checker_API {
 			$result->error = VAT_Check_Result::API_ERROR;
 		} elseif ( 'INVALID_INPUT' === $result->error ) {
 			$result->error = VAT_Check_Result::INVALID_INPUT;
+		} elseif ( 'MS_MAX_CONCURRENT_REQ' === $result->error ) {
+			$result->error = VAT_Check_Result::MS_MAX_CONCURRENT_REQ;
 		}
 
 		return $result;

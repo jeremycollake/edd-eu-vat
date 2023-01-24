@@ -316,7 +316,7 @@ class Plugin_License implements Registerable, License {
 		switch ( $this->get_error_code() ) {
 			case 'missing':
 				$message = sprintf(
-				/* translators: 1: account page link open, 2: account page link close */
+					/* translators: 1: account page link start, 2: account page link end */
 					__( 'Invalid license key - please check your order confirmation email or %1$sAccount%2$s.', 'edd-eu-vat' ),
 					Util::format_store_link_open( 'account' ),
 					'</a>'
@@ -347,7 +347,7 @@ class Plugin_License implements Registerable, License {
 				$message        = sprintf( __( 'Your license key has reached its activation limit (%s).', 'edd-eu-vat' ), $limit );
 				$read_more_link = Util::format_store_link( 'kb/license-key-problems', __( 'Read more', 'edd-eu-vat' ) );
 
-				/* translators: support for RTL. 1: license limit error message, 2: a read more link */
+				/* translators: support for RTL, 1: the license error, 2: a link */
 				$message = sprintf( __( '%1$s %2$s', 'edd-eu-vat' ), $message, $read_more_link );
 				break;
 			case 'inactive':
@@ -368,7 +368,7 @@ class Plugin_License implements Registerable, License {
 
 				$renewal_link = Util::format_link( $this->get_renewal_url(), __( 'Renew now for 20% discount.', 'edd-eu-vat' ), true );
 
-				/* translators: support for RTL. 1: expired license error message, 2: a renewal link */
+				/* translators: support for RTL, 1: the license error, 2: a link */
 				$message = sprintf( __( '%1$s %2$s', 'edd-eu-vat' ), $message, $renewal_link );
 				break;
 			case 'disabled':
@@ -630,6 +630,7 @@ class Plugin_License implements Registerable, License {
 
 	private function get_license_disabled_message() {
 		return sprintf(
+			/* translators: 1: purchase link start, 2: purchase link end. */
 			__( 'Your license key has been disabled. Please %1$spurchase a new license key%2$s to continue using the plugin.', 'edd-eu-vat' ),
 			Util::format_link_open( $this->get_renewal_url( false ), true ),
 			'</a>'

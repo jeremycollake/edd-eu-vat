@@ -2,6 +2,7 @@
 
 namespace Barn2\Plugin\EDD_VAT\Admin\Wizard\Steps;
 
+use Barn2\Plugin\EDD_VAT\Dependencies\Barn2\Setup_Wizard\Api;
 use Barn2\Plugin\EDD_VAT\Dependencies\Barn2\Setup_Wizard\Step;
 
 /**
@@ -44,7 +45,7 @@ class Base_Country extends Step {
 				'label'       => __( 'Yes', 'edd-eu-vat' ),
 				/* translators: %s: EDD Base Country */
 				'description' => sprintf( __( 'Allow the VAT reverse charge for customers based in your home country%s.', 'edd-eu-vat' ), $base_country_reverse_charge_setting ),
-				'value'       => edd_get_option( 'edd_vat_reverse_charge_base_country' ),
+				'value'       => edd_get_option( 'edd_vat_reverse_charge_base_country' ) === '1' || edd_get_option( 'edd_vat_reverse_charge_base_country' ) === 'true',
 				'type'        => 'checkbox',
 			]
 		];
@@ -56,22 +57,14 @@ class Base_Country extends Step {
 	/**
 	 * {@inheritdoc}
 	 */
-	public function submit() {
-
-		check_ajax_referer( 'barn2_setup_wizard_nonce', 'nonce' );
-
-		if ( ! current_user_can( 'manage_options' ) ) {
-			$this->send_error( esc_html__( 'You are not authorized.', 'edd-eu-vat' ) );
-		}
-
-		$values = $this->get_submitted_values();
+	public function submit( array $values ) {
 
 		$reverse_charge_base_country = isset( $values['edd_vat_reverse_charge_base_country'] ) && ! empty( $values['edd_vat_reverse_charge_base_country'] )
 		? $this->bool_to_edd_checkbox_string( $values['edd_vat_reverse_charge_base_country'] ) : false;
 
 		edd_update_option( 'edd_vat_reverse_charge_base_country', $reverse_charge_base_country );
 
-		wp_send_json_success();
+		return Api::send_success_response();
 
 	}
 

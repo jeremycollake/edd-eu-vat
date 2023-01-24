@@ -34,14 +34,14 @@ $icon-font-path: '../../lib/assets/fonts' !default;
 }
 
 @mixin icon {
-	font-family: 'icomoon' !important;
+	font-family: 'icomoon';
 	font-style: normal;
 	font-weight: normal;
 	font-variant: normal;
 	text-transform: none;
 	line-height: 1;
 	background: none;
-	vertical-align: baseline !important;
+	vertical-align: baseline;
 
 	// Better Font Rendering
 	-webkit-font-smoothing: antialiased;

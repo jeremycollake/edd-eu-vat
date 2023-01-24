@@ -64,6 +64,9 @@ class Checkout_Handler implements Registerable, Service {
 
 		// Add VAT to EDD payment.
 		add_action( 'edd_insert_payment', [ $this, 'insert_payment' ], 10, 2 );
+
+		// Refresh on login.
+		add_action( 'wp_login', [ $this, 'clear_vat_on_login' ], 10, 2 );
 	}
 
 	/**
@@ -147,6 +150,21 @@ class Checkout_Handler implements Registerable, Service {
 		if ( ! empty( $this->cart_vat->get_vat_details()->country_code ) && $selected_country !== $this->cart_vat->get_vat_details()->country_code ) {
 			$this->cart_vat->clear();
 		}
+	}
+
+	/**
+	 * Clear VAT on login if not empty.
+	 *
+	 * @param string $user_login
+	 * @param object $user
+	 * @return void
+	 */
+	public function clear_vat_on_login( $user_login, $user ) {
+
+		if ( $this->cart_vat instanceof Cart_VAT && ! empty( $this->cart_vat->get_vat_details() ) ) {
+			$this->cart_vat->clear();
+		}
+
 	}
 
 	/**
@@ -373,6 +391,9 @@ class Checkout_Handler implements Registerable, Service {
 				break;
 			case VAT_Check_Result::API_ERROR:
 				$error = __( 'We\'re having trouble checking your VAT number. Please try again or contact our support team.', 'edd-eu-vat' );
+				break;
+			case VAT_Check_Result::MS_MAX_CONCURRENT_REQ:
+				$error = __( 'We\'re having trouble checking your VAT number. The VIES service is unreachable.', 'edd-eu-vat' );
 				break;
 			default:
 				$error = $code;
