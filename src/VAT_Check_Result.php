@@ -19,6 +19,7 @@ class VAT_Check_Result {
 	const VAT_NUMBER_INVALID_FOR_COUNTRY = 5;
 	const INVALID_INPUT                  = 6;
 	const API_ERROR                      = 7;
+	const MS_MAX_CONCURRENT_REQ          = 8;
 
 	/**
 	 * The VAT number.

@@ -1,4 +1,5 @@
 <?php
+
 namespace Barn2\VAT_Lib\Plugin;
 
 /**
@@ -11,14 +12,6 @@ namespace Barn2\VAT_Lib\Plugin;
  * @version   1.1
  */
 interface Licensed_Plugin extends Plugin {
-
-	/**
-	 * Get the item ID of this plugin.
-	 *
-	 * @return int The item ID
-	 * @deprecated 1.1 Replaced by Plugin::get_id()
-	 */
-	public function get_item_id();
 
 	/**
 	 * Get the plugin license object.

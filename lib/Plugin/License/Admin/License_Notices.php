@@ -13,7 +13,7 @@ use Barn2\VAT_Lib\Util;
  * @author    Barn2 Plugins <support@barn2.com>
  * @license   GPL-3.0
  * @copyright Barn2 Media Ltd
- * @version   1.1.2
+ * @version   1.2
  */
 class License_Notices implements Registerable {
 
@@ -85,15 +85,19 @@ class License_Notices implements Registerable {
 		$plugin_name = '<strong>' . $this->plugin->get_name() . '</strong>';
 		?>
 		<div class="notice notice-warning is-dismissible barn2-notice" data-id="<?php echo esc_attr( $this->plugin->get_id() ); ?>" data-type="<?php echo esc_attr( self::FIRST_ACTIVATION ); ?>">
-			<p><?php
-				/* translators: 1: the plugin name, 2: settings link open, 3: settings link close. */
+			<p>
+			<?php
+				// phpcs:disable WordPress.Security.EscapeOutput
 				printf(
+					/* translators: 1: the plugin name, 2: settings link start, 3: settings link end. */
 					__( 'Thank you for installing %1$s. To get started, please %2$senter your license key%3$s.', 'edd-eu-vat' ),
 					$plugin_name,
 					Util::format_link_open( $this->plugin->get_license_page_url() ),
 					'</a>'
 				);
-				?></p>
+				// phpcs:enable WordPress.Security.EscapeOutput
+			?>
+				</p>
 		</div>
 		<?php
 	}
@@ -102,15 +106,19 @@ class License_Notices implements Registerable {
 		$plugin_name = '<strong>' . $this->plugin->get_name() . '</strong>';
 		?>
 		<div class="notice notice-warning is-dismissible barn2-notice" data-id="<?php echo esc_attr( $this->plugin->get_id() ); ?>" data-type="<?php echo esc_attr( self::EXPIRED ); ?>">
-			<p><?php
-				/* translators: 1: plugin name, 2: renewal link open, 3: renewal link close. */
+			<p>
+			<?php
+				// phpcs:disable WordPress.Security.EscapeOutput
 				printf(
+					/* translators: 1: the plugin name, 2: renewal link start, 3: renewal link end. */
 					__( 'Your license key for %1$s has expired. %2$sClick here to renew for 20%% discount%3$s.', 'edd-eu-vat' ),
 					$plugin_name,
 					Util::format_link_open( $this->plugin->get_license()->get_renewal_url(), true ),
 					'</a>'
 				);
-				?></p>
+				// phpcs:enable WordPress.Security.EscapeOutput
+			?>
+				</p>
 		</div>
 		<?php
 	}
@@ -119,15 +127,19 @@ class License_Notices implements Registerable {
 		$plugin_name = '<strong>' . esc_html( $this->plugin->get_name() ) . '</strong>';
 		?>
 		<div class="notice notice-error is-dismissible barn2-notice" data-id="<?php echo esc_attr( $this->plugin->get_id() ); ?>" data-type="<?php echo esc_attr( self::DISABLED ); ?>">
-			<p><?php
-				/* translators: 1: plugin name, 2: renewal link open, 3: renewal link close. */
+			<p>
+			<?php
+				// phpcs:disable WordPress.Security.EscapeOutput
 				printf(
+					/* translators: 1: the plugin name, 2: renewal link start, 3: renewal link end. */
 					__( 'You no longer have a valid license for %1$s. Please %2$spurchase a new license key%3$s to continue using the plugin.', 'edd-eu-vat' ),
 					$plugin_name,
 					Util::format_link_open( $this->plugin->get_license()->get_renewal_url( false ), true ),
 					'</a>'
 				);
-				?></p>
+				// phpcs:enable WordPress.Security.EscapeOutput
+			?>
+				</p>
 		</div>
 		<?php
 	}
@@ -140,15 +152,19 @@ class License_Notices implements Registerable {
 		$plugin_name = '<strong>' . $this->plugin->get_name() . '</strong>';
 		?>
 		<div class="notice notice-error is-dismissible barn2-notice" data-id="<?php echo esc_attr( $this->plugin->get_id() ); ?>" data-type="<?php echo esc_attr( self::SITE_MOVED ); ?>">
-			<p><?php
-				/* translators: 1: plugin name, 2: settings link open, 3: settings link close. */
+			<p>
+			<?php
+				// phpcs:disable WordPress.Security.EscapeOutput
 				printf(
+					/* translators: 1: the plugin name, 2: settings link start, 3: settings link end. */
 					__( '%1$s - your site has moved to a new domain. Please %2$sreactivate your license key%3$s.', 'edd-eu-vat' ),
 					$plugin_name,
 					Util::format_link_open( $this->plugin->get_license_page_url() ),
 					'</a>'
 				);
-				?></p>
+				// phpcs:enable WordPress.Security.EscapeOutput
+			?>
+				</p>
 		</div>
 		<?php
 	}
@@ -164,7 +180,7 @@ class License_Notices implements Registerable {
 		if ( ! wp_script_is( 'barn2-notices', 'registered' ) ) {
 			wp_register_script(
 				'barn2-notices',
-				plugins_url( 'lib/assets/js/barn2-notices.min.js', $this->plugin->get_file() ),
+				plugins_url( 'lib/assets/js/admin/barn2-notices.min.js', $this->plugin->get_file() ),
 				[ 'jquery' ],
 				$this->plugin->get_version(),
 				true

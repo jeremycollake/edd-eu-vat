@@ -8,7 +8,6 @@ use Barn2\Plugin\EDD_VAT\Admin\Wizard\Setup_Wizard,
 	Barn2\VAT_Lib\Util,
 	Barn2\VAT_Lib\Plugin\Licensed_Plugin,
 	Barn2\VAT_Lib\Plugin\Admin\Admin_Links,
-	Barn2\VAT_Lib\Admin\Plugin_Promo,
 	WPTRT\AdminNotices\Notices;
 
 /**
@@ -31,11 +30,9 @@ class Admin_Controller implements Registerable, Service {
 	public function __construct( Licensed_Plugin $plugin ) {
 		$this->services = [
 			new Admin_Links( $plugin ),
-			new Plugin_Promo( $plugin )
 		];
 
 		if ( Util::is_edd_active() ) {
-			$this->services[] = new Setup_Wizard( $plugin );
 			$this->services[] = new Settings( $plugin );
 		}
 	}

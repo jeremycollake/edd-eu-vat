@@ -9,6 +9,7 @@ use Barn2\Plugin\EDD_VAT\Admin\Plugin_Setup,
 	Barn2\VAT_Lib\Util as Lib_Util,
 	Barn2\VAT_Lib\Admin\Notices,
 	Barn2\VAT_Lib\Service;
+use Barn2\Plugin\EDD_VAT\Admin\Wizard\Setup_Wizard;
 
 /**
  * The main plugin class. Responsible for loading the plugin.
@@ -82,6 +83,8 @@ class Plugin extends Premium_Plugin implements Registerable, Translatable, Servi
 		if ( ! extension_loaded( 'soap' ) ) {
 			$this->add_missing_soap_extension_warning();
 		}
+
+		$this->services['setup_wizard'] = new Setup_Wizard( $this );
 
 		// Only create these services if license is valid.
 		if ( $this->has_valid_license() ) {

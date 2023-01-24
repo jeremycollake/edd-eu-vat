@@ -19,8 +19,12 @@ class Payments_Export implements Registerable, Service {
 	 * {@inheritdoc}
 	 */
 	public function register() {
+		// Backwards compatible.
 		add_filter( 'edd_export_csv_cols_payments', [ $this, 'edd_export_csv_cols_payments' ] );
 		add_filter( 'edd_export_get_data_payments', [ $this, 'edd_export_get_data_payments' ] );
+
+		add_filter( 'edd_export_csv_cols_orders', [ $this, 'edd_export_csv_cols_payments' ] );
+		add_filter( 'edd_export_get_data_orders', [ $this, 'edd_export_get_data_payments' ] );
 	}
 
 	/**

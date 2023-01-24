@@ -9,12 +9,11 @@
 namespace Barn2\Plugin\EDD_VAT\Dependencies\Barn2\Setup_Wizard;
 
 use Barn2\Plugin\EDD_VAT\Dependencies\Barn2\Setup_Wizard\Interfaces\Bootable;
-use Barn2\Plugin\EDD_VAT\Dependencies\Barn2\Setup_Wizard\Interfaces\Restartable;
-use Barn2\Plugin\EDD_VAT\Dependencies\Barn2\Setup_Wizard\Steps\Cross_Selling;
+use JsonSerializable;
 /**
  * Create a setup wizard for a given plugin.
  */
-class Setup_Wizard implements Bootable
+class Setup_Wizard implements Bootable, JsonSerializable
 {
     /**
      * Plugin instance.
@@ -35,19 +34,6 @@ class Setup_Wizard implements Bootable
      */
     private $slug;
     /**
-     * Determine if the library is in dev mode.
-     * When in dev mode, this will hold the __FILE__ path
-     *
-     * @var boolean|string
-     */
-    private $dev_mode;
-    /**
-     * List of arguments and configuration settings sent to the react app.
-     *
-     * @var array
-     */
-    private $js_args = [];
-    /**
      * Holds the EDD_Licensing class.
      *
      * @var object
@@ -66,36 +52,6 @@ class Setup_Wizard implements Bootable
      */
     private $restart_hook;
     /**
-     * Url and path to the custom script that may be needed to extend the react app.
-     *
-     * @var array
-     */
-    private $custom_asset_url = [];
-    /**
-     * Determine if WooCommerce is available within the environment.
-     *
-     * @var boolean
-     */
-    private $woocommerce = \true;
-    /**
-     * URL to the custom base app .js file used when the library is not being used with WC.
-     *
-     * @var string
-     */
-    private $non_wc_app_url = null;
-    /**
-     * Array of dependencies of the non-woocommerce asset file.
-     *
-     * @var array
-     */
-    private $non_wc_deps = [];
-    /**
-     * Version string of the non-woocommerce asset file.
-     *
-     * @var string
-     */
-    private $non_wc_version = null;
-    /**
      * Holds the custom path to the library.
      *
      * @var string
@@ -108,16 +64,27 @@ class Setup_Wizard implements Bootable
      */
     private $lib_url;
     /**
+     * Additional configuration parameters.
+     *
+     * @var array
+     */
+    public $js_args;
+    /**
+     * Holds details about the custom assets.
+     *
+     * @var array
+     */
+    public $custom_asset_url;
+    /**
      * Configure a new plugin setup wizard.
      *
      * @param object $plugin instance of plugin
      * @param array $steps list of steps to add to the wizard
      */
-    public function __construct($plugin, $steps = [], $woocommerce = \true)
+    public function __construct($plugin, $steps = [])
     {
         $this->plugin = $plugin;
         $this->slug = $this->plugin->get_slug() . '-setup-wizard';
-        $this->woocommerce = $woocommerce;
         if (!empty($steps)) {
             $this->add_steps($steps);
         }
@@ -147,18 +114,6 @@ class Setup_Wizard implements Bootable
         return $this;
     }
     /**
-     * Determine whether or not WooCommerce is available within the environment.
-     * When WC is not available we have to load assets in a different way
-     * because @woocommerce/components package uses a global window.wc variable
-     * on the frontend which is not available without WooCommerce.
-     *
-     * @return boolean
-     */
-    public function has_woocommerce()
-    {
-        return (bool) $this->woocommerce;
-    }
-    /**
      * Get the slug of the wizard.
      *
      * @return void
@@ -168,26 +123,6 @@ class Setup_Wizard implements Bootable
         return $this->slug;
     }
     /**
-     * Set or unset the library dev mode.
-     *
-     * @param boolean $value path to the __FILE__
-     * @return Setup_Wizard
-     */
-    public function set_dev_mode($value)
-    {
-        $this->dev_mode = $value;
-        return $this;
-    }
-    /**
-     * Determine if the library is in dev mode.
-     *
-     * @return boolean
-     */
-    public function is_dev_mode()
-    {
-        return !empty($this->dev_mode);
-    }
-    /**
      * Configure the barn2_setup_wizard js object for the react app.
      *
      * @param array $args
@@ -195,11 +130,8 @@ class Setup_Wizard implements Bootable
      */
     public function configure($args = [])
     {
-        $defaults = ['plugin_name' => $this->plugin->get_name(), 'plugin_slug' => $this->plugin->get_slug(), 'plugin_product_id' => $this->plugin::ITEM_ID, 'skip_url' => admin_url(), 'license_tooltip' => '', 'utm_id' => '', 'premium_url' => '', 'completed' => $this->is_completed()];
+        $defaults = ['plugin_name' => $this->plugin->get_name(), 'plugin_slug' => $this->plugin->get_slug(), 'plugin_product_id' => $this->plugin->get_id(), 'skip_url' => admin_url(), 'license_tooltip' => '', 'utm_id' => '', 'premium_url' => '', 'completed' => $this->is_completed(), 'barn2_api' => 'https://barn2.com/wp-json/upsell/v1/settings', 'ready_links' => []];
         $args = wp_parse_args($args, $defaults);
-        $args['ajax'] = esc_url(admin_url('admin-ajax.php'));
-        $args['nonce'] = wp_create_nonce('barn2_setup_wizard_nonce');
-        $args['nonce_upsells'] = wp_create_nonce('barn2_setup_wizard_upsells_nonce');
         $this->js_args = $args;
         return $this;
     }
@@ -245,15 +177,6 @@ class Setup_Wizard implements Bootable
         return $this->edd_api;
     }
     /**
-     * Get the list of arguments for the barn2_setup_wizard js object.
-     *
-     * @return array
-     */
-    public function get_js_args()
-    {
-        return $this->js_args;
-    }
-    /**
      * Specify the hook to use to which the restart button will be attached.
      *
      * @param string $hook
@@ -282,7 +205,6 @@ class Setup_Wizard implements Bootable
     public function add(Step $step)
     {
         $step->with_plugin($this->plugin);
-        $step->set_fields();
         $this->steps[] = $step;
         return $this;
     }
@@ -299,52 +221,9 @@ class Setup_Wizard implements Bootable
                 continue;
             }
             $step->with_plugin($this->plugin);
-            $step->set_fields();
             $this->steps[] = $step;
         }
         return $this;
-    }
-    /**
-     * Set the url to the .js file built without the WC webpack extraction tool.
-     *
-     * @param string $url
-     * @param array $deps array of dependencies
-     * @param string $version version number of the file
-     * @return void
-     */
-    public function set_non_wc_asset($url, $deps = [], $version = null)
-    {
-        $this->non_wc_app_url = $url;
-        $this->non_wc_deps = $deps;
-        $this->non_wc_version = $version;
-        return $this;
-    }
-    /**
-     * Get the url to the .js file built without the WC webpack extraction tool.
-     *
-     * @return string
-     */
-    public function get_non_wc_asset()
-    {
-        return $this->non_wc_app_url;
-    }
-    /**
-     * Get the array of dependencies configure for non-wc asset.
-     *
-     * @return array
-     */
-    public function get_non_wc_dependencies()
-    {
-        return $this->non_wc_deps;
-    }
-    /**
-     * Get the version string for the non-wc asset file.
-     *
-     * @return string
-     */
-    public function get_non_wc_version()
-    {
-        return $this->non_wc_version;
     }
     /**
      * URL and path to the custom script that is loaded together with the react app.
@@ -395,17 +274,31 @@ class Setup_Wizard implements Bootable
         $config = [];
         /** @var Step $step */
         foreach ($this->steps as $step) {
-            if ($step instanceof Cross_Selling) {
-                $item_id = $this->plugin::ITEM_ID;
-                $is_pass = get_option("barn2_plugin_{$item_id}_license_is_pass");
-                if ($is_pass) {
-                    $step->set_hidden(\true);
-                }
-            }
-            $config[] = ['key' => $step->get_id(), 'label' => $step->get_name(), 'description' => $step->get_description(), 'heading' => $step->get_title(), 'tooltip' => $step->get_tooltip(), 'fields' => $step->get_fields(), 'hidden' => $step->is_hidden()];
+            $config[] = ['key' => $step->get_id(), 'label' => $step->get_name(), 'description' => $step->get_description(), 'heading' => $step->get_title(), 'tooltip' => $step->get_tooltip(), 'hidden' => $step->is_hidden()];
         }
         return $config;
     }
+    /**
+     * Get all initially hidden steps.
+     *
+     * @return void
+     */
+    private function get_initially_hidden_steps()
+    {
+        $steps = [];
+        /** @var Step $step */
+        foreach ($this->steps as $step) {
+            if ($step->is_hidden()) {
+                $steps[] = $step->get_id();
+            }
+        }
+        return $steps;
+    }
+    /**
+     * Get steps of the wizard.
+     *
+     * @return array
+     */
     public function get_steps()
     {
         return $this->steps;
@@ -417,60 +310,17 @@ class Setup_Wizard implements Bootable
      */
     public function boot()
     {
-        // Merge the fields configuration to the js arguments.
-        $this->js_args = \array_merge($this->js_args, ['steps' => $this->get_steps_configuration()]);
-        // Merge license details if needed.
-        if ($this->edd_api) {
-            $this->js_args = \array_merge($this->js_args, ['license_key' => $this->get_licensing()->get_license_key(), 'license_status' => $this->get_licensing()->get_status(), 'license_status_text' => $this->get_licensing()->get_status_help_text()]);
-        }
+        $rest_api = new Api($this->plugin, $this->get_steps());
         // Hook into WP.
         add_action('admin_menu', [$this, 'register_admin_page']);
         add_filter('admin_body_class', [$this, 'admin_page_body_class']);
         add_action('admin_enqueue_scripts', [$this, 'enqueue_assets'], 20);
         add_action('admin_head', [$this, 'admin_head']);
-        if ($this instanceof Restartable) {
-            add_action("wp_ajax_barn2_wizard_{$this->plugin->get_slug()}_on_restart", [$this, 'on_restart']);
-        }
-        // Hook all steps into WP.
-        if (!empty($this->steps) && \is_array($this->steps)) {
-            /** @var Step $step */
-            foreach ($this->steps as $step) {
-                $step->with_wizard($this);
-                $step->boot();
-            }
-        }
-        // Merge initial values into the js config.
-        $this->js_args = \array_merge($this->js_args, ['initial_values' => $this->get_steps_values()]);
+        $rest_api->register_api_routes();
         // Attach the restart button if specified.
         if (!empty($this->get_restart_hook())) {
             add_action($this->get_restart_hook(), [$this, 'add_restart_btn']);
         }
-    }
-    /**
-     * Get the intial values of all fields in the setup wizard.
-     *
-     * @return array
-     */
-    public function get_steps_values()
-    {
-        $values = [];
-        /** @var Step $step */
-        foreach ($this->steps as $step) {
-            $fields = $step->get_fields();
-            if (!empty($fields)) {
-                foreach ($fields as $key => $field) {
-                    if ($field['type'] === 'checkbox') {
-                        continue;
-                    }
-                    $disallowed = ['title', 'heading', 'list', 'image'];
-                    if (\in_array($field['type'], $disallowed)) {
-                        continue;
-                    }
-                    $values[$key] = isset($field['value']) ? $field['value'] : '';
-                }
-            }
-        }
-        return $values;
     }
     /**
      * Register a new page in the dashboard menu.
@@ -480,7 +330,8 @@ class Setup_Wizard implements Bootable
     public function register_admin_page()
     {
         $menu_slug = $this->get_slug();
-        $page_title = \sprintf(__('%s setup wizard', 'edd-eu-vat'), $this->plugin->get_name());
+        /* translators: %s: The name of the plugin. */
+        $page_title = \sprintf(__('%s setup wizard', 'barn2-setup-wizard'), $this->plugin->get_name());
         add_menu_page($page_title, $page_title, 'manage_options', $menu_slug, [$this, 'render_setup_wizard_page']);
     }
     /**
@@ -499,7 +350,7 @@ class Setup_Wizard implements Bootable
      */
     public function render_setup_wizard_page()
     {
-        echo '<div id="root"></div>';
+        echo '<div id="barn2-setup-wizard"></div>';
     }
     /**
      * Setup custom classes for the body tag when viewing the setup wizard page.
@@ -523,10 +374,7 @@ class Setup_Wizard implements Bootable
      */
     public function get_library_url()
     {
-        $url = trailingslashit(plugin_dir_url($this->plugin->get_file())) . 'dependencies/';
-        if ($this->is_dev_mode()) {
-            $url = trailingslashit(plugin_dir_url($this->dev_mode));
-        }
+        $url = trailingslashit(plugin_dir_url(__DIR__));
         if (!empty($this->lib_url)) {
             return $this->lib_url;
         }
@@ -539,10 +387,7 @@ class Setup_Wizard implements Bootable
      */
     public function get_library_path()
     {
-        $path = trailingslashit(plugin_dir_path($this->plugin->get_file())) . 'dependencies/';
-        if ($this->is_dev_mode()) {
-            $path = trailingslashit(plugin_dir_path($this->dev_mode));
-        }
+        $path = trailingslashit(plugin_dir_path(__DIR__));
         if (!empty($this->lib_path)) {
             return $this->lib_path;
         }
@@ -560,47 +405,24 @@ class Setup_Wizard implements Bootable
             return;
         }
         $slug = $this->get_slug();
-        if (!$this->has_woocommerce() && !empty($this->get_non_wc_asset())) {
-            $slug = 'b2-wizard-nonwc-app';
-        }
-        $script_path = 'build/main.js';
-        $script_asset_path = $this->get_library_path() . 'build/main.asset.php';
+        $script_path = 'build/setup-wizard.js';
+        $script_asset_path = $this->get_library_path() . 'build/setup-wizard.asset.php';
         $script_asset = \file_exists($script_asset_path) ? require $script_asset_path : ['dependencies' => [], 'version' => \filemtime($script_path)];
         $script_url = $this->get_library_url() . $script_path;
-        if (!$this->has_woocommerce()) {
-            $script_asset['dependencies'] = $this->remove_wc_dependencies($script_asset['dependencies']);
-        }
+        // Register main styling of the wizard.
+        wp_register_style($slug, $this->get_library_url() . 'build/setup-wizard.css', ['wp-components'], \filemtime($this->get_library_path() . '/build/setup-wizard.css'));
+        // Register main script of the wizard.
         wp_register_script($slug, $script_url, $script_asset['dependencies'], $script_asset['version'], \true);
-        $styling_dependencies = ['wp-components', 'wc-components'];
-        if (!$this->has_woocommerce()) {
-            $styling_dependencies = ['wp-components'];
-            wp_enqueue_style('b2-wc-components', $this->get_library_url() . 'resources/wc-vendor/components.css', \false, $script_asset['version']);
-        }
-        wp_register_style($slug, $this->get_library_url() . 'build/main.css', $styling_dependencies, \filemtime($this->get_library_path() . '/build/main.css'));
+        // Enqueue main script of the wizard.
+        wp_enqueue_script($slug);
+        wp_enqueue_style($slug);
         $custom_asset = $this->get_custom_asset();
         if (isset($custom_asset['url'])) {
-            if (isset($custom_asset['dependencies']) && !isset($custom_asset['dependencies']['dependencies'])) {
-                $custom_asset_dependencies = $custom_asset['dependencies'];
-            } else {
-                $custom_asset_dependencies = $custom_asset['dependencies']['dependencies'];
-            }
-            if (empty($custom_asset_dependencies) || !\is_array($custom_asset_dependencies)) {
-                wp_die('Custom asset dependencies should not be empty and should be an array.');
-            }
-            wp_enqueue_script("{$slug}_custom_asset", $custom_asset['url'], $custom_asset_dependencies, 1, \true);
+            $deps = isset($custom_asset['dependencies']['dependencies']) ? $custom_asset['dependencies']['dependencies'] : [];
+            $version = isset($custom_asset['dependencies']['version']) ? $custom_asset['dependencies']['version'] : $script_asset['version'];
+            wp_enqueue_script($slug . '-custom-asset', $custom_asset['url'], $deps, $version, \true);
         }
-        if ($this->has_woocommerce()) {
-            wp_enqueue_script($slug);
-        }
-        wp_enqueue_style($slug);
-        if (!$this->has_woocommerce() && !empty($this->get_non_wc_asset())) {
-            wp_enqueue_script('b2-wizard-nonwc-app', $this->get_non_wc_asset(), $this->get_non_wc_dependencies(), $this->get_non_wc_version(), \true);
-        }
-        if (isset($custom_asset['url'])) {
-            wp_add_inline_script("{$slug}_custom_asset", 'const barn2_setup_wizard = ' . \json_encode($this->get_js_args()), 'before');
-        } else {
-            wp_add_inline_script($slug, 'const barn2_setup_wizard = ' . \json_encode($this->get_js_args()), 'before');
-        }
+        wp_add_inline_script($slug, 'const barn2_setup_wizard = ' . \json_encode($this), 'before');
     }
     /**
      * Attach the restart wizard button.
@@ -614,15 +436,15 @@ class Setup_Wizard implements Bootable
 		<div class="barn2-setup-wizard-restart">
 			<hr>
 			<h3><?php 
-        esc_html_e('Setup wizard', 'edd-eu-vat');
+        esc_html_e('Setup wizard', 'barn2-setup-wizard');
         ?></h3>
 			<p><?php 
-        esc_html_e('If you need to access the setup wizard again, please click on the button below.', 'edd-eu-vat');
+        esc_html_e('If you need to access the setup wizard again, please click on the button below.', 'barn2-setup-wizard');
         ?></p>
 			<a href="<?php 
         echo esc_url($url);
         ?>" class="button barn2-wiz-restart-btn"><?php 
-        esc_html_e('Setup wizard', 'edd-eu-vat');
+        esc_html_e('Setup wizard', 'barn2-setup-wizard');
         ?></a>
 			<hr>
 		</div>
@@ -635,8 +457,9 @@ class Setup_Wizard implements Bootable
 
 		<script>
 			jQuery( '.barn2-wiz-restart-btn' ).on( 'click', function( e ) {
+				/* translators: %s: The name of the plugin. */
 				return confirm( '<?php 
-        echo esc_html(\sprintf(__('Warning: This will overwrite your existing settings for %s. Are you sure you want to continue?', 'edd-eu-vat'), $this->plugin->get_name()));
+        echo esc_html(\sprintf(__('Warning: This will overwrite your existing settings for %s. Are you sure you want to continue?', 'barn2-setup-wizard'), $this->plugin->get_name()));
         ?>' );
 			});
 		</script>
@@ -657,7 +480,7 @@ class Setup_Wizard implements Bootable
             if ($title_setting && isset($title_setting[\key($title_setting)]['desc'])) {
                 $desc = $title_setting[\key($title_setting)]['desc'];
                 $p_closing_tag = \strrpos($desc, '</p>');
-                $new_desc = \substr_replace($desc, ' | <a class="barn2-wiz-restart-btn" href="' . esc_url($url) . '">' . esc_html__('Setup wizard', 'edd-eu-vat') . '</a>', $p_closing_tag, 0);
+                $new_desc = \substr_replace($desc, ' | <a class="barn2-wiz-restart-btn" href="' . esc_url($url) . '">' . esc_html__('Setup wizard', 'barn2-setup-wizard') . '</a>', $p_closing_tag, 0);
                 $settings[\key($title_setting)]['desc'] = $new_desc;
             }
             return $settings;
@@ -668,8 +491,9 @@ class Setup_Wizard implements Bootable
                 ?>
 				<script>
 					jQuery( '.barn2-wiz-restart-btn' ).on( 'click', function( e ) {
+						/* translators: %s: The name of the plugin. */
 						return confirm( '<?php 
-                echo esc_html(\sprintf(__('Warning: This will overwrite your existing settings for %s. Are you sure you want to continue?', 'edd-eu-vat'), $this->plugin->get_name()));
+                echo esc_html(\sprintf(__('Warning: This will overwrite your existing settings for %s. Are you sure you want to continue?', 'barn2-setup-wizard'), $this->plugin->get_name()));
                 ?>' );
 					});
 				</script>
@@ -678,19 +502,12 @@ class Setup_Wizard implements Bootable
         });
     }
     /**
-     * Remove all WooCommerce related scripts from the list
-     * of scripts dependencies when enqueing assets.
+     * Json configuration for the react app.
      *
-     * @param array $deps
      * @return array
      */
-    private function remove_wc_dependencies($deps)
+    public function jsonSerialize()
     {
-        foreach ($deps as $key => $dep) {
-            if (\strpos($dep, 'wc') === 0) {
-                unset($deps[$key]);
-            }
-        }
-        return $deps;
+        return \array_merge(['restNonce' => wp_create_nonce('wp_rest'), 'apiURL' => get_rest_url(null, trailingslashit(Api::API_NAMESPACE . '/' . $this->plugin->get_slug())), 'steps' => $this->get_steps_configuration(), 'hiddenSteps' => $this->get_initially_hidden_steps()], $this->js_args);
     }
 }

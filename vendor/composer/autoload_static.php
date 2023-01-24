@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInitb53b1d7dccb74c2441043b8923e40f80
+class ComposerStaticInit0d79e55a2501816e7218114a159fd3e9
 {
     public static $prefixLengthsPsr4 = array (
         'W' => 
@@ -34,7 +34,9 @@ class ComposerStaticInitb53b1d7dccb74c2441043b8923e40f80
     );
 
     public static $classMap = array (
+        'Barn2\\Plugin\\EDD_VAT\\Dependencies\\Barn2\\Setup_Wizard\\Api' => __DIR__ . '/../..' . '/dependencies/src/Api.php',
         'Barn2\\Plugin\\EDD_VAT\\Dependencies\\Barn2\\Setup_Wizard\\Interfaces\\Bootable' => __DIR__ . '/../..' . '/dependencies/src/Interfaces/Bootable.php',
+        'Barn2\\Plugin\\EDD_VAT\\Dependencies\\Barn2\\Setup_Wizard\\Interfaces\\Deferrable' => __DIR__ . '/../..' . '/dependencies/src/Interfaces/Deferrable.php',
         'Barn2\\Plugin\\EDD_VAT\\Dependencies\\Barn2\\Setup_Wizard\\Interfaces\\Pluggable' => __DIR__ . '/../..' . '/dependencies/src/Interfaces/Pluggable.php',
         'Barn2\\Plugin\\EDD_VAT\\Dependencies\\Barn2\\Setup_Wizard\\Interfaces\\Restartable' => __DIR__ . '/../..' . '/dependencies/src/Interfaces/Restartable.php',
         'Barn2\\Plugin\\EDD_VAT\\Dependencies\\Barn2\\Setup_Wizard\\Setup_Wizard' => __DIR__ . '/../..' . '/dependencies/src/Setup_Wizard.php',
@@ -51,9 +53,9 @@ class ComposerStaticInitb53b1d7dccb74c2441043b8923e40f80
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInitb53b1d7dccb74c2441043b8923e40f80::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInitb53b1d7dccb74c2441043b8923e40f80::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInitb53b1d7dccb74c2441043b8923e40f80::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit0d79e55a2501816e7218114a159fd3e9::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit0d79e55a2501816e7218114a159fd3e9::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInit0d79e55a2501816e7218114a159fd3e9::$classMap;
 
         }, null, ClassLoader::class);
     }

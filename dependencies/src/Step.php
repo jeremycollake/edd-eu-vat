@@ -8,12 +8,11 @@
  */
 namespace Barn2\Plugin\EDD_VAT\Dependencies\Barn2\Setup_Wizard;
 
-use Barn2\Plugin\EDD_VAT\Dependencies\Barn2\Setup_Wizard\Interfaces\Bootable;
 use Barn2\Plugin\EDD_VAT\Dependencies\Barn2\Setup_Wizard\Interfaces\Pluggable;
 /**
  * Handles configuration of a setup wizard step.
  */
-abstract class Step implements Pluggable, Bootable
+abstract class Step implements Pluggable
 {
     /**
      * Step ID (must be unique to each step)
@@ -57,12 +56,6 @@ abstract class Step implements Pluggable, Bootable
      * @var Setup_Wizard
      */
     private $wizard;
-    /**
-     * List of fields displayed on this step's page.
-     *
-     * @var array
-     */
-    private $fields = [];
     /**
      * Check whether the step is hidden by default.
      *
@@ -122,21 +115,7 @@ abstract class Step implements Pluggable, Bootable
      */
     public function get_fields()
     {
-        return $this->fields;
-    }
-    /**
-     * Assign the fields to the step.
-     *
-     * @return Step
-     */
-    public function set_fields($fields = [])
-    {
-        if (!empty($fields)) {
-            $this->fields = $fields;
-        } else {
-            $this->fields = $this->setup_fields();
-        }
-        return $this;
+        return $this->setup_fields();
     }
     /**
      * Get step name
@@ -259,15 +238,6 @@ abstract class Step implements Pluggable, Bootable
         return $this->hidden;
     }
     /**
-     * Boot the step and hook it into wp.
-     *
-     * @return void
-     */
-    public function boot()
-    {
-        add_action("wp_ajax_barn2_wizard_{$this->get_plugin()->get_slug()}_step_{$this->get_id()}", [$this, 'submit']);
-    }
-    /**
      * Send a json error back to the react app.
      *
      * @param string $message
@@ -275,7 +245,7 @@ abstract class Step implements Pluggable, Bootable
      */
     public function send_error(string $message)
     {
-        wp_send_json_error(['error_message' => $message], 403);
+        return Api::send_error_response(['message' => $message]);
     }
     /**
      * Get the values submitted through the ajax request.
@@ -300,7 +270,7 @@ abstract class Step implements Pluggable, Bootable
     /**
      * Handle the submission of the step via ajax.
      *
-     * @return void
+     * @return \WP_REST_Response
      */
-    public abstract function submit();
+    public abstract function submit(array $values);
 }

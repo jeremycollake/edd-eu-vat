@@ -18,13 +18,17 @@ class Util
      * select control component.
      *
      * @param array $array
+     * @param boolean $with_empty whether to display a "select an option" empty option.
      * @return array
      */
-    public static function parse_array_for_dropdown(array $array)
+    public static function parse_array_for_dropdown(array $array, bool $with_empty = \true)
     {
         $values = [];
+        if ($with_empty) {
+            $values[] = ['value' => '', 'label' => __('Select an option', 'barn2-setup-wizard')];
+        }
         foreach ($array as $key => $value) {
-            $values[] = ['key' => $key, 'label' => \html_entity_decode($value)];
+            $values[] = ['value' => $key, 'label' => \html_entity_decode($value)];
         }
         return $values;
     }
@@ -146,7 +150,7 @@ class Util
         if (wp_remote_retrieve_response_code($request) === 200) {
             if (isset($response['is_access_pass'])) {
                 $is_access_pass = (bool) $response['is_access_pass'];
-                $item_id = $plugin::ITEM_ID;
+                $item_id = $plugin->get_id();
                 if ($is_access_pass === \true) {
                     update_option("barn2_plugin_{$item_id}_license_is_pass", \true);
                 } else {
@@ -155,6 +159,30 @@ class Util
             }
         }
         return $is_access_pass;
+    }
+    /**
+     * Retrieve UTM id via the barn2.com api.
+     *
+     * @param object $plugin instance of the plugin.
+     * @return string
+     */
+    public static function get_remote_utm_id($plugin)
+    {
+        $utm_id = get_transient($plugin->get_slug() . '_remote_utm_id');
+        $rest_url = 'https://api.barn2.com/wp-json/upsell/v1/get/';
+        $args = ['plugin' => $plugin->get_slug()];
+        if (\false === $utm_id) {
+            $request = wp_remote_get(add_query_arg($args, $rest_url));
+            $response = wp_remote_retrieve_body($request);
+            $response = \json_decode($response, \true);
+            if (wp_remote_retrieve_response_code($request) === 200) {
+                if (isset($response['utm_prefix'])) {
+                    $utm_id = $response['utm_prefix'];
+                    set_transient($plugin->get_slug() . '_remote_utm_id', $utm_id, WEEK_IN_SECONDS);
+                }
+            }
+        }
+        return $utm_id;
     }
     /**
      * Get an array of pages of the site.
@@ -181,11 +209,40 @@ class Util
      * required by the wizard.
      *
      * @param string $url
-     * @param string $utm_id UTM ID, example: wro
+     * @param string|bool $utm_id UTM ID, example: wro
      * @return string
      */
-    public static function generate_utm_url(string $url, string $utm_id)
+    public static function generate_utm_url(string $url, $utm_id = \false)
     {
-        return add_query_arg(['utm_source' => 'wizard', 'utm_medium' => 'wizard', 'utm_campaign' => "{$utm_id}-wizard", 'utm_content' => "{$utm_id}-wizard"], $url);
+        $utm = get_transient($plugin->get_slug() . '_remote_utm_id');
+        if (!$utm) {
+            $utm = $utm_id;
+        }
+        return add_query_arg(['utm_source' => 'wizard', 'utm_medium' => 'wizard', 'utm_campaign' => "{$utm}-wizard", 'utm_content' => "{$utm}-wizard"], $url);
+    }
+    /**
+     * Retrieves an array of internal WP dependencies for bundled JS files.
+     *
+     * @param Barn2\Lib\Plugin $plugin
+     * @param string           $filename The filepath of the JS file relative to the plugin's 'js' directory. Also supports supplying the full path to the file relative to the plugin root.
+     * @return array
+     */
+    public static function get_script_dependencies($plugin, $filename)
+    {
+        $script_dependencies_file = $plugin->get_dir_path() . 'assets/js/wp-dependencies.json';
+        $script_dependencies = \file_exists($script_dependencies_file) ? \file_get_contents($script_dependencies_file) : \false;
+        // bail if the wp-dependencies.json file doesn't exist
+        if ($script_dependencies === \false) {
+            return ['dependencies' => [], 'version' => ''];
+        }
+        $script_dependencies = \json_decode($script_dependencies, \true);
+        // if the asset doesn't exist, and the path is relative to the 'js' directory then try a full path
+        if (!isset($script_dependencies[$filename]) && \strpos($filename, './assets/js') === \false && isset($script_dependencies[\sprintf('./assets/js/%s', $filename)])) {
+            $filename = \sprintf('./assets/js/%s', $filename);
+        }
+        if (!isset($script_dependencies[$filename])) {
+            return ['dependencies' => [], 'version' => ''];
+        }
+        return $script_dependencies[$filename];
     }
 }

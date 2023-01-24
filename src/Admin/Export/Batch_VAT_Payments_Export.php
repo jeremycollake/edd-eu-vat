@@ -58,7 +58,7 @@ class Batch_VAT_Payments_Export extends \EDD_Batch_Export {
 		$args = [
 			'number' => $this->step_count,
 			'page'   => $this->step,
-			'status' => [ 'publish', 'edd_subscription' ],
+			'status' => [ 'publish', 'complete', 'edd_subscription' ],
 		];
 
 		if ( ! empty( $this->start ) || ! empty( $this->end ) ) {
@@ -143,6 +143,10 @@ class Batch_VAT_Payments_Export extends \EDD_Batch_Export {
 		$total_steps = $this->get_total_steps();
 		$cache_key   = 'edd_eu_vat_export_' . $this->export_key;
 
+		if( ! $total_steps ) {
+			return false;
+		}
+
 		// handle our batch steps
 		if ( $this->step === $total_steps ) {
 			// FiNAL OR ONLY STEP: Do a final totals addition if necessary, and then print the CSV rows.
@@ -211,7 +215,7 @@ class Batch_VAT_Payments_Export extends \EDD_Batch_Export {
 
 		$all_payments_count = edd_count_payments( $args );
 
-		$total      = $all_payments_count->edd_subscription + $all_payments_count->publish;
+		$total      = $all_payments_count->edd_subscription + $all_payments_count->publish + $all_payments_count->complete;
 		$percentage = 100;
 
 		if ( $total > 0 ) {
@@ -283,7 +287,7 @@ class Batch_VAT_Payments_Export extends \EDD_Batch_Export {
 
 		$all_payments_count = edd_count_payments( $args );
 
-		$total = $all_payments_count->edd_subscription + $all_payments_count->publish;
+		$total = $all_payments_count->edd_subscription + $all_payments_count->publish + $all_payments_count->complete;
 
 		if ( $total < 0 ) {
 			return 0;

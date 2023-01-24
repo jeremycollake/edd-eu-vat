@@ -2,11 +2,7 @@
 
 namespace Barn2\VAT_Lib;
 
-use function Barn2\Plugin\WC_Fast_Cart\wfc;
-use function Barn2\Plugin\WC_Product_Table\wpt;
-use function Barn2\Plugin\WC_Protected_Categories\wpc;
-use function Barn2\Plugin\WC_Quick_View_Pro\wqv;
-use function Barn2\Plugin\WC_Restaurant_Ordering\wro;
+use Barn2\VAT_Lib\Plugin\Plugin;
 
 /**
  * Utility functions for Barn2 plugins.
@@ -15,7 +11,7 @@ use function Barn2\Plugin\WC_Restaurant_Ordering\wro;
  * @author    Barn2 Plugins <support@barn2.com>
  * @license   GPL-3.0
  * @copyright Barn2 Media Ltd
- * @version   1.5.3
+ * @version   1.5.4
  */
 class Util {
 
@@ -26,9 +22,9 @@ class Util {
 	/**
 	 * Formats a HTML link to a path on the Barn2 site.
 	 *
-	 * @param string $relative_path The path relative to https://barn2.com.
-	 * @param string $link_text     The link text.
-	 * @param boolean $new_tab      Whether to open the link in a new tab.
+	 * @param string  $relative_path The path relative to https://barn2.com.
+	 * @param string  $link_text     The link text.
+	 * @param boolean $new_tab       Whether to open the link in a new tab.
 	 * @return string The hyperlink.
 	 */
 	public static function barn2_link( $relative_path, $link_text = '', $new_tab = false ) {
@@ -144,9 +140,9 @@ class Util {
 	/**
 	 * Returns true if the plugin instance returned by $function is an active Barn2 plugin.
 	 *
-	 * @since 1.5.3
 	 * @param string $function The function that returns the plugin instance
 	 * @return bool true if active
+	 * @since 1.5.3
 	 */
 	public static function is_barn2_plugin_active( $function ) {
 		if ( function_exists( $function ) ) {
@@ -161,8 +157,8 @@ class Util {
 	/**
 	 * Returns true if WooCommerce Protected Categories is active and has a valid license.
 	 *
-	 * @deprecated 1.5.3 Use `is_barn2_plugin_active( '\Barn2\Plugin\WC_Protected_Categories\wpc' )` instead
 	 * @return bool true if active
+	 * @deprecated 1.5.3 Use `is_barn2_plugin_active( '\Barn2\Plugin\WC_Protected_Categories\wpc' )` instead
 	 */
 	public static function is_protected_categories_active() {
 		return self::is_barn2_plugin_active( '\Barn2\Plugin\WC_Protected_Categories\wpc' );
@@ -171,8 +167,8 @@ class Util {
 	/**
 	 * Returns true if WooCommerce Product Table is active and has a valid license.
 	 *
-	 * @deprecated 1.5.3 Use `is_barn2_plugin_active( '\Barn2\Plugin\WC_Product_Table\wpt' )` instead
 	 * @return bool true if active
+	 * @deprecated 1.5.3 Use `is_barn2_plugin_active( '\Barn2\Plugin\WC_Product_Table\wpt' )` instead
 	 */
 	public static function is_product_table_active() {
 		return self::is_barn2_plugin_active( '\Barn2\Plugin\WC_Product_Table\wpt' );
@@ -181,8 +177,8 @@ class Util {
 	/**
 	 * Returns true if WooCommerce Quick View Pro is active and has a valid license.
 	 *
-	 * @deprecated 1.5.3 Use `is_barn2_plugin_active( '\Barn2\Plugin\WC_Quick_View_Pro\wqv' )` instead
 	 * @return bool true if active
+	 * @deprecated 1.5.3 Use `is_barn2_plugin_active( '\Barn2\Plugin\WC_Quick_View_Pro\wqv' )` instead
 	 */
 	public static function is_quick_view_pro_active() {
 		return self::is_barn2_plugin_active( '\Barn2\Plugin\WC_Quick_View_Pro\wqv' );
@@ -191,8 +187,8 @@ class Util {
 	/**
 	 * Returns true if WooCommerce Restaurant Ordering is active and has a valid license.
 	 *
-	 * @deprecated 1.5.3 Use `is_barn2_plugin_active( '\Barn2\Plugin\WC_Restaurant_Ordering\wro' )` instead
 	 * @return bool true if active
+	 * @deprecated 1.5.3 Use `is_barn2_plugin_active( '\Barn2\Plugin\WC_Restaurant_Ordering\wro' )` instead
 	 */
 	public static function is_restaurant_ordering_active() {
 		return self::is_barn2_plugin_active( '\Barn2\Plugin\WC_Restaurant_Ordering\wro' );
@@ -201,8 +197,8 @@ class Util {
 	/**
 	 * Returns true if WooCommerce Fast Cart is active and has a valid license.
 	 *
-	 * @deprecated 1.5.3 Use `is_barn2_plugin_active( '\Barn2\Plugin\WC_Fast_Cart\wfc' )` instead
 	 * @return bool true if active
+	 * @deprecated 1.5.3 Use `is_barn2_plugin_active( '\Barn2\Plugin\WC_Fast_Cart\wfc' )` instead
 	 */
 	public static function is_fast_cart_active() {
 		return self::is_barn2_plugin_active( '\Barn2\Plugin\WC_Fast_Cart\wfc' );
@@ -253,21 +249,33 @@ class Util {
 	 * Retrieves an array of internal WP dependencies for bundled JS files.
 	 *
 	 * @param Barn2\VAT_Lib\Plugin $plugin
-	 * @param string $filename
+	 * @param string           $filename The filepath of the JS file relative to the plugin's 'js' directory. Also supports supplying the full path to the file relative to the plugin root.
 	 * @return array
 	 */
 	public static function get_script_dependencies( $plugin, $filename ) {
 		$script_dependencies_file = $plugin->get_dir_path() . 'assets/js/wp-dependencies.json';
 		$script_dependencies      = file_exists( $script_dependencies_file ) ? file_get_contents( $script_dependencies_file ) : false;
 
+		// bail if the wp-dependencies.json file doesn't exist
 		if ( $script_dependencies === false ) {
-			return [];
+			return [
+				'dependencies' => [],
+				'version'      => '',
+			];
 		}
 
 		$script_dependencies = json_decode( $script_dependencies, true );
 
+		// if the asset doesn't exist, and the path is relative to the 'js' directory then try a full path
+		if ( ! isset( $script_dependencies[ $filename ] ) && strpos( $filename, './assets/js' ) === false && isset( $script_dependencies[ sprintf( './assets/js/%s', $filename ) ] )   ) {
+			$filename = sprintf( './assets/js/%s', $filename );
+		}
+
 		if ( ! isset( $script_dependencies[ $filename ] ) ) {
-			return [];
+			return [
+				'dependencies' => [],
+				'version'      => '',
+			];
 		}
 
 		return $script_dependencies[ $filename ];
@@ -276,17 +284,17 @@ class Util {
 	/**
 	 * Create a page and store the ID in an option. (adapted from WooCommerce)
 	 *
-	 * @param mixed  $slug Slug for the new page.
-	 * @param string $option Option name to store the page's ID.
-	 * @param string $page_title (default: '') Title for the new page.
+	 * @param mixed  $slug         Slug for the new page.
+	 * @param string $option       Option name to store the page's ID.
+	 * @param string $page_title   (default: '') Title for the new page.
 	 * @param string $page_content (default: '') Content for the new page.
-	 * @param int    $post_parent (default: 0) Parent for the new page.
+	 * @param int    $post_parent  (default: 0) Parent for the new page.
 	 * @return int page ID.
 	 */
 	public static function create_page( $slug, $option = '', $page_title = '', $page_content = '', $post_parent = 0 ) {
 		global $wpdb;
 
-		$slug = esc_sql( $slug );
+		$slug         = esc_sql( $slug );
 		$option_value = get_option( $option );
 
 		if ( $option_value > 0 ) {
@@ -350,4 +358,38 @@ class Util {
 
 		return $page_id;
 	}
+
+	/**
+	 * Similar to wp_kses_post but with added support for <img> srcset and sizes attributes.
+	 *
+	 * @param string $string The string to sanitize.
+	 * @return string The sanitized string.
+	 * @see https://core.trac.wordpress.org/ticket/29807
+	 */
+	public static function barn2_kses_post( string $string ) {
+		$allowed_html = wp_kses_allowed_html( 'post' );
+
+		if ( isset( $allowed_html['img'] ) ) {
+			$allowed_html['img']['srcset'] = true;
+			$allowed_html['img']['sizes']  = true;
+		}
+
+		return wp_kses( $string, $allowed_html );
+	}
+
+	/**
+	 * Get the plugin data from the plugin header
+	 *
+	 * @param Plugin $plugin
+	 * @return array The plugin data from the plugin header
+	 * @since 1.5.4
+	 */
+	public static function get_plugin_data( Plugin $plugin ) {
+		if ( ! function_exists( 'get_plugin_data' ) ) {
+			require_once ABSPATH . 'wp-admin/includes/plugin.php';
+		}
+
+		return get_plugin_data( $plugin->get_file() );
+	}
+
 }

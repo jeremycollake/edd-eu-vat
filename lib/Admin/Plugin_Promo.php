@@ -1,9 +1,8 @@
 <?php
+
 namespace Barn2\VAT_Lib\Admin;
 
-use Barn2\VAT_Lib\Registerable,
-	Barn2\VAT_Lib\Plugin\Plugin,
-	Barn2\VAT_Lib\Util;
+use Barn2\VAT_Lib\Registerable;
 
 /**
  * Provides functions to add the plugin promo to the plugin settings page in the WordPress admin.
@@ -12,64 +11,57 @@ use Barn2\VAT_Lib\Registerable,
  * @author    Barn2 Plugins <support@barn2.com>
  * @license   GPL-3.0
  * @copyright Barn2 Media Ltd
- * @version   1.1
+ * @version   1.3
  */
-class Plugin_Promo implements Registerable {
+class Plugin_Promo extends Abstract_Plugin_Promo implements Registerable {
 
-	private $plugin;
-	private $plugin_id;
-
-	public function __construct( Plugin $plugin ) {
-		$this->plugin    = $plugin;
-		$this->plugin_id = $plugin->get_id();
-	}
-
+	/**
+	 * {@inheritdoc}
+	 */
 	public function register() {
-		add_action( 'barn2_after_plugin_settings', [ $this, 'render_promo' ], 10, 1 );
-		add_action( 'admin_enqueue_scripts', [ $this, 'load_styles' ] );
+		add_action( 'barn2_before_plugin_settings', [ $this, 'render_settings_start' ], 10, 1 );
+		add_action( 'barn2_after_plugin_settings', [ $this, 'render_settings_end' ], 10, 1 );
+		add_action( 'admin_enqueue_scripts', [ $this, 'maybe_load_styles' ] );
 	}
 
-	public function load_styles( $hook ) {
+	/**
+	 * Load the plugin promo CSS.
+	 *
+	 * @param string $hook
+	 */
+	public function maybe_load_styles( $hook ) {
 		$parsed_url = wp_parse_url( $this->plugin->get_settings_page_url() );
+
 		if ( isset( $parsed_url['query'] ) ) {
 			parse_str( $parsed_url['query'], $args );
 
 			if ( isset( $args['page'] ) && false !== strpos( $hook, $args['page'] ) ) {
-				wp_enqueue_style( 'barn2-plugins-promo', plugins_url( 'lib/assets/css/admin/plugin-promo.min.css', $this->plugin->get_file() ) );
+				parent::load_styles();
 			}
 		}
 	}
 
-	public function render_promo( $plugin_id ) {
-		if ( $plugin_id !== $this->plugin_id ) {
+	public function render_settings_start( $plugin_id ) {
+		if ( $plugin_id !== $this->plugin->get_id() ) {
 			return;
 		}
 
-		$promo_content = $this->get_promo_content();
-
-		if ( ! empty( $promo_content ) ) {
-			echo '<div id="barn2_plugins_promo" class="barn2-plugins-promo">' . $promo_content . '</div>';
-		}
+		echo '<div class="barn2-promo-wrap">';
+		echo '<div class="barn2-promo-inner barn2-settings ' . esc_attr( $this->plugin->get_slug() . '-settings' ) . '">';
 	}
 
-	private function get_promo_content() {
-		if ( ( $promo_content = get_transient( 'barn2_plugin_promo_' . $this->plugin_id ) ) === false ) {
-			$promo_response = wp_remote_get( Util::barn2_url( '/wp-json/barn2/v2/pluginpromo/' . $this->plugin_id . '?_=' . date( 'mdY' ) ) );
-
-			if ( wp_remote_retrieve_response_code( $promo_response ) != 200 ) {
-				return;
-			}
-
-			$promo_content = json_decode( wp_remote_retrieve_body( $promo_response ), true );
-
-			set_transient( 'barn2_plugin_promo_' . $this->plugin_id, $promo_content, DAY_IN_SECONDS );
-		}
-
-		if ( empty( $promo_content ) || is_array( $promo_content ) ) {
+	public function render_settings_end( $plugin_id ) {
+		if ( $plugin_id !== $this->plugin->get_id() ) {
 			return;
 		}
 
-		return $promo_content;
+		echo '</div><!-- barn2-promo-inner -->';
+
+		// Promo content is sanitized via barn2_kses_post.
+		// phpcs:ignore WordPress.Security.EscapeOutput
+		echo parent::get_promo_sidebar();
+
+		echo '</div><!-- barn2-promo-wrap -->';
 	}
 
 }

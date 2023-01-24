@@ -68,14 +68,14 @@ class Settings implements Registerable, Service {
 			p.barn2-support-links { font-size: 13px !important; }
 			span.edd-help-tip { margin: 4px 0 0 6px; }
 
-			.edd-settings-content .barn2-plugins-promo { display: none }
+			.barn2-plugins-promo, #wpfooter { display: none }
 			@media only screen and (min-width : 1200px) {
 				.edd-settings-content table:nth-of-type(2) {
 					float: left;
 					width: 70%;
 				}
 
-				.edd-settings-content .barn2-plugins-promo {
+				.barn2-plugins-promo {
 					display: block;
 					float: right;
 					width: 28%;

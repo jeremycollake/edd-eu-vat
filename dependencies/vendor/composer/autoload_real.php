@@ -21,27 +21,27 @@ class ComposerAutoloaderInit8f46b741b3fc545944ffe0b77210fba6
             return self::$loader;
         }
         \spl_autoload_register(array('Barn2\\Plugin\\EDD_VAT\\Dependencies\\ComposerAutoloaderInit8f46b741b3fc545944ffe0b77210fba6', 'loadClassLoader'), \true, \true);
-        self::$loader = $loader = new \Barn2\Plugin\EDD_VAT\Dependencies\Composer\Autoload\ClassLoader(\dirname(\dirname(__FILE__)));
+        self::$loader = $loader = new \Barn2\Plugin\EDD_VAT\Dependencies\Composer\Autoload\ClassLoader(\dirname(__DIR__));
         \spl_autoload_unregister(array('ComposerAutoloaderInit8f46b741b3fc545944ffe0b77210fba6', 'loadClassLoader'));
-        $useStaticLoader = \PHP_VERSION_ID >= 50600 && !\defined('Barn2\\Plugin\\EDD_VAT\\Dependencies\\HHVM_VERSION') && (!\function_exists('zend_loader_file_encoded') || !\zend_loader_file_encoded());
-        if ($useStaticLoader) {
-            require __DIR__ . '/autoload_static.php';
-            \call_user_func(\Barn2\Plugin\EDD_VAT\Dependencies\Composer\Autoload\ComposerStaticInit8f46b741b3fc545944ffe0b77210fba6::getInitializer($loader));
-        } else {
-            $map = (require __DIR__ . '/autoload_namespaces.php');
-            foreach ($map as $namespace => $path) {
-                $loader->set($namespace, $path);
-            }
-            $map = (require __DIR__ . '/autoload_psr4.php');
-            foreach ($map as $namespace => $path) {
-                $loader->setPsr4($namespace, $path);
-            }
-            $classMap = (require __DIR__ . '/autoload_classmap.php');
-            if ($classMap) {
-                $loader->addClassMap($classMap);
-            }
-        }
+        require __DIR__ . '/autoload_static.php';
+        \call_user_func(\Barn2\Plugin\EDD_VAT\Dependencies\Composer\Autoload\ComposerStaticInit8f46b741b3fc545944ffe0b77210fba6::getInitializer($loader));
         $loader->register(\true);
+        $includeFiles = \Barn2\Plugin\EDD_VAT\Dependencies\Composer\Autoload\ComposerStaticInit8f46b741b3fc545944ffe0b77210fba6::$files;
+        foreach ($includeFiles as $fileIdentifier => $file) {
+            composerRequire8f46b741b3fc545944ffe0b77210fba6($fileIdentifier, $file);
+        }
         return $loader;
+    }
+}
+/**
+ * @param string $fileIdentifier
+ * @param string $file
+ * @return void
+ */
+function composerRequire8f46b741b3fc545944ffe0b77210fba6($fileIdentifier, $file)
+{
+    if (empty($GLOBALS['__composer_autoload_files'][$fileIdentifier])) {
+        $GLOBALS['__composer_autoload_files'][$fileIdentifier] = \true;
+        require $file;
     }
 }

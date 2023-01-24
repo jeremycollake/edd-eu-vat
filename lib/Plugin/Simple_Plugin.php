@@ -1,4 +1,5 @@
 <?php
+
 namespace Barn2\VAT_Lib\Plugin;
 
 use Barn2\VAT_Lib\Util;
@@ -19,8 +20,22 @@ class Simple_Plugin implements Plugin {
 	protected $data;
 	private $basename = null;
 	private $dir_path = null;
-	private $dir_url  = null;
+	private $dir_url = null;
 
+	/**
+	 * Constructs a new simple plugin with the supplied plugin data.
+	 *
+	 * @param array  $data                 {
+	 * @type int     $id                   (required) The plugin ID. This should be the EDD Download ID.
+	 * @type string  $name                 (required) The plugin name.
+	 * @type string  $version              (required) The plugin version, e.g. '1.2.3'.
+	 * @type string  $file                 (required) The main plugin __FILE__.
+	 * @type boolean $is_woocommerce       true if this is a WooCommerce plugin.
+	 * @type boolean $is_edd               true if this is an EDD plugin.
+	 * @type string  $documentation_path   The path to the plugin documentation, relative to https://barn2.com
+	 * @type string  $settings_path        The plugin settings path, relative to /wp-admin
+	 *                                     }
+	 */
 	public function __construct( array $data ) {
 		$this->data = array_merge( [
 			'id'                 => 0,
@@ -31,7 +46,7 @@ class Simple_Plugin implements Plugin {
 			'is_edd'             => false,
 			'documentation_path' => '',
 			'settings_path'      => '',
-			], $data
+		], $data
 		);
 
 		$this->data['id']                 = (int) $this->data['id'];
@@ -41,6 +56,7 @@ class Simple_Plugin implements Plugin {
 		// Check for 'item_id' in case 'id' not set.
 		if ( ! $this->get_id() && ! empty( $this->data['item_id'] ) ) {
 			$this->data['id'] = (int) $this->data['item_id'];
+			unset( $this->data['item_id'] );
 		}
 
 		// WooCommerce plugins cannot be EDD plugins (and vice-versa).

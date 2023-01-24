@@ -1,5 +1,5 @@
 
-var EDD_EU_VAT = ( function( $, window, document, params ) {
+window.EDD_EU_VAT = ( function( $, window, document, params ) {
 
     // Back-compat
     window.euCountries = params.countries;
@@ -160,6 +160,27 @@ var EDD_EU_VAT = ( function( $, window, document, params ) {
                 eddCountryCheck();
             } );
         } );
+
+	// Disable the purchase button while we wait for tax recalculation.
+	$( function() {
+		// Bind events for purchase form.
+		$( '#edd_purchase_form' )
+			.on( 'change', '#billing_country', function( event ) {
+				$( '#edd-purchase-button, #billing_country' ).attr( 'disabled', true )
+			} )
+	} );
+
+	// Update the data-total attribute.
+	$( document.body ).on( "edd_taxes_recalculated", function( event, data ) {
+		const cartAmount = $( '.edd_cart_amount' );
+		const rawTax = data?.response?.total_raw
+
+		if ( rawTax !== undefined ) {
+			cartAmount.attr( 'data-total', rawTax )
+		}
+
+		$( '#edd-purchase-button, #billing_country' ).removeAttr( 'disabled' )
+	});
 
     return {
         checkVatNumber: eddVatCheck,

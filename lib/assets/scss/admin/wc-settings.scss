@@ -1,28 +1,71 @@
 
-.barn2-plugins-settings {
+.woocommerce .barn2-settings .form-table {
 
-	.setting-image-size {
+	.with-suffix {
+		margin-right: 6px;
+		vertical-align: middle;
+	}
 
-		.separator {
-			display: inline-block;
-			font-size: 1.2em;
-			padding-left: 4px;
-			padding-right: 4px;
-		}
+}
 
-		.suffix {
-			padding-left: 8px;
-		}
+.image-size-field {
 
+	.separator {
+		display: inline-block;
+		font-size: 1.2em;
+		padding-left: 4px;
+		padding-right: 4px;
+	}
+
+	.suffix {
+		padding-left: 8px;
+	}
+
+	.separator, .suffix {
+		padding-top: 9px;
+	}
+
+	@media screen and (min-width: 783px) {
 		.separator, .suffix {
-			padding-top: 9px;
+			padding-top: 4px;
 		}
+	}
+}
 
-		@media screen and (min-width: 783px) {
-			.separator, .suffix {
-				padding-top: 4px;
-			}
+.color-picker-field, .color-size-field {
+
+	.wp-picker-container {
+		vertical-align: top;
+
+		input[type="text"].wp-color-picker {
+			width: 5rem;
 		}
 	}
 
+}
+
+.color-size-field {
+
+	input[type="number"] {
+		.woocommerce .form-table & { // to override WC styles
+			vertical-align: top;
+			width: 6em;
+		}
+	}
+
+	.wp-picker-active {
+		margin-right: 3px;
+	}
+
+	.description {
+		display: inline-block;
+		margin-left: 10px;
+		margin-top: 1px;
+
+		img {
+			vertical-align: middle;
+			margin: 3px 6px 3px 0;
+			display: inline-block;
+		}
+	}
 }
