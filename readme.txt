@@ -4,7 +4,7 @@ Tags: easy digital downloads, edd, vat, checkout, tax
 Requires at least: 5.0
 Tested up to: 6.0
 Requires PHP: 7.2
-Stable tag: 1.5.10
+Stable tag: 1.5.13
 License: GPL-3.0
 License URI: https://www.gnu.org/licenses/gpl.html
 
@@ -22,6 +22,25 @@ This plugin extends the Easy Digital Downloads plugin with EU VAT support.
 1. Enter your license key under Downloads -> Settings -> Extensions -> EU VAT.
 
 == Changelog ==
+
+= 1.5.13 =
+Release date 13 March 2023
+
+ * Tweak: disabled clearing of VAT details on login.
+ * Tweak: added 2 new filters that can be used to fire custom validation requests for VAT numbers.
+ * Tweak: updated internal libraries.
+
+= 1.5.12 =
+Release date 20 February 2023
+
+ * Tweak: added internal debugging utilities.
+
+= 1.5.11 =
+Release date 08 February 2023
+
+ * Tweak: updated list of countries available for the "Country" setting.
+ * Fix: content of the "Additional Text" setting from the EDD Invoices plugin not displaying.
+ * Fix: unable to reverse charge UK VAT for valid UK/GB VAT Numbers.
 
 = 1.5.10 =
 Release date 03 January 2023

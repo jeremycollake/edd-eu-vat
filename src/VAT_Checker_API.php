@@ -68,22 +68,48 @@ class VAT_Checker_API {
 			$vat_number = substr( $vat_number, 2 );
 		}
 
-		// Use HMRC for UK, otherwise VIES for EU
-		if ( $country_code === 'GB' ) {
-			$result = self::hmrc_request( $result, $vat_number );
+		/**
+		 * Filter: when it returns true, allows developers to
+		 * fire requests via a customised method.
+		 *
+		 * @param boolean $return
+		 * @return boolean
+		 */
+		$has_custom_request_method = apply_filters( 'edd_vat_has_custom_request_method', false );
+
+		if ( $has_custom_request_method ) {
+			/**
+			 * Filter: allows developers to return a customized response.
+			 * Useful when wanting to use third party services to validate the VAT number.
+			 *
+			 * @param VAT_Check_Result $result
+			 * @param string $vat_number
+			 * @param string $country_code
+			 * @return VAT_Check_Result
+			 */
+			$result = apply_filters( 'edd_vat_custom_request_result', $result, $vat_number, $country_code );
 		} else {
-			$result = self::vies_request(
-				$result,
-				$vat_number,
-				$country_code,
-				$vat_prefix_for_country
-			);
+			// Use HMRC for UK, otherwise VIES for EU
+			if ( $country_code === 'GB' ) {
+				$result = self::hmrc_request( $result, $vat_number );
+			} else {
+				$result = self::vies_request(
+					$result,
+					$vat_number,
+					$country_code,
+					$vat_prefix_for_country
+				);
+			}
 		}
 
 		// Catch all for invalid VAT number if no error set.
 		if ( ! $result->is_valid() && empty( $result->error ) ) {
 			$result->error = VAT_Check_Result::INVALID_VAT_NUMBER;
 		}
+
+		edd_debug_log( 'Checked VAT for VAT Number: ' . $vat_number );
+		edd_debug_log( 'Checked VAT with country code: ' . $country_code );
+		edd_debug_log( 'Checked VAT result: ' . print_r( $result, true ) );
 
 		return apply_filters( 'edd_vat_number_check', $result, $vat_number, $country_code );
 	}
@@ -119,6 +145,10 @@ class VAT_Checker_API {
 				$requester_vat_number   = false;
 			}
 
+			edd_debug_log( 'Preparing VIES request' );
+			edd_debug_log( 'VIES requester country code: '. $requester_country_code );
+			edd_debug_log( 'VIES requester vat number: '. $requester_vat_number );
+
 			if ( ! empty( $requester_country_code ) && ! empty( $requester_vat_number ) ) {
 				$parameters['requesterCountryCode'] = $requester_country_code;
 				$parameters['requesterVatNumber']   = $requester_vat_number;
@@ -126,6 +156,8 @@ class VAT_Checker_API {
 			} else {
 				$response = $client->checkVat( $parameters );
 			}
+
+			edd_debug_log( 'VIES request response: ' . print_r( $response, true ) );
 
 			$result->valid = filter_var( $response->valid, FILTER_VALIDATE_BOOLEAN );
 
@@ -226,6 +258,8 @@ class VAT_Checker_API {
 
 		$response_body = json_decode( wp_remote_retrieve_body( $request ), true );
 		$response_code = wp_remote_retrieve_response_code( $request );
+
+		edd_debug_log( 'HMRC request response: '. print_r( $response_body, true ) );
 
 		// We have a success with valid structure
 		if ( $response_code === 200 && isset( $response_body['target']['vatNumber'] ) ) {

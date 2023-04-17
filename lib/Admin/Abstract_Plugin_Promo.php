@@ -17,12 +17,16 @@ use Barn2\VAT_Lib\Util;
 abstract class Abstract_Plugin_Promo {
 
 	/**
-	 * @var Plugin The plugin object.
+	 * The plugin object.
+	 *
+	 * @var Plugin
 	 */
 	protected $plugin;
 
 	/**
-	 * @var string The content of the plugin promo.
+	 * The content of the plugin promo.
+	 *
+	 * @var string
 	 */
 	private $promo_content = null;
 
@@ -33,10 +37,6 @@ abstract class Abstract_Plugin_Promo {
 	 */
 	public function __construct( Plugin $plugin ) {
 		$this->plugin = $plugin;
-
-		if ( ! function_exists( 'get_plugins' ) ) {
-			require_once ABSPATH . 'wp-admin/includes/plugin.php';
-		}
 	}
 
 	/**
@@ -49,7 +49,6 @@ abstract class Abstract_Plugin_Promo {
 
 		if ( ! empty( $promo_content ) ) {
 			// Promo content is sanitized via barn2_kses_post.
-			// phpcs:ignore WordPress.Security.EscapeOutput
 			return '<div id="barn2_plugins_promo" class="barn2-plugins-promo-wrapper">' . Util::barn2_kses_post( $promo_content ) . '</div>';
 		}
 
@@ -68,14 +67,14 @@ abstract class Abstract_Plugin_Promo {
 
 		$plugin_id = $this->plugin->get_id();
 
-		$review_content = get_transient( 'barn2_plugin_review_banner_' . $plugin_id );
-		$promo_content  = get_transient( 'barn2_plugin_promo_' . $plugin_id );
+		$review_content      = get_transient( 'barn2_plugin_review_banner_' . $plugin_id );
+		$promo_response_data = get_transient( 'barn2_plugin_promo_' . $plugin_id );
 
 		if ( false === $review_content ) {
-			$review_content_url = Util::barn2_url( '/wp-json/barn2/v2/pluginpromo/' . $plugin_id . '?_=' . gmdate( 'mdY' ) );
+			$review_content_url = Util::barn2_api_url( '/wp-json/promos/v1/get/' . $plugin_id . '?_=' . gmdate( 'mdY' ) );
 			$review_content_url = add_query_arg(
 				[
-					'source'   => urlencode( get_bloginfo( 'url' ) ),
+					'source'   => rawurlencode( get_bloginfo( 'url' ) ),
 					'template' => 'review_request',
 				],
 				$review_content_url
@@ -91,41 +90,22 @@ abstract class Abstract_Plugin_Promo {
 			if ( 200 !== wp_remote_retrieve_response_code( $review_response ) ) {
 				$review_content = '';
 			} else {
-				$review_content = json_decode( wp_remote_retrieve_body( $review_response ) );
+				$review_content = json_decode( wp_remote_retrieve_body( $review_response ), true );
 				set_transient( 'barn2_plugin_review_banner_' . $plugin_id, $review_content, 7 * DAY_IN_SECONDS );
 			}
 		}
 
-		if ( false === $promo_content ) {
-			$promo_content_url = Util::barn2_url( '/wp-json/barn2/v2/pluginpromo/' . $plugin_id . '?_=' . gmdate( 'mdY' ) );
-			$plugin_dir        = WP_PLUGIN_DIR;
-			$current_plugins   = get_plugins();
-			$barn2_installed   = [];
+		$plugins_installed = Util::get_installed_barn2_plugins() ?: [];
 
-			foreach ( $current_plugins as $slug => $data ) {
-				if ( false !== stripos( $data['Author'], 'Barn2 Plugins' ) ) {
+		if ( false === $promo_response_data || ! is_array( $promo_response_data ) ) {
 
-					if ( is_readable( "$plugin_dir/$slug" ) ) {
-						$plugin_contents = file_get_contents( "$plugin_dir/$slug" );
+			$promo_content_url = Util::barn2_api_url( '/wp-json/promos/v1/get/' . $plugin_id . '?_=' . gmdate( 'mdY' ) );
+			$promo_content_url = add_query_arg( 'source', rawurlencode( get_bloginfo( 'url' ) ), $promo_content_url );
 
-						if ( preg_match( '/namespace ([0-9A-Za-z_\\\]+);/', $plugin_contents, $namespace ) ) {
-							$classname = $namespace[1] . '\Plugin';
-
-							if ( class_exists( $classname ) && defined( "$classname::ITEM_ID" ) ) {
-								if ( $id = ( $classname::ITEM_ID ?? null ) ) {
-									$barn2_installed[] = $id;
-								}
-							}
-						}
-					}
-				}
+			if ( $plugins_installed ) {
+				$plugins_installed = array_column( $plugins_installed, 'ITEM_ID' );
+				$promo_content_url = add_query_arg( 'plugins_installed', implode( ',', $plugins_installed ), $promo_content_url );
 			}
-
-			if ( $barn2_installed ) {
-				$promo_content_url = add_query_arg( 'plugins_installed', implode( ',', $barn2_installed ), $promo_content_url );
-			}
-
-			$promo_content_url = add_query_arg( 'source', urlencode( get_bloginfo( 'url' ) ), $promo_content_url );
 
 			$promo_response = wp_remote_get(
 				$promo_content_url,
@@ -134,12 +114,28 @@ abstract class Abstract_Plugin_Promo {
 				]
 			);
 
-			if ( 200 !== wp_remote_retrieve_response_code( $promo_response ) ) {
-				$promo_content = '';
-			} else {
-				$promo_content = json_decode( wp_remote_retrieve_body( $promo_response ) );
-				set_transient( 'barn2_plugin_promo_' . $plugin_id, $promo_content, 7 * DAY_IN_SECONDS );
+			if ( 200 === wp_remote_retrieve_response_code( $promo_response ) ) {
+				$promo_response_data = json_decode( wp_remote_retrieve_body( $promo_response ), true );
+				set_transient( 'barn2_plugin_promo_' . $plugin_id, $promo_response_data, 7 * DAY_IN_SECONDS );
 			}
+		}
+
+		$promo_content = '';
+		$count         = 0;
+
+		if ( is_array( $promo_response_data ) && isset( $promo_response_data['promos'] ) ) {
+
+			foreach ( $promo_response_data['promos'] as $promo ) {
+				if ( ! in_array( absint( $promo['product_id'] ), $plugins_installed, true ) ) {
+					$promo_content .= $promo['html'];
+					$count++;
+				}
+				if ( $count >= 2 ) {
+					break;
+				}
+			}
+
+			$promo_content = sprintf( $promo_response_data['template'], $promo_content );
 		}
 
 		$this->promo_content = $review_content . $promo_content;

@@ -1,8 +1,27 @@
-
 window.EDD_EU_VAT = ( function( $, window, document, params ) {
 
     // Back-compat
     window.euCountries = params.countries;
+
+	// Determine if debug mode is enabled.
+	const isDebug = edd_eu_vat_params.debug_mode === '1';
+
+	// List of actions logged when debug mode is enabled.
+	const loggedActions = [];
+
+	function logCheckout( message, data = '' ) {
+		if ( ! isDebug ) {
+			return
+		}
+
+		loggedActions.push( {
+			message: message,
+			data: data,
+			date: new Date().toLocaleString()
+		} )
+
+		localStorage.setItem('euVatLogger', JSON.stringify(loggedActions));
+	}
 
     function hideResult() {
         $( '#edd-vat-check-result' ).remove();
@@ -16,6 +35,11 @@ window.EDD_EU_VAT = ( function( $, window, document, params ) {
         var $vatField = $( '#edd-card-vat-wrap' ),
             billingCountry = $( '#billing_country' ).val(),
             vatNumber = $( '#edd-vat-number' ).val();
+
+		logCheckout( 'eddVatCheck running', {
+			'billingCountry': billingCountry,
+			'vatNumber': vatNumber,
+		} )
 
         if ( !$vatField.length ) {
             return false;
@@ -120,11 +144,15 @@ window.EDD_EU_VAT = ( function( $, window, document, params ) {
 
         var billingCountry = $( '#billing_country' ).val();
 
+		logCheckout( 'eddCountryCheck running', '' );
+
         if ( billingCountry && -1 !== params.countries.indexOf( billingCountry ) ) {
             $( '#edd-card-vat-wrap' ).show();
+			logCheckout( 'eddCountryCheck showing #edd-cart-vat-wrap', '' );
         } else {
             $( '#edd-card-vat-wrap' ).hide();
             hideResult();
+			logCheckout( 'eddCountryCheck hiding #edd-cart-vat-wrap', '');
         }
     }
 
@@ -133,6 +161,7 @@ window.EDD_EU_VAT = ( function( $, window, document, params ) {
         $( '#edd_purchase_form' )
             .on( 'click', '#edd-vat-check-button', eddVatCheck )
             .on( 'change', '#billing_country', function( event ) {
+				logCheckout('#billing_country changed', $(this).val() )
                 var vatData = $( '#edd-vat-check-result' ).data();
 
                 // Clear previous VAT number and result if country is changed.
@@ -145,6 +174,7 @@ window.EDD_EU_VAT = ( function( $, window, document, params ) {
             } )
             .on( 'change', '#edd-stripe-update-billing-address', function( event ) {
                 // Prevent EDD Stripe hiding the VAT field when toggling the billing fields for saved addresses.
+				logCheckout( '#edd-stripe-update-billing-address changed', '' )
                 eddCountryCheck();
             } );
 
@@ -153,10 +183,12 @@ window.EDD_EU_VAT = ( function( $, window, document, params ) {
     $( document.body )
         .on( 'edd_gateway_loaded', function( e, gateway ) {
             // Trigger EU country check when payment gateway loaded.
+			logCheckout( 'running eddCountryCheck on edd_gateway_loaded event' )
             eddCountryCheck();
 
             // Also check EU country when 'Add new' card option selected in EDD Stripe.
             $( '#edd-stripe-add-new' ).on( 'change', function( e ) {
+				logCheckout('running eddCountryCheck on #edd-stripe-add-new click')
                 eddCountryCheck();
             } );
         } );
@@ -178,6 +210,10 @@ window.EDD_EU_VAT = ( function( $, window, document, params ) {
 		if ( rawTax !== undefined ) {
 			cartAmount.attr( 'data-total', rawTax )
 		}
+
+		logCheckout('updating data-total attribute', {
+			rawTax: rawTax
+		})
 
 		$( '#edd-purchase-button, #billing_country' ).removeAttr( 'disabled' )
 	});

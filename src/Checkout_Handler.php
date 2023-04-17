@@ -54,6 +54,9 @@ class Checkout_Handler implements Registerable, Service {
 		add_action( 'wp_ajax_edd_recalculate_taxes', [ $this, 'ajax_edd_recalculate_taxes' ], 5 );
 		add_action( 'wp_ajax_nopriv_edd_recalculate_taxes', [ $this, 'ajax_edd_recalculate_taxes' ], 5 );
 
+		add_action( 'wp_ajax_edd_debug_payment_note', [ $this, 'ajax_reconcile_payment_note' ] );
+		add_action( 'wp_ajax_nopriv_edd_debug_payment_note', [ $this, 'ajax_reconcile_payment_note' ] );
+
 		// Tax filters.
 		add_filter( 'edd_tax_rate', [ $this, 'tax_rate' ], 500, 3 );
 		add_filter( 'edd_cart_tax', [ $this, 'cart_tax' ] );
@@ -66,7 +69,10 @@ class Checkout_Handler implements Registerable, Service {
 		add_action( 'edd_insert_payment', [ $this, 'insert_payment' ], 10, 2 );
 
 		// Refresh on login.
-		add_action( 'wp_login', [ $this, 'clear_vat_on_login' ], 10, 2 );
+		//add_action( 'wp_login', [ $this, 'clear_vat_on_login' ], 10, 2 );
+
+		// Debug util on purchase receipt page.
+		add_action( 'edd_order_receipt_before_table', [ $this, 'debug_receipt' ], 10, 2 );
 	}
 
 	/**
@@ -132,6 +138,8 @@ class Checkout_Handler implements Registerable, Service {
 			'vat_check_result' => $this->get_vat_check_result()
 		];
 
+		edd_debug_log( 'EUVAT: ajax_vat_check response: ' . print_r( $response, true ) );
+
 		// Send
 		wp_send_json( $response );
 	}
@@ -140,14 +148,28 @@ class Checkout_Handler implements Registerable, Service {
 	 * Recalculate taxes via AJAX
 	 */
 	public function ajax_edd_recalculate_taxes() {
+		$nonce = isset( $_POST['nonce'] ) ? sanitize_text_field( $_POST['nonce'] ) : '';
+		$nonce_verified = wp_verify_nonce( $nonce, 'edd-checkout-address-fields' );
+
+		if ( ! $nonce_verified ) {
+			return;
+		}
+
+		edd_debug_log( 'EUVAT: ajax_edd_recalculate_taxes called' );
+
 		$selected_country = isset( $_POST['billing_country'] ) ? sanitize_text_field( $_POST['billing_country'] ) : '';
+
+		edd_debug_log( 'EUVAT: ajax_edd_recalculate_taxes $selected_country: ' . $selected_country );
 
 		if ( empty( $selected_country ) ) {
 			$selected_country = edd_get_shop_country();
+
+			edd_debug_log( 'EUVAT: ajax_edd_recalculate_taxes $selected_country override:' . $selected_country );
 		}
 
 		// Clear the VAT state if the country has changed.
 		if ( ! empty( $this->cart_vat->get_vat_details()->country_code ) && $selected_country !== $this->cart_vat->get_vat_details()->country_code ) {
+			edd_debug_log( 'EUVAT: ajax_edd_recalculate_taxes cleared VAT state of country has changed' );
 			$this->cart_vat->clear();
 		}
 	}
@@ -163,6 +185,7 @@ class Checkout_Handler implements Registerable, Service {
 
 		if ( $this->cart_vat instanceof Cart_VAT && ! empty( $this->cart_vat->get_vat_details() ) ) {
 			$this->cart_vat->clear();
+			edd_debug_log( 'EUVAT: cleared VAT on login for user: ' . $user_login );
 		}
 
 	}
@@ -195,6 +218,13 @@ class Checkout_Handler implements Registerable, Service {
 			}
 		}
 
+		edd_debug_log( 'EUVAT: tax_rate called with args: ' . print_r(
+			[
+				'$rate' => $rate,
+				'$country' => $country,
+				'$state' => $state
+			], true ) );
+
 		return $rate;
 	}
 
@@ -225,6 +255,12 @@ class Checkout_Handler implements Registerable, Service {
 				$formatted_rate
 			);
 		}
+
+		edd_debug_log( 'EUVAT: cart_tax called with arguments: ' . print_r(
+			[
+				'$cart_tax' => $cart_tax,
+				'reverse_charged' => $this->cart_vat->is_reverse_charged(),
+			], true ) );
 
 		return $cart_tax;
 	}
@@ -301,6 +337,24 @@ class Checkout_Handler implements Registerable, Service {
 			edd_update_payment_meta( $payment_id, '_edd_payment_vat_company_name', $this->cart_vat->get_vat_details()->name );
 			edd_update_payment_meta( $payment_id, '_edd_payment_vat_company_address', $this->cart_vat->get_vat_details()->address );
 			edd_update_payment_meta( $payment_id, '_edd_payment_vat_consultation_number', $this->cart_vat->get_vat_details()->consultation_number );
+		}
+
+		edd_debug_log( 'EUVAT: insert_payment arguments: ' . print_r(
+			[
+				'details' => $this->cart_vat->get_vat_details(),
+				'reverse_charged' => $this->cart_vat->is_reverse_charged(),
+				'payment_id' => $payment_id,
+				'country_code' => $country_code
+			], true ) );
+
+		if ( edd_is_debug_mode() ) {
+			edd_insert_payment_note( $payment_id, print_r(
+				[
+					'details' => $this->cart_vat->get_vat_details(),
+					'reverse_charged' => $this->cart_vat->is_reverse_charged(),
+					'payment_id' => $payment_id,
+					'country_code' => $country_code
+				], true ) );
 		}
 	}
 
@@ -399,6 +453,49 @@ class Checkout_Handler implements Registerable, Service {
 				$error = $code;
 		}
 		return apply_filters( 'edd_vat_error_code_to_string', $error, $code );
+	}
+
+	/**
+	 * Reconcile local storage data with the payment note.
+	 *
+	 * @return void
+	 */
+	public function ajax_reconcile_payment_note() {
+
+		$nonce = isset( $_POST['nonce'] ) ? sanitize_text_field( $_POST['nonce'] ) : '';
+		$nonce_verified = wp_verify_nonce( $nonce, 'euvat-debug' );
+
+		if ( ! $nonce_verified ) {
+			return;
+		}
+
+		$payment_id = isset( $_POST['payment_id'] ) ? absint( $_POST['payment_id'] ) : false;
+		$debug_data = isset( $_POST['logged'] ) ? json_decode( stripslashes( $_POST['logged'] ), true ) : [];
+
+		if ( edd_is_debug_mode() ) {
+			edd_insert_payment_note( $payment_id, print_r( Util::clean( $debug_data ) , true ) );
+		}
+
+		wp_send_json_success( $debug_data );
+
+	}
+
+	/**
+	 * Print an hidden element that holds the ID number of the order.
+	 * This is needed for debug purposes.
+	 *
+	 * @param object $order
+	 * @param array $receipt_args
+	 * @return void
+	 */
+	public function debug_receipt( $order, $receipt_args ) {
+
+		if ( ! edd_is_debug_mode() ) {
+			return;
+		}
+
+		echo '<div id="eddeuvat-order-debug" data-order-id="'. absint( $order->id ) .'"></div>';
+
 	}
 
 }

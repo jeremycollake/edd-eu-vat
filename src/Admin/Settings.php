@@ -137,7 +137,7 @@ class Settings implements Registerable, Service {
 				[
 					'id'   => 'edd_vat_reverse_charge_base_country',
 					'name' => __( 'Reverse Charge in Home Country?', 'edd-eu-vat' ),
-					'desc' => __( 'If your store is based in the EU, check this to reverse charge VAT for customers with a valid VAT number who are in your home country.', 'edd-eu-vat' ),
+					'desc' => __( 'If your store is based in the EU or the UK, check this to reverse charge VAT for customers with a valid VAT number who are in your home country.', 'edd-eu-vat' ),
 					'type' => 'checkbox',
 				],
 				[

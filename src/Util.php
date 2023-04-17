@@ -118,14 +118,15 @@ class Util {
 		 */
 		if ( ! $reverse_charge_in_base_country ) {
 			$base_country = edd_get_option( 'edd_vat_address_country', edd_get_shop_country() );
-			$eu_countries = array_diff( $eu_countries, [ $base_country ] );
 
-			// Exclude GB due to brexit.
-			$edd_vat_country = edd_get_option( 'edd_vat_address_country' );
-
-			if ( $edd_vat_country === 'EU' ) {
-				$eu_countries = array_diff( $eu_countries, [ 'GB' ] );
+			/**
+			 * If the base country is set to EU, use the EDD shop country instead.
+			 */
+			if ( $base_country === 'EU' ) {
+				$base_country = edd_get_shop_country();
 			}
+
+			$eu_countries = array_diff( $eu_countries, [ $base_country ] );
 		}
 
 		return apply_filters( 'edd_vat_can_reverse_charge_vat', in_array( $country_code, $eu_countries, true ), $country_code );
@@ -275,13 +276,55 @@ class Util {
 	}
 
 	/**
+	 * Returns a list of EU countries plus the United Kingdom.
+	 *
+	 * @return array
+	 */
+	public static function get_eu_countries_list() {
+
+		$eu_countries = array(
+			"AT" => __( "Austria" ),
+			"BE" => __( "Belgium" ),
+			"BG" => __( "Bulgaria" ),
+			"HR" => __( "Croatia" ),
+			"CY" => __( "Cyprus" ),
+			"CZ" => __( "Czech Republic" ),
+			"DK" => __( "Denmark" ),
+			"EE" => __( "Estonia" ),
+			"FI" => __( "Finland" ),
+			"FR" => __( "France" ),
+			"DE" => __( "Germany" ),
+			"GR" => __( "Greece" ),
+			"HU" => __( "Hungary" ),
+			"IE" => __( "Ireland" ),
+			"IT" => __( "Italy" ),
+			"LV" => __( "Latvia" ),
+			"LT" => __( "Lithuania" ),
+			"LU" => __( "Luxembourg" ),
+			"MT" => __( "Malta" ),
+			"NL" => __( "Netherlands" ),
+			"PL" => __( "Poland" ),
+			"PT" => __( "Portugal" ),
+			"RO" => __( "Romania" ),
+			"SK" => __( "Slovakia" ),
+			"SI" => __( "Slovenia" ),
+			"ES" => __( "Spain" ),
+			"SE" => __( "Sweden" ),
+			"GB" => __( 'United Kingdom' ),
+		);
+
+		return $eu_countries;
+
+	}
+
+	/**
 	 * Get the list of countries plus our custom ones.
 	 *
 	 * @return array
 	 */
 	public static function get_country_list() {
 
-		$countries = edd_get_country_list();
+		$countries = self::get_eu_countries_list();
 
 		$countries = self::array_insert_after( 'GB', $countries, 'EU', __( 'EU MOSS Number', 'edd-eu-vat' ) );
 		$countries = self::array_insert_after( 'IE', $countries, 'XI', __( 'Northern Ireland', 'edd-eu-vat' ) );
@@ -290,4 +333,17 @@ class Util {
 
 	}
 
+	/**
+     * Sanitize anything.
+     *
+     * @param mixed $var the thing to sanitize.
+     * @return mixed
+     */
+    public static function clean( $var ){
+        if (\is_array($var)) {
+            return \array_map('self::clean', $var);
+        } else {
+            return \is_scalar($var) ? sanitize_text_field($var) : $var;
+        }
+    }
 }

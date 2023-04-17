@@ -15,6 +15,7 @@ use Barn2\VAT_Lib\Plugin\Plugin;
  */
 class Util {
 
+	const BARN2_API_URL      = 'https://api.barn2.com';
 	const BARN2_URL          = 'https://barn2.com';
 	const EDD_STORE_URL      = 'https://barn2.com';
 	const KNOWLEDGE_BASE_URL = 'https://barn2.com';
@@ -36,6 +37,10 @@ class Util {
 
 	public static function barn2_url( $relative_path ) {
 		return esc_url( trailingslashit( self::BARN2_URL ) . ltrim( $relative_path, '/' ) );
+	}
+
+	public static function barn2_api_url( $relative_path ) {
+		return esc_url( trailingslashit( self::BARN2_API_URL ) . ltrim( $relative_path, '/' ) );
 	}
 
 	public static function format_barn2_link_open( $relative_path, $new_tab = false ) {
@@ -390,6 +395,45 @@ class Util {
 		}
 
 		return get_plugin_data( $plugin->get_file() );
+	}
+
+	/**
+	 * Loops through all active plugins on the user's website and returns ones that are authored by Barn2
+	 *
+	 * @return array List of plugin meta data and the ITEM_ID found in each Barn2 plugin
+	 */
+	public static function get_installed_barn2_plugins() {
+
+		if ( ! function_exists( 'get_plugins' ) ) {
+			require_once ABSPATH . 'wp-admin/includes/plugin.php';
+		}
+
+		$plugin_dir        = WP_PLUGIN_DIR;
+		$current_plugins   = get_plugins();
+		$barn2_installed   = [];
+
+		foreach ( $current_plugins as $slug => $data ) {
+			if ( false !== stripos( $data['Author'], 'Barn2 Plugins' ) ) {
+
+				if ( is_readable( "$plugin_dir/$slug" ) ) {
+					$plugin_contents = file_get_contents( "$plugin_dir/$slug" );
+
+					if ( preg_match( '/namespace ([0-9A-Za-z_\\\]+);/', $plugin_contents, $namespace ) ) {
+						$classname = $namespace[1] . '\Plugin';
+
+						if ( class_exists( $classname ) && defined( "$classname::ITEM_ID" ) ) {
+							if ( $id = ( $classname::ITEM_ID ?? null ) ) {
+								$data['ITEM_ID']   = absint( $id );
+								$barn2_installed[] = $data;
+							}
+						}
+					}
+				}
+			}
+		}
+
+		return $barn2_installed;
+
 	}
 
 }

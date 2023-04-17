@@ -92,6 +92,8 @@ class Cart_VAT implements Registerable, Service {
 		$this->is_reverse_charged = (bool) $vat_session['is_reverse_charged'];
 		$this->vat_details        = null;
 
+		edd_debug_log( 'EUVAT: cart restored with: ' . print_r( $vat_session, true ) );
+
 		if ( ! empty( $vat_session['vat_check'] ) && is_array( $vat_session['vat_check'] ) ) {
 			$vat_check_array = array_merge(
 				array_fill_keys( [ 'vat_number', 'country_code', 'valid', 'name', 'address', 'error', 'consultation_number' ], '' ),
@@ -134,6 +136,7 @@ class Cart_VAT implements Registerable, Service {
 
 		// If selected country on checkout doesn't match saved VAT country, we clear the state.
 		if ( $selected_country !== $this->vat_details->country_code ) {
+			edd_debug_log( 'EUVAT: cleared VAT selected country on checkout doesn\'t match saved VAT country (' . $selected_country . ') - (' . $this->vat_details->country_code . ')' );
 			$this->clear();
 		}
 	}
