@@ -9,23 +9,20 @@
 namespace Barn2\Plugin\EDD_VAT\Dependencies\Barn2\Setup_Wizard\Steps;
 
 use Barn2\Plugin\EDD_VAT\Dependencies\Barn2\Setup_Wizard\Step;
+use Barn2\Plugin\EDD_VAT\Dependencies\Barn2\Setup_Wizard\Util;
 /**
- * Handles the last step of the wizard.
+ * Handles the welcome step of the wizard.
+ * Displays a license validation field and validates the license.
  */
-class Ready extends Step
+class Welcome extends Step
 {
     /**
      * Initialize the step.
      */
     public function __construct()
     {
-        $this->set_id('ready');
-<<<<<<< HEAD
-        $this->set_title(__('Finished!', 'edd-eu-vat'));
-=======
-        $this->set_name(esc_html__('Ready', 'barn2-setup-wizard'));
-        $this->set_title(esc_html__('Setup Complete', 'barn2-setup-wizard'));
->>>>>>> main
+        $this->set_id('welcome');
+        $this->set_name(esc_html__('Welcome', 'barn2-setup-wizard'));
     }
     /**
      * {@inheritdoc}
@@ -39,5 +36,6 @@ class Ready extends Step
      */
     public function submit($values)
     {
+        return Api::send_success_response();
     }
 }

@@ -10,22 +10,19 @@ namespace Barn2\Plugin\EDD_VAT\Dependencies\Barn2\Setup_Wizard\Steps;
 
 use Barn2\Plugin\EDD_VAT\Dependencies\Barn2\Setup_Wizard\Step;
 /**
- * Handles the last step of the wizard.
+ * Handles the cross selling step of the wizard.
  */
-class Ready extends Step
+class Cross_Selling extends Step
 {
     /**
      * Initialize the step.
      */
     public function __construct()
     {
-        $this->set_id('ready');
-<<<<<<< HEAD
-        $this->set_title(__('Finished!', 'edd-eu-vat'));
-=======
-        $this->set_name(esc_html__('Ready', 'barn2-setup-wizard'));
-        $this->set_title(esc_html__('Setup Complete', 'barn2-setup-wizard'));
->>>>>>> main
+        $this->set_id('more');
+        $this->set_name(esc_html__('More', 'barn2-setup-wizard'));
+        $this->set_title(esc_html__('Extra features', 'barn2-setup-wizard'));
+        $this->set_description(esc_html__('Enhance your site with these fantastic plugins from Barn2.', 'barn2-setup-wizard'));
     }
     /**
      * {@inheritdoc}
