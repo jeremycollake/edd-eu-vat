@@ -33,30 +33,6 @@ if ( ! $should_show ) {
 <div class="information">
 	<header><?php esc_html_e( 'Additional Information:', 'edd-eu-vat' ); ?></header>
 
-	<?php if ( Util::is_eu_payment( $order->ID ) && ( $payment_vat->is_reverse_charged || $order->tax > 0 ) ) : ?>
-		<article>
-		<?php if ( $payment_vat->is_reverse_charged ) : ?>
-			<div class="vat-note">
-				<span class="invoice-label"><?php esc_html_e( 'VAT reverse charged', 'edd-eu-vat' ); ?></span>
-			</div>
-		<?php elseif ( $order->tax > 0 ) : ?>
-			<div class="vat-note">
-				<span class="invoice-label">
-					<?php
-					echo esc_html(
-						sprintf(
-						/* translators: %s is the VAT tax rate */
-							__( 'VAT charged at %s%%', 'edd-eu-vat' ),
-							$order->tax_rate * 100
-						)
-					);
-					?>
-				</span>
-			</div>
-		<?php endif; ?>
-		</article>
-	<?php endif; ?>
-
 	<article>
 		<?php
 		// Customer Notes.

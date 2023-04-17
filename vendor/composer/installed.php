@@ -3,7 +3,7 @@
         'name' => 'barn2/edd-eu-vat',
         'pretty_version' => 'dev-master',
         'version' => 'dev-master',
-        'reference' => 'db5889b0e42f998ba4dd9f9463f6d68dea410e42',
+        'reference' => '1301b875eb010810fe2a708463682d40a26c1a81',
         'type' => 'wordpress-plugin',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -13,7 +13,7 @@
         'barn2/edd-eu-vat' => array(
             'pretty_version' => 'dev-master',
             'version' => 'dev-master',
-            'reference' => 'db5889b0e42f998ba4dd9f9463f6d68dea410e42',
+            'reference' => '1301b875eb010810fe2a708463682d40a26c1a81',
             'type' => 'wordpress-plugin',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),

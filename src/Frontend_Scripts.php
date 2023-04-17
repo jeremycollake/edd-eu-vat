@@ -48,6 +48,8 @@ class Frontend_Scripts implements Registerable {
 
 		wp_register_script( 'edd-eu-vat', $this->plugin_url . "assets/js/edd-eu-vat{$min}.js", [ 'jquery' ], $this->version, true );
 
+		wp_register_script( 'edd-eu-vat-debug', $this->plugin_url . "assets/js/edd-eu-vat-debug{$min}.js", [ 'jquery' ], $this->version, true );
+
 		$countries = Util::get_eu_countries();
 
 		if ( apply_filters( 'edd_eu_vat_uk_hide_checkout_input', false ) ) {
@@ -57,6 +59,7 @@ class Frontend_Scripts implements Registerable {
 		$script_params = [
 			'countries'            => $countries,
 			'hide_edd_sl_notices'  => apply_filters( 'edd_vat_hide_edd_sl_upgrade_notices', true ),
+			'debug_mode' => edd_is_debug_mode(),
 			'messages'             => [
 				'vat_number_missing' => __( 'Please enter a VAT number.', 'edd-eu-vat' ),
 				'country_missing'    => __( 'Please select a country.', 'edd-eu-vat' ),
@@ -65,6 +68,15 @@ class Frontend_Scripts implements Registerable {
 		];
 
 		wp_localize_script( 'edd-eu-vat', 'edd_eu_vat_params', apply_filters( 'edd_vat_script_params', $script_params ) );
+
+		$purchase_confirm_params = [
+			'nonce' => wp_create_nonce( 'euvat-debug' ),
+			'ajax' => admin_url( 'admin-ajax.php' ),
+			'payment_id' => isset( $_GET['id'] ) ? absint( $_GET['id'] ) : false
+		];
+
+		wp_add_inline_script( 'edd-eu-vat-debug', 'const euvat_debug = ' . wp_json_encode( $purchase_confirm_params ), 'before');
+
 	}
 
 	/**
@@ -74,6 +86,10 @@ class Frontend_Scripts implements Registerable {
 		if ( ( function_exists( 'edd_is_checkout' ) && edd_is_checkout() ) || apply_filters( 'edd_vat_force_load_scripts', false ) ) {
 			wp_enqueue_style( 'edd-eu-vat' );
 			wp_enqueue_script( 'edd-eu-vat' );
+		}
+
+		if ( function_exists( 'edd_is_success_page' ) && edd_is_success_page() ) {
+			wp_enqueue_script( 'edd-eu-vat-debug' );
 		}
 	}
 

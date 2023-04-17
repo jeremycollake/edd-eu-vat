@@ -25,6 +25,9 @@
         "barn2/php-standards": "dev-master",
         "bamarni/composer-bin-plugin": "^1.4",
         "barn2/setup-wizard": "^1.0.0",
+		"chevere/var-dump": "^0.6.0",
+		"chevere/xr": "^0.6.0",
+		"chevere/xr-server": "^0.6.2",
         "symfony/var-dumper": "^5.4"
     },
     "scripts": {

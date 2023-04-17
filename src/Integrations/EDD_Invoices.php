@@ -44,6 +44,7 @@ class EDD_Invoices implements Registerable, Service {
 
 		add_action( 'edd_invoices_invoice_items_table', [ $this, 'add_additional_info' ], 15 );
 		add_action( 'edd_invoices_after_customer_details', [ $this, 'add_customer_vat' ] );
+		add_action( 'edd_invoices_invoice_additional_info', [ $this, 'additional_info' ] );
 
 	}
 
