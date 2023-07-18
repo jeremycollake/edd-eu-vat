@@ -327,10 +327,11 @@ class Util {
 		$countries = self::get_eu_countries_list();
 
 		if ( $with_moss ) {
-			$countries = self::array_insert_after( 'GB', $countries, 'EU', __( 'EU MOSS Number', 'edd-eu-vat' ) );
+			$countries = self::array_insert_after( 'GB', $countries, 'EU', __( 'EU MOSS Number', 'edd-eu-vat' ) );			
 		}
 
 		$countries = self::array_insert_after( 'IE', $countries, 'XI', __( 'Northern Ireland', 'edd-eu-vat' ) );
+		$countries = self::array_insert_after( 'XI', $countries, 'US', __( 'United States', 'edd-eu-vat' ) );
 
 		return $countries;
 
