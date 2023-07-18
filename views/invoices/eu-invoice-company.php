@@ -18,7 +18,7 @@ $company = Util::get_company_vat();
 
 <div class="storefront">
 	<header>
-		<?php esc_html_e( 'Invoice From:', 'edd-invoices' ); ?>
+		<?php esc_html_e( 'Invoice From:', 'edd-eu-vat' ); ?>
 	</header>
 
 	<article>
@@ -42,7 +42,7 @@ $company = Util::get_company_vat();
 			?>
 			<!-- Vendor Company Registration # -->
 			<div class="storefront__registration">
-				<span class="invoice-label"><?php esc_html_e( 'Registration:', 'edd-invoices' ); ?></span> <?php echo esc_html( $company_reg ); ?>
+				<span class="invoice-label"><?php esc_html_e( 'Registration:', 'edd-eu-vat' ); ?></span> <?php echo esc_html( $company_reg ); ?>
 			</div>
 			<?php
 		}
@@ -52,7 +52,7 @@ $company = Util::get_company_vat();
 			?>
 			<!-- Vendor Tax/VAT # -->
 			<div class="storefront__vat">
-				<span class="invoice-label"><?php esc_html_e( 'Tax/VAT:', 'edd-invoices' ); ?></span> <?php echo esc_html( $company->vat_number ); ?>
+				<span class="invoice-label"><?php esc_html_e( 'Tax/VAT:', 'edd-eu-vat' ); ?></span> <?php echo esc_html( $company->vat_number ); ?>
 			</div>
 			<?php
 		}

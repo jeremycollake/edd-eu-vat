@@ -2,7 +2,7 @@
 
 namespace Barn2\Plugin\EDD_VAT\Admin\Wizard\Steps;
 
-use Barn2\Plugin\EDD_VAT\Dependencies\Barn2\Setup_Wizard\Steps\Ready;
+use Barn2\Plugin\EDD_VAT\Dependencies\Setup_Wizard\Steps\Ready;
 
 /**
  * Completed Step.

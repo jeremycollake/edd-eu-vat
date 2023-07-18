@@ -117,7 +117,7 @@ class Util {
 		 * @link https://europa.eu/youreurope/business/taxation/vat/cross-border-vat/index_en.htm#withintheeusellgoodsanotherbusiness
 		 */
 		if ( ! $reverse_charge_in_base_country ) {
-			$base_country = edd_get_option( 'edd_vat_address_country', edd_get_shop_country() );
+			$base_country = Util::get_country_for_api( edd_get_shop_country() );
 
 			/**
 			 * If the base country is set to EU, use the EDD shop country instead.
@@ -198,7 +198,7 @@ class Util {
 			'line2'   => edd_get_option( 'edd_vat_address_line_2' ),
 			'city'    => edd_get_option( 'edd_vat_address_city' ),
 			'zip'     => edd_get_option( 'edd_vat_address_code' ),
-			'country' => apply_filters( 'edd_vat_invoice_address_country_code', edd_get_option( 'edd_vat_address_country' ) ),
+			'country' => apply_filters( 'edd_vat_invoice_address_country_code', self::get_country_for_address() ),
 		];
 
 		$company_vat->formatted_address = self::format_edd_address( $company_vat->address );
@@ -283,34 +283,34 @@ class Util {
 	public static function get_eu_countries_list() {
 
 		$eu_countries = array(
-			"AT" => __( "Austria" ),
-			"BE" => __( "Belgium" ),
-			"BG" => __( "Bulgaria" ),
-			"HR" => __( "Croatia" ),
-			"CY" => __( "Cyprus" ),
-			"CZ" => __( "Czech Republic" ),
-			"DK" => __( "Denmark" ),
-			"EE" => __( "Estonia" ),
-			"FI" => __( "Finland" ),
-			"FR" => __( "France" ),
-			"DE" => __( "Germany" ),
-			"GR" => __( "Greece" ),
-			"HU" => __( "Hungary" ),
-			"IE" => __( "Ireland" ),
-			"IT" => __( "Italy" ),
-			"LV" => __( "Latvia" ),
-			"LT" => __( "Lithuania" ),
-			"LU" => __( "Luxembourg" ),
-			"MT" => __( "Malta" ),
-			"NL" => __( "Netherlands" ),
-			"PL" => __( "Poland" ),
-			"PT" => __( "Portugal" ),
-			"RO" => __( "Romania" ),
-			"SK" => __( "Slovakia" ),
-			"SI" => __( "Slovenia" ),
-			"ES" => __( "Spain" ),
-			"SE" => __( "Sweden" ),
-			"GB" => __( 'United Kingdom' ),
+			"AT" => __( "Austria", 'edd-eu-vat' ),
+			"BE" => __( "Belgium", 'edd-eu-vat' ),
+			"BG" => __( "Bulgaria", 'edd-eu-vat' ),
+			"HR" => __( "Croatia", 'edd-eu-vat' ),
+			"CY" => __( "Cyprus", 'edd-eu-vat' ),
+			"CZ" => __( "Czech Republic", 'edd-eu-vat' ),
+			"DK" => __( "Denmark", 'edd-eu-vat' ),
+			"EE" => __( "Estonia", 'edd-eu-vat' ),
+			"FI" => __( "Finland", 'edd-eu-vat' ),
+			"FR" => __( "France", 'edd-eu-vat' ),
+			"DE" => __( "Germany", 'edd-eu-vat' ),
+			"GR" => __( "Greece", 'edd-eu-vat' ),
+			"HU" => __( "Hungary", 'edd-eu-vat' ),
+			"IE" => __( "Ireland", 'edd-eu-vat' ),
+			"IT" => __( "Italy", 'edd-eu-vat' ),
+			"LV" => __( "Latvia", 'edd-eu-vat' ),
+			"LT" => __( "Lithuania", 'edd-eu-vat' ),
+			"LU" => __( "Luxembourg", 'edd-eu-vat' ),
+			"MT" => __( "Malta", 'edd-eu-vat' ),
+			"NL" => __( "Netherlands", 'edd-eu-vat' ),
+			"PL" => __( "Poland", 'edd-eu-vat' ),
+			"PT" => __( "Portugal", 'edd-eu-vat' ),
+			"RO" => __( "Romania", 'edd-eu-vat' ),
+			"SK" => __( "Slovakia", 'edd-eu-vat' ),
+			"SI" => __( "Slovenia", 'edd-eu-vat' ),
+			"ES" => __( "Spain", 'edd-eu-vat' ),
+			"SE" => __( "Sweden", 'edd-eu-vat' ),
+			"GB" => __( 'United Kingdom', 'edd-eu-vat' ),
 		);
 
 		return $eu_countries;
@@ -322,11 +322,14 @@ class Util {
 	 *
 	 * @return array
 	 */
-	public static function get_country_list() {
+	public static function get_country_list( $with_moss = true ) {
 
 		$countries = self::get_eu_countries_list();
 
-		$countries = self::array_insert_after( 'GB', $countries, 'EU', __( 'EU MOSS Number', 'edd-eu-vat' ) );
+		if ( $with_moss ) {
+			$countries = self::array_insert_after( 'GB', $countries, 'EU', __( 'EU MOSS Number', 'edd-eu-vat' ) );
+		}
+
 		$countries = self::array_insert_after( 'IE', $countries, 'XI', __( 'Northern Ireland', 'edd-eu-vat' ) );
 
 		return $countries;
@@ -346,4 +349,23 @@ class Util {
             return \is_scalar($var) ? sanitize_text_field($var) : $var;
         }
     }
+
+	/**
+	 * Return the country to use for the API.
+	 *
+	 * @return string
+	 */
+	public static function get_country_for_api( $default = '' ) {
+		return edd_get_option( 'edd_vat_address_country', $default );
+	}
+
+	/**
+	 * Return the country to use for the address.
+	 *
+	 * @return string
+	 */
+	public static function get_country_for_address() {
+		return edd_get_option( 'edd_vat_address_invoice', '' );
+	}
+
 }

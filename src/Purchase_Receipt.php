@@ -1,8 +1,8 @@
 <?php
 namespace Barn2\Plugin\EDD_VAT;
 
-use Barn2\VAT_Lib\Registerable,
-	Barn2\VAT_Lib\Service,
+use Barn2\Plugin\EDD_VAT\Dependencies\Lib\Registerable,
+	Barn2\Plugin\EDD_VAT\Dependencies\Lib\Service,
 	Barn2\Plugin\EDD_VAT\Util,
 	EDD_Payment,
 	WP_Post;

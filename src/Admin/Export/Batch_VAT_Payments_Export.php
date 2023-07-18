@@ -75,7 +75,7 @@ class Batch_VAT_Payments_Export extends \EDD_Batch_Export {
 		$payments = edd_get_payments( $args );
 
 		$eu_countries = Util::get_eu_countries();
-		$base_country = edd_get_option( 'edd_vat_address_country', edd_get_shop_country() );
+		$base_country = Util::get_country_for_address();
 		$eu_countries = array_diff( $eu_countries, [ $base_country ] );
 
 		$vat_rates = Util::get_eu_vat_rates();

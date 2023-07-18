@@ -1,7 +1,7 @@
 <?php
 namespace Barn2\Plugin\EDD_VAT\Integrations;
 
-use Barn2\VAT_Lib\Registerable,
+use Barn2\Plugin\EDD_VAT\Dependencies\Lib\Registerable,
 	EDD_Payment,
 	EDD_Subscription;
 
@@ -35,7 +35,16 @@ class EDD_Recurring implements Registerable {
 			return;
 		}
 
-		$payment_id = $payment->ID;
+		/**
+		 * Filter the payment ID to use for the subscription payment.
+		 * This allows other plugins to modify the payment ID if required.
+		 *
+		 * @param int $payment_id The payment ID.
+		 * @param EDD_Payment $payment The payment object.
+		 * @param EDD_Subscription $subscription The subscription object.
+		 * @return int
+		 */
+		$payment_id = apply_filters( 'edd_vat_recurring_insert_subscription_payment_id', $payment->ID, $payment, $subscription );
 
 		edd_update_payment_meta( $payment_id, '_edd_payment_vat_reverse_charged', edd_get_payment_meta( $subscription->parent_payment_id, '_edd_payment_vat_reverse_charged', true ) );
 		edd_update_payment_meta( $payment_id, '_edd_payment_vat_is_eu', edd_get_payment_meta( $subscription->parent_payment_id, '_edd_payment_vat_is_eu', true ) );

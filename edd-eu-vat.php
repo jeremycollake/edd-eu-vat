@@ -10,7 +10,7 @@
  * @wordpress-plugin
  * Plugin Name:         Easy Digital Downloads - EU VAT
  * Plugin URI:          https://barn2.com/wordpress-plugins/easy-digital-downloads-eu-vat/
- * Version:             1.5.13
+ * Version:             1.5.17
  * Description:         Adds EU VAT support to Easy Digital Downloads.
  * Author:              Barn2 Plugins
  * Author URI:          https://barn2.com
@@ -28,7 +28,7 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
-const PLUGIN_VERSION = '1.5.13';
+const PLUGIN_VERSION = '1.5.17';
 const PLUGIN_FILE    = __FILE__;
 
 // Include autoloader.

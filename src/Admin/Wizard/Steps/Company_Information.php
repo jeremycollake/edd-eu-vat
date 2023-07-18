@@ -2,8 +2,9 @@
 
 namespace Barn2\Plugin\EDD_VAT\Admin\Wizard\Steps;
 
-use Barn2\Plugin\EDD_VAT\Dependencies\Barn2\Setup_Wizard\Api;
-use Barn2\Plugin\EDD_VAT\Dependencies\Barn2\Setup_Wizard\Step;
+use Barn2\Plugin\EDD_VAT\Dependencies\Setup_Wizard\Api;
+use Barn2\Plugin\EDD_VAT\Dependencies\Setup_Wizard\Step;
+use Barn2\Plugin\EDD_VAT\Util;
 
 /**
  * General Step.
@@ -61,14 +62,14 @@ class Company_Information extends Step {
 				'description' => __( 'Enter line 2 of your company\'s registered VAT address if required.', 'edd-eu-vat' ),
 				'type'        => 'text',
 			],
-			'edd_vat_address_country' => [
+			'edd_vat_address_invoice' => [
 				'label'       => __( 'Country', 'edd-eu-vat' ),
-				'description' => __( 'Select the country of your company\'s registered VAT address.', 'edd-eu-vat' ),
+				'description' => __( 'Select the country where your business is based. This will be used on invoices.', 'edd-eu-vat' ),
 				'type'        => 'select',
 				'searchable'  => true,
-				'options'     => $this->format_edd_coutries_for_select(),
+				'options'     => $this->format_edd_coutries_for_select( false ),
 				'placeholder' => __( 'Select a country', 'edd-eu-vat' ),
-				'value'       => edd_get_option( 'edd_vat_address_country' ) ?: edd_get_shop_country(),
+				'value'       => Util::get_country_for_address(),
 			],
 			'edd_vat_address_city'    => [
 				'value'       => edd_get_option( 'edd_vat_address_city', '' ),
@@ -81,6 +82,16 @@ class Company_Information extends Step {
 				'label'       => __( 'Zip / Postal Code', 'edd-eu-vat' ),
 				'description' => __( 'Enter the zip / postal code of your company\'s registered VAT address.', 'edd-eu-vat' ),
 				'type'        => 'text',
+			],
+			'edd_vat_address_country' => [
+				'label'       => __( 'Country of VAT registration', 'edd-eu-vat' ),
+				'description' => __( 'Select the country of your company\'s registered VAT address.', 'edd-eu-vat' ),
+				'type'        => 'select',
+				'searchable'  => true,
+				'options'     => $this->format_edd_coutries_for_select(),
+				'placeholder' => __( 'Select a country', 'edd-eu-vat' ),
+				'value'       => Util::get_country_for_api( edd_get_shop_country() ),
+				'classes'     => [ 'with-separator' ]
 			],
 		];
 
@@ -116,6 +127,9 @@ class Company_Information extends Step {
 		$edd_vat_address_country = isset( $values['edd_vat_address_country'] ) && ! empty( $values['edd_vat_address_country'] )
 		? $values['edd_vat_address_country'] : edd_get_shop_country();
 
+		$edd_vat_address_invoice = isset( $values['edd_vat_address_invoice'] ) && ! empty( $values['edd_vat_address_invoice'] )
+		? $values['edd_vat_address_invoice'] : edd_get_shop_country();
+
 		edd_update_option( 'edd_vat_company_name', $edd_vat_company_name );
 		edd_update_option( 'edd_vat_number', $edd_vat_number );
 		edd_update_option( 'edd_uk_vat_number', $edd_uk_vat_number );
@@ -124,6 +138,7 @@ class Company_Information extends Step {
 		edd_update_option( 'edd_vat_address_city', $edd_vat_address_city );
 		edd_update_option( 'edd_vat_address_code', $edd_vat_address_code );
 		edd_update_option( 'edd_vat_address_country', $edd_vat_address_country );
+		edd_update_option( 'edd_vat_address_invoice', $edd_vat_address_invoice );
 
 		return Api::send_success_response();
 
@@ -134,8 +149,8 @@ class Company_Information extends Step {
 	 *
 	 * @return array $select_countries
 	 */
-	private function format_edd_coutries_for_select() {
-		$edd_countries = edd_get_country_list();
+	private function format_edd_coutries_for_select( $with_moss = true ) {
+		$edd_countries = Util::get_country_list( $with_moss );
 
 		$select_countries = array_map(
 			function( $country_code, $country_name ) {
