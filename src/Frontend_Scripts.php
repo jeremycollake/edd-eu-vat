@@ -1,9 +1,9 @@
 <?php
 namespace Barn2\Plugin\EDD_VAT;
 
-use Barn2\VAT_Lib\Registerable,
+use Barn2\Plugin\EDD_VAT\Dependencies\Lib\Registerable,
 	Barn2\Plugin\EDD_VAT\Util,
-	Barn2\VAT_Lib\Util as Lib_Util;
+	Barn2\Plugin\EDD_VAT\Dependencies\Lib\Util as Lib_Util;
 
 /**
  * Loads the scripts and styles needed on the front-end.
@@ -43,12 +43,12 @@ class Frontend_Scripts implements Registerable {
 	public function register_scripts() {
 		$min = Lib_Util::get_script_suffix();
 
-		wp_register_style( 'edd-eu-vat', $this->plugin_url . "assets/css/edd-eu-vat.min.css", [], $this->version );
-		wp_register_style( 'edd-eu-vat-receipt', $this->plugin_url . "assets/css/edd-eu-vat-receipt.min.css", [], $this->version );
+		wp_register_style( 'edd-eu-vat', $this->plugin_url . "assets/css/edd-eu-vat.css", [], $this->version );
+		wp_register_style( 'edd-eu-vat-receipt', $this->plugin_url . "assets/css/edd-eu-vat-receipt.css", [], $this->version );
 
-		wp_register_script( 'edd-eu-vat', $this->plugin_url . "assets/js/edd-eu-vat{$min}.js", [ 'jquery' ], $this->version, true );
+		wp_register_script( 'edd-eu-vat', $this->plugin_url . "assets/js/edd-eu-vat-main.js", [ 'jquery' ], $this->version, true );
 
-		wp_register_script( 'edd-eu-vat-debug', $this->plugin_url . "assets/js/edd-eu-vat-debug{$min}.js", [ 'jquery' ], $this->version, true );
+		wp_register_script( 'edd-eu-vat-debug', $this->plugin_url . "assets/js/edd-eu-vat-debug.js", [ 'jquery' ], $this->version, true );
 
 		$countries = Util::get_eu_countries();
 

@@ -19,6 +19,14 @@
         {
             "type": "vcs",
             "url": "git@bitbucket.org:barn2plugins/setup-wizard.git"
+        },
+        {
+            "type": "vcs",
+            "url": "git@bitbucket.org:barn2plugins/barn2-lib.git"
+        },
+        {
+            "type": "vcs",
+            "url": "git@bitbucket.org:barn2plugins/php-scoper-excludes.git"
         }
     ],
     "require-dev": {
@@ -28,7 +36,11 @@
 		"chevere/var-dump": "^0.6.0",
 		"chevere/xr": "^0.6.0",
 		"chevere/xr-server": "^0.6.2",
-        "symfony/var-dumper": "^5.4"
+        "symfony/var-dumper": "^5.4",
+        "barn2/barn2-lib": "^1.1",
+        "barn2/php-scoper-excludes": "^0.1.0",
+        "dealerdirect/phpcodesniffer-composer-installer": "^0.7.2",
+        "pronamic/wp-documentor": "^1.3"
     },
     "scripts": {
 		"no-dev": "composer update --prefer-dist --no-dev",
@@ -41,12 +53,10 @@
     },
     "autoload": {
         "psr-4": {
-            "Barn2\\Plugin\\EDD_VAT\\": "src",
-            "Barn2\\VAT_Lib\\": "lib",
-            "WPTRT\\AdminNotices\\": "lib/vendor/admin-notices/src"
+            "Barn2\\Plugin\\EDD_VAT\\": "src"
         },
         "classmap": [
-            "dependencies/src"
+            "dependencies"
         ]
     },
     "config": {

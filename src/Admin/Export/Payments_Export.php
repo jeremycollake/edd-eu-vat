@@ -2,8 +2,8 @@
 
 namespace Barn2\Plugin\EDD_VAT\Admin\Export;
 
-use Barn2\VAT_Lib\Registerable,
-	Barn2\VAT_Lib\Service;
+use Barn2\Plugin\EDD_VAT\Dependencies\Lib\Registerable,
+	Barn2\Plugin\EDD_VAT\Dependencies\Lib\Service;
 
 /**
  * Handles the VAT info on the CSV payments export.

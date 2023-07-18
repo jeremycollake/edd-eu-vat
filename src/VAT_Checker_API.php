@@ -210,7 +210,7 @@ class VAT_Checker_API {
 	 * @return string
 	 */
 	private static function get_requester_country_code() {
-		return edd_get_option( 'edd_vat_address_country', '' );
+		return Util::get_country_for_api();
 	}
 
 	/**

@@ -2,8 +2,8 @@
 
 namespace Barn2\Plugin\EDD_VAT\Admin;
 
-use Barn2\VAT_Lib\Registerable,
-	Barn2\VAT_Lib\Service,
+use Barn2\Plugin\EDD_VAT\Dependencies\Lib\Registerable,
+	Barn2\Plugin\EDD_VAT\Dependencies\Lib\Service,
 	Barn2\Plugin\EDD_VAT\Util;
 
 /**
@@ -152,7 +152,7 @@ class Email_Tags implements Registerable, Service {
 			'line_2'  => edd_get_option( 'edd_vat_address_line_2' ),
 			'city'    => edd_get_option( 'edd_vat_address_city' ),
 			'zip'     => edd_get_option( 'edd_vat_address_code' ),
-			'country' => edd_get_option( 'edd_vat_address_country' ),
+			'country' => Util::get_country_for_address(),
 		];
 
 		$output = Util::format_edd_address( $address );

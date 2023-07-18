@@ -1,8 +1,8 @@
 <?php
 namespace Barn2\Plugin\EDD_VAT;
 
-use Barn2\VAT_Lib\Registerable,
-	Barn2\VAT_Lib\Service,
+use Barn2\Plugin\EDD_VAT\Dependencies\Lib\Registerable,
+	Barn2\Plugin\EDD_VAT\Dependencies\Lib\Service,
 	Barn2\Plugin\EDD_VAT\Util;
 
 /**
@@ -202,10 +202,21 @@ class Checkout_Handler implements Registerable, Service {
 		if ( $this->cart_vat->is_reverse_charged() ) {
 			$rate = apply_filters( 'edd_vat_reverse_charge_vat_rate', 0.00, $country, $state );
 		} elseif ( apply_filters( 'edd_vat_apply_eu_vat_automatically', true ) ) {
-			$edd_tax_rates = edd_get_tax_rates();
+			$edd_tax_rates = edd_get_tax_rates(
+				[
+					'number' => 9999
+				]
+			);
 
 			if ( ! is_array( $edd_tax_rates ) ) {
 				$edd_tax_rates = [];
+			}
+
+			// check if Easy Digital Downloads is version 3.0.0 or higher and check for the "status" key.
+			if ( version_compare( EDD_VERSION, '3.0.0', '>=' ) ) {
+				$edd_tax_rates = array_filter( $edd_tax_rates, function( $sub_array ) {
+					return isset( $sub_array['status'] ) && 'active' === $sub_array['status'];
+				} );
 			}
 
 			// Pluck all tax rates from EDD settings, keyed by country code.

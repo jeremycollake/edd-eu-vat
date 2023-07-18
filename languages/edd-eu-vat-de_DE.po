@@ -1,0 +1,757 @@
+# Copyright (C) 2021 Barn2 Plugins
+# This file is distributed under the GNU General Public License v3.0.
+msgid ""
+msgstr ""
+"Project-Id-Version: Easy Digital Downloads - EU VAT 1.4.2\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/easy-digital-"
+"downloads-eu-vat\n"
+"POT-Creation-Date: 2022-03-07 09:13+0000\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2023-06-29 08:23+0000\n"
+"Last-Translator: \n"
+"Language-Team: Deutsch\n"
+"X-Generator: Loco https://localise.biz/\n"
+"Language: de_DE\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Loco-Version: 2.6.4; wp-6.2.2"
+
+#: src/Admin/Wizard/Steps/Base_Country.php:23
+msgid ""
+" Choose whether to allow customers from your home country to reverse charge "
+"the VAT."
+msgstr ""
+
+#: src/Admin/Wizard/Steps/Company_Information.php:23
+msgid ""
+" Enter your company details which will be displayed on the order details "
+"page and purchase receipt email."
+msgstr ""
+
+#. support for RTL. 1: license limit error message, 2: a read more link
+#. support for RTL. 1: expired license error message, 2: a renewal link
+#: lib/Plugin/License/Plugin_License.php:348
+#: lib/Plugin/License/Plugin_License.php:369
+msgid "%1$s %2$s"
+msgstr ""
+
+#. 1: plugin name, 2: settings link open, 3: settings link close.
+#: lib/Plugin/License/Admin/License_Notices.php:145
+msgid ""
+"%1$s - your site has moved to a new domain. Please %2$sreactivate your "
+"license key%3$s."
+msgstr ""
+
+#. %1$s: HTML <strong> %2$s: HTML </strong> %3$s: HTML <a href> - tax settings page  %4$s: HTML </a>
+#: src/Admin/Admin_Controller.php:64
+msgid ""
+"%1$sEasy Digital Downloads%2$s - Please %3$senable taxes%4$s in order to use "
+"the EU VAT extension."
+msgstr ""
+
+#: dependencies/src/Setup_Wizard.php:442
+msgid "%s setup wizard"
+msgstr ""
+
+#: lib/Plugin/License/Plugin_License.php:341
+msgid "%s site active"
+msgid_plural "%s sites active"
+msgstr[0] ""
+msgstr[1] ""
+
+#. %s is the formatted tax amount
+#: src/Checkout_Handler.php:196
+msgid "[VAT reverse charged] %s"
+msgstr ""
+
+#: lib/Plugin/License/Admin/License_Key_Setting.php:175
+msgid "Activate"
+msgstr ""
+
+#: lib/Plugin/Admin/Plugin_Updater.php:121
+msgid "Activate %1$syour license key%2$s to enable updates."
+msgstr ""
+
+#: views/invoices/invoice-additional-info.php:34
+msgid "Additional Information:"
+msgstr "Zusätzliche Informationen:"
+
+#: src/Admin/Settings.php:180 src/Admin/Wizard/Steps/Company_Information.php:53
+msgid "Address Line 1"
+msgstr ""
+
+#: src/Admin/Settings.php:186 src/Admin/Wizard/Steps/Company_Information.php:59
+msgid "Address Line 2"
+msgstr ""
+
+#. %s is the registered company address
+#. %s: Company Address
+#: src/Purchase_Receipt.php:144 src/Integrations/EDD_PDF_Invoices.php:87
+#: src/Integrations/EDD_Invoices.php:228
+msgid "Address: %s"
+msgstr ""
+
+#. Description of the plugin
+msgid "Adds EU VAT support to Easy Digital Downloads."
+msgstr ""
+
+#. %s: EDD Base Country
+#: src/Admin/Wizard/Steps/Base_Country.php:46
+msgid ""
+"Allow the VAT reverse charge for customers based in your home country%s."
+msgstr ""
+
+#: lib/Plugin/License/EDD_Licensing.php:184
+msgid "An error has occurred, please try again."
+msgstr ""
+
+#. Author of the plugin
+msgid "Barn2 Plugins"
+msgstr ""
+
+#: src/Admin/Wizard/Steps/Base_Country.php:22
+#: src/Admin/Wizard/Steps/Base_Country.php:24
+msgid "Base Country"
+msgstr ""
+
+#: src/Purchase_Receipt.php:154
+msgid "Billed To"
+msgstr ""
+
+#: views/payment-postbox-vat.php:83
+msgid "Billing country:"
+msgstr ""
+
+#: views/checkout-vat-field.php:34
+#: lib/Plugin/License/Admin/License_Key_Setting.php:174
+msgid "Check"
+msgstr "Überprüfen"
+
+#: src/Admin/Settings.php:145
+msgid ""
+"Check this box if you would like your website address to be shown on the "
+"invoice."
+msgstr ""
+
+#: views/export-vat-payments.php:43 views/export-vat-ec-sales-payments.php:43
+msgid "Choose end date"
+msgstr ""
+
+#: views/export-vat-payments.php:31 views/export-vat-ec-sales-payments.php:31
+msgid "Choose start date"
+msgstr ""
+
+#: src/Admin/Settings.php:192 src/Admin/Wizard/Steps/Company_Information.php:74
+msgid "City / State"
+msgstr ""
+
+#: views/payment-postbox-vat.php:77
+msgid "Company address:"
+msgstr ""
+
+#: src/Admin/Settings.php:162
+msgid "Company Email"
+msgstr ""
+
+#: src/Admin/Settings.php:150 src/Admin/Wizard/Steps/Company_Information.php:22
+#: src/Admin/Wizard/Steps/Company_Information.php:24
+msgid "Company Information"
+msgstr ""
+
+#: src/Admin/Settings.php:156 src/Admin/Wizard/Steps/Company_Information.php:35
+msgid "Company Name"
+msgstr ""
+
+#: views/payment-postbox-vat.php:73
+msgid "Company name:"
+msgstr ""
+
+#. %s is the registered company name
+#. %s: Company Name
+#: src/Purchase_Receipt.php:140 src/Integrations/EDD_PDF_Invoices.php:82
+#: src/Integrations/EDD_Invoices.php:224
+msgid "Company name: %s"
+msgstr ""
+
+#: src/Admin/Wizard/Steps/Completed.php:23
+msgid "Complete Setup"
+msgstr ""
+
+#: src/Admin/Wizard/Steps/Completed.php:24
+msgid ""
+"Congratulations, you have finished setting up the plugin! Your customers "
+"from EU countries will now automatically be charged the correct rate of VAT, "
+"and can reverse charge the VAT on the checkout if they have a valid European "
+"VAT number."
+msgstr ""
+
+#: src/Admin/Settings.php:204 src/Admin/Export/Batch_VAT_Payments_Export.php:41
+#: src/Admin/Wizard/Steps/Company_Information.php:64
+msgid "Country"
+msgstr ""
+
+#: lib/Plugin/License/Admin/License_Key_Setting.php:176
+msgid "Deactivate"
+msgstr ""
+
+#: lib/Plugin/Admin/Admin_Links.php:73
+msgid "Docs"
+msgstr ""
+
+#: src/Admin/Settings.php:256
+msgid "Documentation"
+msgstr ""
+
+#: views/export-vat-ec-sales-payments.php:20
+msgid ""
+"Download a CSV of all European Sales to VAT-registered customers, which you "
+"can use for your EC Sales List tax return."
+msgstr ""
+
+#: views/export-vat-payments.php:20
+msgid ""
+"Download a CSV of all European VAT collected, which you can use for your EU "
+"VAT/MOSS tax return."
+msgstr ""
+
+#: views/checkout-vat-field.php:31
+msgid "e.g. DE123456789"
+msgstr "z.B. AT123456789"
+
+#. Name of the plugin
+msgid "Easy Digital Downloads - EU VAT"
+msgstr ""
+
+#: src/Plugin.php:179
+msgid ""
+"Easy Digital Downloads EU VAT requires the PHP Soap extension to be "
+"installed in order to validate EU VAT numbers."
+msgstr ""
+
+#. %1$s: URL to All Access Pass page %2$s: URL to the KB about the upgrading process
+#: src/Admin/Wizard/Steps/Upsell.php:27
+msgid ""
+"Enhance your store with these fantastic plugins from Barn2, or get them all "
+"by upgrading to an <a href=\"%1$s\" target=\"_blank\">All Access Pass<a/>! "
+"<a href=\"%2$s\" target=\"_blank\">(learn how here)</a>"
+msgstr ""
+
+#: src/Admin/Settings.php:181 src/Admin/Wizard/Steps/Company_Information.php:54
+msgid "Enter line 1 of your company's registered VAT address."
+msgstr ""
+
+#: src/Admin/Settings.php:187 src/Admin/Wizard/Steps/Company_Information.php:60
+msgid "Enter line 2 of your company's registered VAT address if required."
+msgstr ""
+
+#: src/Admin/Settings.php:193 src/Admin/Wizard/Steps/Company_Information.php:75
+msgid "Enter the city / state of your company's registered VAT address."
+msgstr ""
+
+#: src/Admin/Settings.php:163
+msgid "Enter the email address that will appear on the invoice."
+msgstr ""
+
+#: src/Admin/Settings.php:169 src/Admin/Wizard/Steps/Company_Information.php:42
+msgid "Enter the registered EU VAT number of your company."
+msgstr ""
+
+#: src/Admin/Settings.php:175 src/Admin/Wizard/Steps/Company_Information.php:48
+msgid "Enter the registered UK VAT number of your company."
+msgstr ""
+
+#: views/checkout-vat-field.php:23
+msgid "Enter the VAT number of your company."
+msgstr ""
+"Gib die VAT-Nummer deines Landes ein. Gilt nur für EU-Länder OHNE "
+"Deutschland."
+
+#: src/Admin/Settings.php:199 src/Admin/Wizard/Steps/Company_Information.php:81
+msgid "Enter the zip / postal code of your company's registered VAT address."
+msgstr ""
+
+#: src/Admin/Settings.php:157 src/Admin/Wizard/Steps/Company_Information.php:36
+msgid "Enter your company name."
+msgstr ""
+
+#: dependencies/src/Steps/Welcome.php:33
+msgid "Enter your license key to start using the plugin."
+msgstr ""
+
+#: src/Admin/Export/Batch_VAT_EC_Sales_Payments_Export.php:41
+msgid "EU Country Code"
+msgstr ""
+
+#: src/Admin/Settings.php:108 src/Admin/Settings.php:124
+msgid "EU VAT"
+msgstr ""
+
+#: src/Admin/Settings.php:168 src/Admin/Wizard/Steps/Company_Information.php:41
+msgid "EU VAT Number"
+msgstr ""
+
+#. %s is the VAT number
+#: src/Purchase_Receipt.php:185
+msgid "EU VAT number: %s"
+msgstr ""
+
+#: views/export-vat-ec-sales-payments.php:17
+msgid "Export EC Sales List Report"
+msgstr ""
+
+#: views/export-vat-payments.php:17
+msgid "Export EU VAT Report"
+msgstr ""
+
+#: src/Admin/Wizard/Steps/Upsell.php:32
+msgid "Extra features"
+msgstr ""
+
+#: views/invoices/invoice-contacts.php:24
+msgid "From:"
+msgstr ""
+
+#: views/export-vat-payments.php:51 views/export-vat-ec-sales-payments.php:51
+msgid "Generate CSV"
+msgstr ""
+
+#. Author URI of the plugin
+msgid "https://barn2.com"
+msgstr ""
+
+#. URI of the plugin
+msgid "https://barn2.com/wordpress-plugins/easy-digital-downloads-eu-vat/"
+msgstr ""
+
+#: dependencies/src/Setup_Wizard.php:573
+msgid ""
+"If you need to access the setup wizard again, please click on the button "
+"below."
+msgstr ""
+
+#: src/Admin/Settings.php:139
+msgid ""
+"If your store is based in the EU, check this to reverse charge VAT for "
+"customers with a valid VAT number who are in your home country."
+msgstr ""
+
+#: src/Admin/Settings.php:133
+msgid "Include VAT information on the order details page."
+msgstr ""
+
+#: src/Admin/Export/Batch_VAT_EC_Sales_Payments_Export.php:44
+msgid "Indicator"
+msgstr ""
+
+#. 1: account page link open, 2: account page link close
+#: lib/Plugin/License/Plugin_License.php:319
+msgid ""
+"Invalid license key - please check your order confirmation email or "
+"%1$sAccount%2$s."
+msgstr ""
+
+#: views/payment-postbox-vat.php:85
+msgid "IP address:"
+msgstr ""
+
+#: lib/Plugin/License/Admin/License_Key_Setting.php:148
+msgid "License Key"
+msgstr ""
+
+#: dependencies/src/Steps/Welcome.php:33
+#: lib/Plugin/License/Admin/License_Key_Setting.php:137
+msgid "License key"
+msgstr ""
+
+#: lib/Plugin/License/Admin/License_Key_Setting.php:187
+msgid "License key deactivated."
+msgstr ""
+
+#: lib/Plugin/License/Plugin_License.php:328
+msgid "License key mismatch, please contact support."
+msgstr ""
+
+#: lib/Plugin/License/Admin/License_Key_Setting.php:64
+msgid "License key successfully activated."
+msgstr ""
+
+#: lib/Plugin/License/Admin/License_Key_Setting.php:73
+msgid "License key successfully deactivated."
+msgstr ""
+
+#: views/payment-postbox-vat.php:82
+msgid "Location Evidence"
+msgstr ""
+
+#: src/Admin/Wizard/Steps/Upsell.php:23
+msgid "More"
+msgstr ""
+
+#: lib/Plugin/License/Plugin_License.php:325
+msgid "No URL was supplied for activation, please contact support."
+msgstr ""
+
+#: views/invoices/invoice-additional-info.php:67
+msgid "Notes:"
+msgstr ""
+
+#: src/Admin/Settings.php:132
+msgid "Order Details Page"
+msgstr ""
+
+#: dependencies/src/Steps/Welcome.php:47
+msgid "Please enter a license key."
+msgstr ""
+
+#: src/Checkout_Handler.php:356 src/Frontend_Scripts.php:61
+msgid "Please enter a VAT number."
+msgstr "Bitte gib eine VAT-Nummer an."
+
+#: lib/Plugin/License/Plugin_License.php:113
+msgid "Please enter your license key."
+msgstr ""
+
+#. %1$s: HTML <a href> EDD WordPress.org link %2$s: HTML </a>
+#: src/Plugin.php:159
+msgid ""
+"Please install and activate %1$sEasy Digital Downloads%2$s in order to use "
+"the EU VAT extension."
+msgstr ""
+
+#: src/Checkout_Handler.php:359 src/Frontend_Scripts.php:62
+msgid "Please select a country."
+msgstr ""
+
+#: lib/Util.php:39 lib/Plugin/License/Plugin_License.php:345
+msgid "Read more"
+msgstr ""
+
+#: src/Admin/Wizard/Steps/Completed.php:22
+msgid "Ready"
+msgstr ""
+
+#: views/invoices/invoice-contacts.php:49
+msgid "Registration:"
+msgstr ""
+
+#: lib/Plugin/License/Plugin_License.php:366
+msgid "Renew now for 20% discount."
+msgstr ""
+
+#: src/Admin/Wizard/Steps/Base_Country.php:43
+msgid "Reverse Charge in Base Country?"
+msgstr ""
+
+#: src/Admin/Settings.php:138
+msgid "Reverse Charge in Home Country?"
+msgstr ""
+
+#: src/Admin/Settings.php:209 src/Admin/Wizard/Steps/Company_Information.php:69
+msgid "Select a country"
+msgstr ""
+
+#: src/Admin/Settings.php:205 src/Admin/Wizard/Steps/Company_Information.php:65
+msgid "Select the country of your company's registered VAT address."
+msgstr ""
+
+#: lib/Plugin/Admin/Admin_Links.php:52
+msgid "Settings"
+msgstr ""
+
+#: dependencies/src/Setup_Wizard.php:570 dependencies/src/Setup_Wizard.php:578
+#: dependencies/src/Setup_Wizard.php:613 src/Admin/Settings.php:261
+msgid "Setup wizard"
+msgstr ""
+
+#: src/Admin/Settings.php:144
+msgid "Show website address?"
+msgstr ""
+
+#: lib/Admin/Settings_API_Helper.php:298
+msgid "Size"
+msgstr ""
+
+#: src/Purchase_Receipt.php:197
+msgid "Sold By"
+msgstr ""
+
+#: dependencies/src/Steps/Cross_Selling.php:66
+#: src/Admin/Wizard/Steps/Upsell.php:79
+msgid ""
+"Something went wrong while retrieving the list of products. Please try again "
+"later."
+msgstr ""
+
+#: src/Admin/Export/Batch_VAT_Payments_Export.php:42
+msgid "Standard VAT Rate"
+msgstr ""
+
+#: src/Admin/Wizard/Steps/License_Verification.php:23
+msgid "Start charging EU VAT in no time."
+msgstr ""
+
+#: src/Admin/Settings.php:257
+msgid "Support"
+msgstr ""
+
+#. 1: the plugin name, 2: settings link open, 3: settings link close.
+#: lib/Plugin/License/Admin/License_Notices.php:90
+msgid ""
+"Thank you for installing %1$s. To get started, please %2$senter your license "
+"key%3$s."
+msgstr ""
+
+#: src/Checkout_Handler.php:371
+msgid "The country or VAT number is invalid."
+msgstr ""
+
+#: src/Admin/Email_Tags.php:45
+msgid "The customer's VAT number if provided"
+msgstr ""
+
+#: src/Admin/Settings.php:151
+msgid ""
+"The following information about your company will be displayed on the order "
+"details page and purchase receipt email."
+msgstr ""
+
+#: dependencies/src/Steps/Welcome.php:33 src/Admin/Wizard/Setup_Wizard.php:47
+#: lib/Plugin/License/Admin/License_Key_Setting.php:145
+msgid "The licence key is contained in your order confirmation email."
+msgstr ""
+
+#: lib/Plugin/License/Admin/License_Key_Setting.php:81
+msgid "The license key looks good!"
+msgstr ""
+
+#: src/Admin/Email_Tags.php:60
+msgid "The registered address for your company"
+msgstr ""
+
+#: src/Admin/Email_Tags.php:55
+msgid "The registered VAT number for your company"
+msgstr ""
+
+#: src/Checkout_Handler.php:365
+msgid "The VAT number applies to EU countries only."
+msgstr ""
+
+#: src/Checkout_Handler.php:362
+msgid "The VAT number is invalid."
+msgstr "Die VAT-Nummer ist ungültig."
+
+#: src/Admin/Email_Tags.php:40
+msgid ""
+"The VAT rate and amount charged, falls back to {tax} if not an EU payment"
+msgstr ""
+
+#: lib/Plugin/License/Admin/License_Key_Setting.php:65
+msgid "There was an error activating your license key."
+msgstr ""
+
+#: lib/Plugin/License/Admin/License_Key_Setting.php:74
+msgid "There was an error deactivating your license key, please try again."
+msgstr ""
+
+#: lib/Plugin/License/Admin/License_Key_Setting.php:82
+msgid "There's a problem with your license key."
+msgstr ""
+
+#: lib/Plugin/License/Plugin_License.php:331
+msgid "This license is for a bundled product and cannot be activated."
+msgstr ""
+
+#: views/invoices/invoice-contacts.php:86
+msgid "To:"
+msgstr ""
+
+#: src/Admin/Settings.php:174 src/Admin/Wizard/Steps/Company_Information.php:47
+msgid "UK VAT Number"
+msgstr ""
+
+#. %s is the VAT number
+#: src/Purchase_Receipt.php:190
+msgid "UK VAT number: %s"
+msgstr ""
+
+#. %1$s - opening <span> tag; %2$s - closing </span> tag
+#: views/invoices/invoice-contacts.php:94
+msgid "Update %1$sbilling information%2$s"
+msgstr ""
+
+#: src/Admin/Wizard/Steps/License_Verification.php:24
+msgid ""
+"Use this setup wizard to enable EU VAT in your store. You can change these "
+"options later on the plugin settings page or by relaunching the setup wizard."
+msgstr ""
+
+#: src/Admin/Export/Batch_VAT_Payments_Export.php:43
+msgid "Value of Items (Excluding VAT)"
+msgstr ""
+
+#: src/Admin/Export/Batch_VAT_EC_Sales_Payments_Export.php:43
+msgid "Value of Supplies"
+msgstr ""
+
+#: src/Admin/View_Order.php:54
+#: src/Admin/Export/Batch_VAT_Payments_Export.php:44
+msgid "VAT"
+msgstr ""
+
+#. %s is the VAT tax rate
+#: src/Purchase_Receipt.php:53 src/Integrations/EDD_PDF_Invoices.php:95
+#: src/Integrations/EDD_Invoices.php:192
+#: views/invoices/invoice-additional-info.php:49
+msgid "VAT charged at %s%%"
+msgstr "VAT berechnet mit %s%%"
+
+#: src/Purchase_Receipt.php:160 views/payment-postbox-vat.php:52
+#: src/Integrations/EDD_PDF_Invoices.php:126
+#: src/Integrations/EDD_Invoices.php:234
+msgid "VAT Details"
+msgstr ""
+
+#: views/checkout-vat-field.php:18 src/Admin/Export/Payments_Export.php:33
+msgid "VAT Number"
+msgstr "EU VAT-Nummer"
+
+#: views/payment-postbox-vat.php:63
+msgid "VAT number valid"
+msgstr "VAT-Nummer gültig"
+
+#: src/Checkout_Handler.php:317
+msgid "VAT number valid - reverse charge applied."
+msgstr "VAT-Nummer gültig – Reverse-Charge angewendet."
+
+#: views/payment-postbox-vat.php:57 views/invoices/invoice-contacts.php:60
+#: views/invoices/invoice-contacts.php:125
+msgid "VAT number:"
+msgstr "VAT number:"
+
+#. %s is the VAT number
+#. %s: VAT number
+#: src/Purchase_Receipt.php:136 src/Integrations/EDD_PDF_Invoices.php:77
+#: src/Integrations/EDD_Invoices.php:220
+msgid "VAT number: %s"
+msgstr "VAT number: %s"
+
+#: src/Admin/Export/Batch_VAT_EC_Sales_Payments_Export.php:42
+msgid "VAT Registration Number"
+msgstr ""
+
+#: src/Purchase_Receipt.php:49 views/payment-postbox-vat.php:67
+#: src/Admin/Email_Tags.php:100 src/Integrations/EDD_PDF_Invoices.php:92
+#: src/Integrations/EDD_Invoices.php:186
+#: views/invoices/invoice-additional-info.php:40
+msgid "VAT reverse charged"
+msgstr "VAT nach dem Reverse-Charge-Verfahren"
+
+#. %s: The plugin name
+#: lib/Plugin/Admin/Admin_Links.php:72
+msgid "View %s documentation"
+msgstr ""
+
+#: dependencies/src/Setup_Wizard.php:592 dependencies/src/Setup_Wizard.php:625
+#: src/Admin/Settings.php:88
+msgid ""
+"Warning: This will overwrite your existing settings for %s. Are you sure you "
+"want to continue?"
+msgstr ""
+
+#: src/Checkout_Handler.php:374
+msgid ""
+"We're having trouble checking your VAT number. Please try again or contact "
+"our support team."
+msgstr ""
+"Wir können deine VAT-Nummer gerade nicht überprüfen. Bitte probiere es "
+"später noch einmal oder kontaktiere unseren Support."
+
+#: dependencies/src/Steps/Welcome.php:25
+#: src/Admin/Wizard/Steps/License_Verification.php:22
+msgid "Welcome"
+msgstr ""
+
+#: src/Admin/Wizard/Steps/Base_Country.php:44
+msgid "Yes"
+msgstr ""
+
+#: dependencies/src/Steps/Welcome.php:43
+msgid "You are not allowed to validate your license."
+msgstr ""
+
+#: src/Admin/Wizard/Steps/Base_Country.php:64
+#: src/Admin/Wizard/Steps/Completed.php:34
+#: src/Admin/Wizard/Steps/Company_Information.php:97
+msgid "You are not authorized."
+msgstr ""
+
+#. 1: plugin name, 2: renewal link open, 3: renewal link close.
+#: lib/Plugin/License/Admin/License_Notices.php:124
+msgid ""
+"You no longer have a valid license for %1$s. Please %2$spurchase a new "
+"license key%3$s to continue using the plugin."
+msgstr ""
+
+#: src/Checkout_Handler.php:368
+msgid "Your billing country must match the country for the VAT number."
+msgstr "Das Rechnungsland muss mit dem Land der VAT-Nummer identisch sein."
+
+#: src/Admin/Email_Tags.php:50
+msgid "Your company name"
+msgstr ""
+
+#: lib/Plugin/License/Plugin_License.php:621
+msgid "Your license key expired has expired."
+msgstr ""
+
+#. %s: The license expiry date
+#: lib/Plugin/License/Plugin_License.php:362
+msgid "Your license key expired on %s."
+msgstr ""
+
+#. 1: plugin name, 2: renewal link open, 3: renewal link close.
+#: lib/Plugin/License/Admin/License_Notices.php:107
+msgid ""
+"Your license key for %1$s has expired. %2$sClick here to renew for 20%% "
+"discount%3$s."
+msgstr ""
+
+#: lib/Plugin/License/Plugin_License.php:626
+msgid ""
+"Your license key has been disabled. Please %1$spurchase a new license "
+"key%2$s to continue using the plugin."
+msgstr ""
+
+#: lib/Plugin/License/Plugin_License.php:344
+msgid "Your license key has reached its activation limit (%s)."
+msgstr ""
+
+#: lib/Plugin/License/Plugin_License.php:93
+msgid "Your license key is active."
+msgstr ""
+
+#: lib/Plugin/License/Plugin_License.php:115
+#: lib/Plugin/License/Plugin_License.php:380
+msgid "Your license key is invalid."
+msgstr ""
+
+#: lib/Plugin/License/Plugin_License.php:617
+msgid "Your license key is not active. Please reactivate or save the settings."
+msgstr ""
+
+#: lib/Plugin/License/Plugin_License.php:335
+msgid "Your license key is not valid for this plugin."
+msgstr ""
+
+#. %s: Country name
+#: src/Checkout_Handler.php:320
+msgid "Your VAT number is valid, but we cannot apply the reverse charge in %s."
+msgstr ""
+"Deine VAT-Nummer ist gültig, aber wir können das Reverse-Charge-Verwahren "
+"nicht in %s anwenden."
+
+#: src/Admin/Settings.php:198 src/Admin/Wizard/Steps/Company_Information.php:80
+msgid "Zip / Postal Code"
+msgstr ""
+

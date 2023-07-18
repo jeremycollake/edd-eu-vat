@@ -3,11 +3,11 @@
 namespace Barn2\Plugin\EDD_VAT\Admin;
 
 use Barn2\Plugin\EDD_VAT\Util as EDD_VATUtil;
-use Barn2\VAT_Lib\Registerable,
-	Barn2\VAT_Lib\Service,
-	Barn2\VAT_Lib\Util,
-	Barn2\VAT_Lib\Plugin\Licensed_Plugin,
-	Barn2\VAT_Lib\Plugin\License\Admin\License_Setting;
+use Barn2\Plugin\EDD_VAT\Dependencies\Lib\Registerable,
+	Barn2\Plugin\EDD_VAT\Dependencies\Lib\Service,
+	Barn2\Plugin\EDD_VAT\Dependencies\Lib\Util,
+	Barn2\Plugin\EDD_VAT\Dependencies\Lib\Plugin\Licensed_Plugin,
+	Barn2\Plugin\EDD_VAT\Dependencies\Lib\Plugin\License\Admin\License_Setting;
 
 /**
  * Registrations of the EDD settings page.
@@ -66,7 +66,6 @@ class Settings implements Registerable, Service {
 		?>
 		<style>
 			p.barn2-support-links { font-size: 13px !important; }
-			span.edd-help-tip { margin: 4px 0 0 6px; }
 
 			.barn2-plugins-promo, #wpfooter { display: none }
 			@media only screen and (min-width : 1200px) {
@@ -201,8 +200,21 @@ class Settings implements Registerable, Service {
 					'type' => 'text',
 				],
 				[
-					'id'          => 'edd_vat_address_country',
+					'id'          => 'edd_vat_address_invoice',
 					'name'        => __( 'Country', 'edd-eu-vat' ),
+					'desc'        => __( 'Select the country where your business is based. This will be used on invoices.', 'edd-eu-vat' ),
+					'type'        => 'select',
+					'options'     => EDD_VATUtil::get_country_list( false ),
+					'chosen'      => true,
+					'placeholder' => __( 'Select a country', 'edd-eu-vat' ),
+					'std'         => edd_get_shop_country(),
+					'data'        => [
+						'nonce' => wp_create_nonce( 'edd-country-field-nonce' )
+					],
+				],
+				[
+					'id'          => 'edd_vat_address_country',
+					'name'        => __( 'Country of VAT registration', 'edd-eu-vat' ),
 					'desc'        => __( 'Select the country of your company\'s registered VAT address.', 'edd-eu-vat' ),
 					'type'        => 'select',
 					'options'     => EDD_VATUtil::get_country_list(),

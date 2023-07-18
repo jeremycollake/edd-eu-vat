@@ -2,13 +2,13 @@
 namespace Barn2\Plugin\EDD_VAT;
 
 use Barn2\Plugin\EDD_VAT\Admin\Plugin_Setup,
-	Barn2\VAT_Lib\Registerable,
-	Barn2\VAT_Lib\Translatable,
-	Barn2\VAT_Lib\Service_Provider,
-	Barn2\VAT_Lib\Plugin\Premium_Plugin,
-	Barn2\VAT_Lib\Util as Lib_Util,
-	Barn2\VAT_Lib\Admin\Notices,
-	Barn2\VAT_Lib\Service;
+	Barn2\Plugin\EDD_VAT\Dependencies\Lib\Registerable,
+	Barn2\Plugin\EDD_VAT\Dependencies\Lib\Translatable,
+	Barn2\Plugin\EDD_VAT\Dependencies\Lib\Service_Provider,
+	Barn2\Plugin\EDD_VAT\Dependencies\Lib\Plugin\Premium_Plugin,
+	Barn2\Plugin\EDD_VAT\Dependencies\Lib\Util as Lib_Util,
+	Barn2\Plugin\EDD_VAT\Dependencies\Lib\Admin\Notices,
+	Barn2\Plugin\EDD_VAT\Dependencies\Lib\Service;
 use Barn2\Plugin\EDD_VAT\Admin\Wizard\Setup_Wizard;
 
 /**

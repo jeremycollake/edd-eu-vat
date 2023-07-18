@@ -3,12 +3,12 @@
 namespace Barn2\Plugin\EDD_VAT\Admin;
 
 use Barn2\Plugin\EDD_VAT\Admin\Wizard\Setup_Wizard,
-	Barn2\VAT_Lib\Registerable,
-	Barn2\VAT_Lib\Service,
-	Barn2\VAT_Lib\Util,
-	Barn2\VAT_Lib\Plugin\Licensed_Plugin,
-	Barn2\VAT_Lib\Plugin\Admin\Admin_Links,
-	WPTRT\AdminNotices\Notices;
+	Barn2\Plugin\EDD_VAT\Dependencies\Lib\Registerable,
+	Barn2\Plugin\EDD_VAT\Dependencies\Lib\Service,
+	Barn2\Plugin\EDD_VAT\Dependencies\Lib\Util,
+	Barn2\Plugin\EDD_VAT\Dependencies\Lib\Plugin\Licensed_Plugin,
+	Barn2\Plugin\EDD_VAT\Dependencies\Lib\Plugin\Admin\Admin_Links,
+	Barn2\Plugin\EDD_VAT\Dependencies\WPTRT\AdminNotices\Notices;
 
 /**
  * Main admin class. Responsible for setting up the admin services.

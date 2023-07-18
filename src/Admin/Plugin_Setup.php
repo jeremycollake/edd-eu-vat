@@ -2,10 +2,10 @@
 
 namespace Barn2\Plugin\EDD_VAT\Admin;
 
-use Barn2\Plugin\EDD_VAT\Dependencies\Barn2\Setup_Wizard\Starter;
-use Barn2\VAT_Lib\Plugin\Licensed_Plugin,
-	Barn2\VAT_Lib\Plugin\Plugin_Activation_Listener,
-	Barn2\VAT_Lib\Registerable;
+use Barn2\Plugin\EDD_VAT\Dependencies\Setup_Wizard\Starter;
+use Barn2\Plugin\EDD_VAT\Dependencies\Lib\Plugin\Licensed_Plugin,
+	Barn2\Plugin\EDD_VAT\Dependencies\Lib\Plugin\Plugin_Activation_Listener,
+	Barn2\Plugin\EDD_VAT\Dependencies\Lib\Registerable;
 
 /**
  * Plugin Setup

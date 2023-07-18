@@ -2,8 +2,9 @@
 
 namespace Barn2\Plugin\EDD_VAT\Admin\Wizard\Steps;
 
-use Barn2\Plugin\EDD_VAT\Dependencies\Barn2\Setup_Wizard\Api;
-use Barn2\Plugin\EDD_VAT\Dependencies\Barn2\Setup_Wizard\Step;
+use Barn2\Plugin\EDD_VAT\Dependencies\Setup_Wizard\Api;
+use Barn2\Plugin\EDD_VAT\Dependencies\Setup_Wizard\Step;
+use Barn2\Plugin\EDD_VAT\Util;
 
 /**
  * General Step.
@@ -32,7 +33,7 @@ class Base_Country extends Step {
 
 		$base_country_reverse_charge_setting = '';
 
-		$base_country_code = edd_get_option( 'edd_vat_address_country', edd_get_shop_country() );
+		$base_country_code = Util::get_country_for_api( edd_get_shop_country() );
 
 		if ( $base_country_code ) {
 			$base_country                        = edd_get_country_name( $base_country_code );
