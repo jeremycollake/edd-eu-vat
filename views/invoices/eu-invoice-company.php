@@ -13,6 +13,7 @@
 use Barn2\Plugin\EDD_VAT\Util;
 
 $company = Util::get_company_vat();
+$vat_numbers = Util::get_company_vat_numbers();
 
 ?>
 
@@ -48,11 +49,11 @@ $company = Util::get_company_vat();
 		}
 
 		// Vendor Tax/VAT #
-		if ( $company->vat_number ) {
+		if ( $vat_numbers ) {
 			?>
 			<!-- Vendor Tax/VAT # -->
 			<div class="storefront__vat">
-				<span class="invoice-label"><?php esc_html_e( 'Tax/VAT:', 'edd-eu-vat' ); ?></span> <?php echo esc_html( $company->vat_number ); ?>
+				<span class="invoice-label"><?php esc_html_e( 'Tax/VAT:', 'edd-eu-vat' ); ?></span> <?php echo esc_html( $vat_numbers ); ?>
 			</div>
 			<?php
 		}

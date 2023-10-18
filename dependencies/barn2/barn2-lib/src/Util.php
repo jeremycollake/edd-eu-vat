@@ -396,4 +396,20 @@ class Util
             return \is_scalar($var) ? \sanitize_text_field($var) : $var;
         }
     }
+    /**
+     * Declare compatibility with the High-Performance Order Storage 
+     * feature in WooCommerce.
+     * 
+     * @param string $plugin_entry_file The main plugin file.
+     * @param bool $compatible Whether the plugin is compatible with HPOS.
+     * @return void
+     */
+    public static function declare_hpos_compatibility($plugin_entry_file, $compatible = \true)
+    {
+        \add_action('before_woocommerce_init', function () use($plugin_entry_file, $compatible) {
+            if (\class_exists(\Automattic\WooCommerce\Utilities\FeaturesUtil::class)) {
+                \Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility('custom_order_tables', $plugin_entry_file, $compatible);
+            }
+        });
+    }
 }

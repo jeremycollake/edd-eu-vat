@@ -64,7 +64,9 @@ class Frontend_Scripts implements Registerable {
 				'vat_number_missing' => __( 'Please enter a VAT number.', 'edd-eu-vat' ),
 				'country_missing'    => __( 'Please select a country.', 'edd-eu-vat' ),
 				'ajax_error' => __('There was an error trying to validate your VAT number, please try reloading the page or try again later.', 'edd-eu-vat'),
-			]
+			],
+			'checkout_updated_cart_selector' => apply_filters( 'edd_vat_checkout_updated_cart_selector', '#edd_checkout_cart_form' ), // '#edd_checkout_cart_form
+			'checkout_form_selector' => apply_filters( 'edd_vat_checkout_form_selector', '#edd_checkout_cart_form' ),
 		];
 
 		wp_localize_script( 'edd-eu-vat', 'edd_eu_vat_params', apply_filters( 'edd_vat_script_params', $script_params ) );

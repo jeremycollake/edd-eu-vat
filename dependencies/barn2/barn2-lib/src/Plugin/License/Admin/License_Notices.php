@@ -87,7 +87,7 @@ class License_Notices implements Registerable
         // phpcs:disable WordPress.Security.EscapeOutput
         \printf(
             /* translators: 1: the plugin name, 2: settings link start, 3: settings link end. */
-            __('Thank you for installing %1$s. To get started, please %2$senter your license key%3$s.', 'edd-eu-vat'),
+            __('Thank you for installing %1$s. To get started, please %2$s enter your license key%3$s.', 'edd-eu-vat'),
             $plugin_name,
             Util::format_link_open($this->plugin->get_license_page_url()),
             '</a>'

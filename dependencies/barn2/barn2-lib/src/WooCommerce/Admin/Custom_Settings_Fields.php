@@ -17,7 +17,7 @@ use WC_Admin_Settings;
  */
 class Custom_Settings_Fields implements Registerable
 {
-    const ALL_FIELDS = ['hidden', 'color_picker', 'color_size', 'help_note', 'multi_text', 'settings_start', 'settings_end', 'checkbox_tooltip', 'image_size'];
+    const ALL_FIELDS = ['hidden', 'color_picker', 'color_size', 'help_note', 'multi_text', 'settings_start', 'settings_end', 'checkbox_tooltip', 'image_size', 'radio_input'];
     /**
      * The plugin object.
      *
@@ -479,6 +479,83 @@ class Custom_Settings_Fields implements Registerable
         echo $suffix_html;
         echo $description['description'];
         ?>
+			</td>
+		</tr>
+		<?php 
+    }
+    /**
+     * Radio input field.
+     *
+     * @param array $value Field parameters.
+     * @return void
+     */
+    public function radio_input_field($value)
+    {
+        $option_value = $value['value'];
+        $custom_attributes = Settings_Util::get_custom_attributes($value);
+        // atts are escaped
+        $description = WC_Admin_Settings::get_field_description($value);
+        ?>
+		<tr valign="top">
+			<th scope="row" class="titledesc">
+				<label for="<?php 
+        echo \esc_attr($value['id']);
+        ?>"><?php 
+        echo \esc_html($value['title']);
+        ?></label>
+				<?php 
+        echo $description['tooltip_html'];
+        ?>
+			</th>
+			<td class="forminp forminp-radio">
+				<fieldset>
+					<?php 
+        if (!empty($value['title'])) {
+            ?>
+						<legend class="screen-reader-text"><span><?php 
+            echo \esc_html($value['title']);
+            ?></span></legend>
+					<?php 
+        }
+        ?>
+					<?php 
+        foreach ($value['options'] as $key => $val) {
+            ?>
+						<label for="<?php 
+            echo \esc_attr($value['id'] . '_' . $key);
+            ?>">
+							<input
+									name="<?php 
+            echo \esc_attr($value['id']);
+            ?>"
+									id="<?php 
+            echo \esc_attr($value['id'] . '_' . $key);
+            ?>"
+									type="radio"
+									class="<?php 
+            echo \esc_attr(isset($value['class']) ? $value['class'] : '');
+            ?>"
+									value="<?php 
+            echo \esc_attr($key);
+            ?>"
+								<?php 
+            \checked($option_value, $key);
+            ?>
+								<?php 
+            echo $custom_attributes;
+            ?>
+							/> <?php 
+            echo $val;
+            ?>
+						</label><br/>
+					<?php 
+        }
+        ?>
+					<?php 
+        echo $description['description'];
+        // escaped
+        ?>
+				</fieldset>
 			</td>
 		</tr>
 		<?php 

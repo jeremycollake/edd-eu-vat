@@ -131,14 +131,7 @@ class Email_Tags implements Registerable, Service {
 	 * @return string
 	 */
 	public function get_company_vat_number() {
-		$vat_numbers = array_filter(
-			[
-				edd_get_option( 'edd_vat_number' ),
-				edd_get_option( 'edd_uk_vat_number' )
-			]
-		);
-
-		return implode( ' / ', $vat_numbers );
+		return Util::get_company_vat_numbers();
 	}
 
 	/**

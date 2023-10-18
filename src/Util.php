@@ -117,7 +117,7 @@ class Util {
 		 * @link https://europa.eu/youreurope/business/taxation/vat/cross-border-vat/index_en.htm#withintheeusellgoodsanotherbusiness
 		 */
 		if ( ! $reverse_charge_in_base_country ) {
-			$base_country = Util::get_country_for_api( edd_get_shop_country() );
+			$base_country = self::get_country_for_api( edd_get_shop_country() );
 
 			/**
 			 * If the base country is set to EU, use the EDD shop country instead.
@@ -207,6 +207,22 @@ class Util {
 	}
 
 	/**
+	 * Get the company VAT number(s) for output.
+	 *
+	 * @return string
+	 */
+	public static function get_company_vat_numbers() {
+		$vat_numbers = array_filter(
+			[
+				edd_get_option( 'edd_vat_number' ),
+				edd_get_option( 'edd_uk_vat_number' )
+			]
+		);
+
+		return implode( ' / ', $vat_numbers );
+	}
+
+	/**
 	 * Formats and EDD address array for output
 	 *
 	 * @param array $address
@@ -219,7 +235,7 @@ class Util {
 			'city'    => '',
 			'state'   => '',
 			'zip'     => '',
-			'country' => ''
+			'country' => '',
 		];
 
 		$address = wp_parse_args( $address, $defaults );
@@ -282,39 +298,38 @@ class Util {
 	 */
 	public static function get_eu_countries_list() {
 
-		$eu_countries = array(
-			"AT" => __( "Austria", 'edd-eu-vat' ),
-			"BE" => __( "Belgium", 'edd-eu-vat' ),
-			"BG" => __( "Bulgaria", 'edd-eu-vat' ),
-			"HR" => __( "Croatia", 'edd-eu-vat' ),
-			"CY" => __( "Cyprus", 'edd-eu-vat' ),
-			"CZ" => __( "Czech Republic", 'edd-eu-vat' ),
-			"DK" => __( "Denmark", 'edd-eu-vat' ),
-			"EE" => __( "Estonia", 'edd-eu-vat' ),
-			"FI" => __( "Finland", 'edd-eu-vat' ),
-			"FR" => __( "France", 'edd-eu-vat' ),
-			"DE" => __( "Germany", 'edd-eu-vat' ),
-			"GR" => __( "Greece", 'edd-eu-vat' ),
-			"HU" => __( "Hungary", 'edd-eu-vat' ),
-			"IE" => __( "Ireland", 'edd-eu-vat' ),
-			"IT" => __( "Italy", 'edd-eu-vat' ),
-			"LV" => __( "Latvia", 'edd-eu-vat' ),
-			"LT" => __( "Lithuania", 'edd-eu-vat' ),
-			"LU" => __( "Luxembourg", 'edd-eu-vat' ),
-			"MT" => __( "Malta", 'edd-eu-vat' ),
-			"NL" => __( "Netherlands", 'edd-eu-vat' ),
-			"PL" => __( "Poland", 'edd-eu-vat' ),
-			"PT" => __( "Portugal", 'edd-eu-vat' ),
-			"RO" => __( "Romania", 'edd-eu-vat' ),
-			"SK" => __( "Slovakia", 'edd-eu-vat' ),
-			"SI" => __( "Slovenia", 'edd-eu-vat' ),
-			"ES" => __( "Spain", 'edd-eu-vat' ),
-			"SE" => __( "Sweden", 'edd-eu-vat' ),
-			"GB" => __( 'United Kingdom', 'edd-eu-vat' ),
-		);
+		$eu_countries = [
+			'AT' => __( 'Austria', 'edd-eu-vat' ),
+			'BE' => __( 'Belgium', 'edd-eu-vat' ),
+			'BG' => __( 'Bulgaria', 'edd-eu-vat' ),
+			'HR' => __( 'Croatia', 'edd-eu-vat' ),
+			'CY' => __( 'Cyprus', 'edd-eu-vat' ),
+			'CZ' => __( 'Czech Republic', 'edd-eu-vat' ),
+			'DK' => __( 'Denmark', 'edd-eu-vat' ),
+			'EE' => __( 'Estonia', 'edd-eu-vat' ),
+			'FI' => __( 'Finland', 'edd-eu-vat' ),
+			'FR' => __( 'France', 'edd-eu-vat' ),
+			'DE' => __( 'Germany', 'edd-eu-vat' ),
+			'GR' => __( 'Greece', 'edd-eu-vat' ),
+			'HU' => __( 'Hungary', 'edd-eu-vat' ),
+			'IE' => __( 'Ireland', 'edd-eu-vat' ),
+			'IT' => __( 'Italy', 'edd-eu-vat' ),
+			'LV' => __( 'Latvia', 'edd-eu-vat' ),
+			'LT' => __( 'Lithuania', 'edd-eu-vat' ),
+			'LU' => __( 'Luxembourg', 'edd-eu-vat' ),
+			'MT' => __( 'Malta', 'edd-eu-vat' ),
+			'NL' => __( 'Netherlands', 'edd-eu-vat' ),
+			'PL' => __( 'Poland', 'edd-eu-vat' ),
+			'PT' => __( 'Portugal', 'edd-eu-vat' ),
+			'RO' => __( 'Romania', 'edd-eu-vat' ),
+			'SK' => __( 'Slovakia', 'edd-eu-vat' ),
+			'SI' => __( 'Slovenia', 'edd-eu-vat' ),
+			'ES' => __( 'Spain', 'edd-eu-vat' ),
+			'SE' => __( 'Sweden', 'edd-eu-vat' ),
+			'GB' => __( 'United Kingdom', 'edd-eu-vat' ),
+		];
 
 		return $eu_countries;
-
 	}
 
 	/**
@@ -333,22 +348,21 @@ class Util {
 		$countries = self::array_insert_after( 'IE', $countries, 'XI', __( 'Northern Ireland', 'edd-eu-vat' ) );
 
 		return $countries;
-
 	}
 
 	/**
-     * Sanitize anything.
-     *
-     * @param mixed $var the thing to sanitize.
-     * @return mixed
-     */
-    public static function clean( $var ){
-        if (\is_array($var)) {
-            return \array_map('self::clean', $var);
-        } else {
-            return \is_scalar($var) ? sanitize_text_field($var) : $var;
-        }
-    }
+	 * Sanitize anything.
+	 *
+	 * @param mixed $var the thing to sanitize.
+	 * @return mixed
+	 */
+	public static function clean( $var ) {
+		if ( \is_array( $var ) ) {
+			return \array_map( 'self::clean', $var );
+		} else {
+			return \is_scalar( $var ) ? sanitize_text_field( $var ) : $var;
+		}
+	}
 
 	/**
 	 * Return the country to use for the API.
@@ -367,5 +381,4 @@ class Util {
 	public static function get_country_for_address() {
 		return edd_get_option( 'edd_vat_address_invoice', '' );
 	}
-
 }

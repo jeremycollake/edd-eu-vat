@@ -229,9 +229,9 @@ class Simple_Plugin implements Plugin
      */
     public function register_script($handle, $relative_path = '', $deps = [], $version = null, $in_footer = \true)
     {
-        $registered = \wp_register_script($handle, $this->get_dir_url() . $relative_path, $deps, $version ?? $this->get_version(), $in_footer);
+        $registered = \wp_register_script($handle, $this->get_dir_url($relative_path), $deps, $version ?? $this->get_version(), $in_footer);
         if ($registered && \in_array('wp-i18n', $deps, \true)) {
-            \wp_set_script_translations($handle, $this->get_textdomain(), $this->get_dir_path() . 'languages');
+            \wp_set_script_translations($handle, $this->get_textdomain(), $this->get_dir_path('languages'));
         }
         return $registered;
     }

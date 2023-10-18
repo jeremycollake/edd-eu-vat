@@ -2,14 +2,14 @@
 # This file is distributed under the GNU General Public License v3.0.
 msgid ""
 msgstr ""
-"Project-Id-Version: Easy Digital Downloads - EU VAT 1.5.17\n"
+"Project-Id-Version: Easy Digital Downloads - EU VAT 1.5.21\n"
 "Report-Msgid-Bugs-To: https://barn2.com/support-center/\n"
 "Last-Translator: Barn2 Plugins <support@barn2.com>\n"
 "Language-Team: Barn2 Plugins <support@barn2.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2023-07-11T00:00:00+00:00\n"
+"POT-Creation-Date: 2023-08-22T00:00:00+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.7.1\n"
 "X-Domain: edd-eu-vat\n"
@@ -127,7 +127,7 @@ msgstr ""
 
 #. translators: 1: the plugin name, 2: settings link start, 3: settings link end.
 #: dependencies/barn2/barn2-lib/src/Plugin/License/Admin/License_Notices.php:90
-msgid "Thank you for installing %1$s. To get started, please %2$senter your license key%3$s."
+msgid "Thank you for installing %1$s. To get started, please %2$s enter your license key%3$s."
 msgstr ""
 
 #. translators: 1: the plugin name, 2: renewal link start, 3: renewal link end.
@@ -241,15 +241,15 @@ msgstr ""
 msgid "Save changes"
 msgstr ""
 
-#: dependencies/barn2/setup-wizard/src/Api.php:152
+#: dependencies/barn2/setup-wizard/src/Api.php:151
 msgid "Could not find the appropriate step."
 msgstr ""
 
-#: dependencies/barn2/setup-wizard/src/Api.php:192
+#: dependencies/barn2/setup-wizard/src/Api.php:195
 msgid "Please enter a license key."
 msgstr ""
 
-#: dependencies/barn2/setup-wizard/src/Api.php:195
+#: dependencies/barn2/setup-wizard/src/Api.php:198
 msgid "Invalid action requested."
 msgstr ""
 
@@ -696,123 +696,123 @@ msgstr ""
 msgid "Sold By"
 msgstr ""
 
-#: src/Util.php:286
+#: src/Util.php:302
 msgid "Austria"
 msgstr ""
 
-#: src/Util.php:287
+#: src/Util.php:303
 msgid "Belgium"
 msgstr ""
 
-#: src/Util.php:288
+#: src/Util.php:304
 msgid "Bulgaria"
 msgstr ""
 
-#: src/Util.php:289
+#: src/Util.php:305
 msgid "Croatia"
 msgstr ""
 
-#: src/Util.php:290
+#: src/Util.php:306
 msgid "Cyprus"
 msgstr ""
 
-#: src/Util.php:291
+#: src/Util.php:307
 msgid "Czech Republic"
 msgstr ""
 
-#: src/Util.php:292
+#: src/Util.php:308
 msgid "Denmark"
 msgstr ""
 
-#: src/Util.php:293
+#: src/Util.php:309
 msgid "Estonia"
 msgstr ""
 
-#: src/Util.php:294
+#: src/Util.php:310
 msgid "Finland"
 msgstr ""
 
-#: src/Util.php:295
+#: src/Util.php:311
 msgid "France"
 msgstr ""
 
-#: src/Util.php:296
+#: src/Util.php:312
 msgid "Germany"
 msgstr ""
 
-#: src/Util.php:297
+#: src/Util.php:313
 msgid "Greece"
 msgstr ""
 
-#: src/Util.php:298
+#: src/Util.php:314
 msgid "Hungary"
 msgstr ""
 
-#: src/Util.php:299
+#: src/Util.php:315
 msgid "Ireland"
 msgstr ""
 
-#: src/Util.php:300
+#: src/Util.php:316
 msgid "Italy"
 msgstr ""
 
-#: src/Util.php:301
+#: src/Util.php:317
 msgid "Latvia"
 msgstr ""
 
-#: src/Util.php:302
+#: src/Util.php:318
 msgid "Lithuania"
 msgstr ""
 
-#: src/Util.php:303
+#: src/Util.php:319
 msgid "Luxembourg"
 msgstr ""
 
-#: src/Util.php:304
+#: src/Util.php:320
 msgid "Malta"
 msgstr ""
 
-#: src/Util.php:305
+#: src/Util.php:321
 msgid "Netherlands"
 msgstr ""
 
-#: src/Util.php:306
+#: src/Util.php:322
 msgid "Poland"
 msgstr ""
 
-#: src/Util.php:307
+#: src/Util.php:323
 msgid "Portugal"
 msgstr ""
 
-#: src/Util.php:308
+#: src/Util.php:324
 msgid "Romania"
 msgstr ""
 
-#: src/Util.php:309
+#: src/Util.php:325
 msgid "Slovakia"
 msgstr ""
 
-#: src/Util.php:310
+#: src/Util.php:326
 msgid "Slovenia"
 msgstr ""
 
-#: src/Util.php:311
+#: src/Util.php:327
 msgid "Spain"
 msgstr ""
 
-#: src/Util.php:312
+#: src/Util.php:328
 msgid "Sweden"
 msgstr ""
 
-#: src/Util.php:313
+#: src/Util.php:329
 msgid "United Kingdom"
 msgstr ""
 
-#: src/Util.php:330
+#: src/Util.php:345
 msgid "EU MOSS Number"
 msgstr ""
 
-#: src/Util.php:333
+#: src/Util.php:348
 msgid "Northern Ireland"
 msgstr ""
 
@@ -861,15 +861,15 @@ msgstr ""
 msgid "Download a CSV of all European VAT collected, which you can use for your EU VAT/MOSS tax return."
 msgstr ""
 
-#: views/invoices/eu-invoice-company.php:21
+#: views/invoices/eu-invoice-company.php:22
 msgid "Invoice From:"
 msgstr ""
 
-#: views/invoices/eu-invoice-company.php:45
+#: views/invoices/eu-invoice-company.php:46
 msgid "Registration:"
 msgstr ""
 
-#: views/invoices/eu-invoice-company.php:55
+#: views/invoices/eu-invoice-company.php:56
 msgid "Tax/VAT:"
 msgstr ""
 
