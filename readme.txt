@@ -2,9 +2,9 @@
 Contributors: andykeith, barn2media
 Tags: easy digital downloads, edd, vat, checkout, tax
 Requires at least: 5.0
-Tested up to: 6.2.0
+Tested up to: 6.3
 Requires PHP: 7.2
-Stable tag: 1.5.17
+Stable tag: 1.5.21
 License: GPL-3.0
 License URI: https://www.gnu.org/licenses/gpl.html
 
@@ -22,6 +22,28 @@ This plugin extends the Easy Digital Downloads plugin with EU VAT support.
 1. Enter your license key under Downloads -> Settings -> Extensions -> EU VAT.
 
 == Changelog ==
+
+= 1.5.21 =
+Release date 22 August 2023
+
+ * Tweak: Display both EU and UK VAT numbers in invoices template.
+
+= 1.5.20 =
+Release date 09 August 2023
+
+ * Dev: Updated internal libraries.
+ * Dev: Tested up to WP 6.3.
+
+= 1.5.19 =
+Release date 01 August 2023
+
+  * Fix: Checkout displaying "Invalid Requester member state" when the "Country of VAT registration" is set to "United Kingdom" due to change in VIES api.
+
+= 1.5.18 =
+Release date 25 July 2023
+
+ * Tweak: Display all countries into the "Country" field.
+ * Tweak: Added filters for the selectors used when updating the checkout template.
 
 = 1.5.17 =
 Release date 11 July 2023

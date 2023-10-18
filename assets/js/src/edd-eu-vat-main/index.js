@@ -6,6 +6,11 @@ window.EDD_EU_VAT = ( function( $, window, document, params ) {
 	// Determine if debug mode is enabled.
 	const isDebug = edd_eu_vat_params.debug_mode === '1';
 
+	// Get the checkout form element.
+	const checkoutUpdatedCartElement = edd_eu_vat_params.checkout_updated_cart_selector;
+	const checkoutFormElement = edd_eu_vat_params.checkout_form_selector;
+
+
 	// List of actions logged when debug mode is enabled.
 	const loggedActions = [];
 
@@ -86,11 +91,11 @@ window.EDD_EU_VAT = ( function( $, window, document, params ) {
         } )
             .done( function( response, textStatus, jqXHR ) {
                 if ( jqXHR.status == 200 && typeof response.html !== 'undefined' ) {
-                    var $updatedCart = $( $.parseHTML( response.html.trim() ) ).filter( '#edd_checkout_cart_form' );
+                    var $updatedCart = $( $.parseHTML( response.html.trim() ) ).filter( checkoutUpdatedCartElement );
 
                     // Update cart.
                     if ( $updatedCart.length ) {
-                        $( '#edd_checkout_cart_form' ).replaceWith( $updatedCart );
+                        $( checkoutFormElement ).replaceWith( $updatedCart );
                     }
 
                     // Update totals.

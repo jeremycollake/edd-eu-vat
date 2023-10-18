@@ -426,7 +426,7 @@ class Plugin_License implements Registerable, License
         $url = \untrailingslashit($url);
         return $url;
     }
-    private function is_license_overridden()
+    public function is_license_overridden()
     {
         $license_data = $this->get_license_data();
         return !empty($license_data['override']);

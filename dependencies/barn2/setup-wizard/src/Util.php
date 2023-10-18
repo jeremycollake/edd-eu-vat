@@ -142,7 +142,7 @@ class Util
     public static function license_is_access_pass($plugin, $license_key)
     {
         $is_access_pass = \false;
-        $rest_url = 'https://barn2.com/wp-json/upsell/v1/validate/';
+        $rest_url = 'https://api.barn2.com/wp-json/upsell/v1/validate/';
         $args = ['license' => $license_key];
         $request = \wp_remote_get(\add_query_arg($args, $rest_url));
         $response = \wp_remote_retrieve_body($request);

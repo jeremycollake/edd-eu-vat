@@ -130,7 +130,7 @@ class Setup_Wizard implements Bootable, JsonSerializable
      */
     public function configure($args = [])
     {
-        $defaults = ['plugin_name' => $this->plugin->get_name(), 'plugin_slug' => $this->plugin->get_slug(), 'plugin_product_id' => $this->plugin->get_id(), 'skip_url' => \admin_url(), 'license_tooltip' => '', 'utm_id' => '', 'premium_url' => '', 'completed' => $this->is_completed(), 'barn2_api' => 'https://barn2.com/wp-json/upsell/v1/settings', 'ready_links' => [], 'is_free' => empty($this->get_licensing())];
+        $defaults = ['plugin_name' => $this->plugin->get_name(), 'plugin_slug' => $this->plugin->get_slug(), 'plugin_product_id' => $this->plugin->get_id(), 'skip_url' => \admin_url(), 'license_tooltip' => '', 'utm_id' => '', 'premium_url' => '', 'completed' => $this->is_completed(), 'barn2_api' => 'https://api.barn2.com/wp-json/upsell/v1/settings', 'ready_links' => [], 'is_free' => empty($this->get_licensing())];
         $args = \wp_parse_args($args, $defaults);
         $this->js_args = $args;
         return $this;
@@ -540,6 +540,23 @@ class Setup_Wizard implements Bootable, JsonSerializable
         });
     }
     /**
+     * Get the list of installed plugins slugs.
+     *
+     * @return array
+     */
+    public function get_installed_plugins_slugs()
+    {
+        if (!\function_exists('get_plugins')) {
+            require_once \ABSPATH . 'wp-admin/includes/plugin.php';
+        }
+        $installed_plugins = \get_plugins();
+        $parsed = [];
+        foreach ($installed_plugins as $plugin => $data) {
+            $parsed[] = \explode('/', $plugin)[0];
+        }
+        return $parsed;
+    }
+    /**
      * Json configuration for the react app.
      *
      * @return array
@@ -547,6 +564,6 @@ class Setup_Wizard implements Bootable, JsonSerializable
     #[\ReturnTypeWillChange]
     public function jsonSerialize()
     {
-        return \array_merge(['restNonce' => \wp_create_nonce('wp_rest'), 'apiURL' => \get_rest_url(null, \trailingslashit(Api::API_NAMESPACE . '/' . $this->plugin->get_slug())), 'steps' => $this->get_steps_configuration(), 'hiddenSteps' => $this->get_initially_hidden_steps()], $this->js_args);
+        return \array_merge(['restNonce' => \wp_create_nonce('wp_rest'), 'apiURL' => \get_rest_url(null, \trailingslashit(Api::API_NAMESPACE . '/' . $this->plugin->get_slug())), 'steps' => $this->get_steps_configuration(), 'hiddenSteps' => $this->get_initially_hidden_steps(), 'installedPlugins' => $this->get_installed_plugins_slugs()], $this->js_args);
     }
 }

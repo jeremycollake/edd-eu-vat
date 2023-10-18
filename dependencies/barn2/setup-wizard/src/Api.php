@@ -80,8 +80,7 @@ class Api implements JsonSerializable
      */
     public function check_permissions($request)
     {
-        return \true;
-        //return wp_verify_nonce( $request->get_header( 'x-wp-nonce' ), 'wp_rest' ) && current_user_can( 'manage_options' );
+        return \wp_verify_nonce($request->get_header('x-wp-nonce'), 'wp_rest') && \current_user_can('manage_options');
     }
     /**
      * Get the api namespace for the steps.
@@ -99,7 +98,7 @@ class Api implements JsonSerializable
      */
     public function register_routes()
     {
-        \register_rest_route($this->get_api_namespace(), 'steps', [['methods' => 'GET', 'callback' => [$this, 'get_steps'], 'permission_callback' => [$this, 'check_permissions']], ['methods' => 'POST', 'callback' => [$this, 'save_fields'], 'permission_callback' => [$this, 'check_permissions']]]);
+        \register_rest_route($this->get_api_namespace(), 'steps', [['methods' => 'GET', 'callback' => [$this, 'get_steps'], 'permission_callback' => '__return_true'], ['methods' => 'POST', 'callback' => [$this, 'save_fields'], 'permission_callback' => [$this, 'check_permissions']]]);
         \register_rest_route($this->get_api_namespace(), 'license', [['methods' => 'GET', 'callback' => [$this, 'get_license'], 'permission_callback' => [$this, 'check_permissions']], ['methods' => 'POST', 'callback' => [$this, 'handle_license'], 'permission_callback' => [$this, 'check_permissions']]]);
     }
     /**
@@ -175,7 +174,7 @@ class Api implements JsonSerializable
             return ['status' => '', 'exists' => \false, 'key' => '', 'status_help_text' => '', 'error_message' => '', 'free_plugin' => \true];
         }
         $license_handler = $this->get_plugin()->get_license();
-        return ['status' => $license_handler->get_status(), 'exists' => $license_handler->exists(), 'key' => $license_handler->get_license_key(), 'status_help_text' => $license_handler->get_status_help_text(), 'error_message' => $license_handler->get_error_message()];
+        return ['status' => $license_handler->get_status(), 'exists' => $license_handler->exists(), 'key' => $license_handler->get_license_key(), 'status_help_text' => $license_handler->get_status_help_text(), 'error_message' => $license_handler->get_error_message(), 'overridden' => $license_handler->is_license_overridden()];
     }
     /**
      * Handle licensing actions via the api.
@@ -187,6 +186,10 @@ class Api implements JsonSerializable
     {
         $license_key = $request->get_param('license');
         $action = $request->get_param('action');
+        $license_handler = $this->get_plugin()->get_license();
+        if ($license_handler->is_license_overridden() && $action !== 'deactivate') {
+            return self::send_success_response($this->get_license_details());
+        }
         $allowed_actions = ['activate', 'check', 'deactivate'];
         if (empty($license_key)) {
             return self::send_error_response(['message' => __('Please enter a license key.', 'edd-eu-vat')]);
@@ -194,7 +197,6 @@ class Api implements JsonSerializable
         if (!\in_array($action, $allowed_actions, \true)) {
             return self::send_error_response(['message' => __('Invalid action requested.', 'edd-eu-vat')]);
         }
-        $license_handler = $this->get_plugin()->get_license();
         switch ($action) {
             case 'activate':
                 $license_handler->activate(\sanitize_text_field($license_key));

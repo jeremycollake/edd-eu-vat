@@ -184,7 +184,7 @@ class VAT_Checker_API {
 				$result->consultation_number = $response->requestIdentifier;
 			}
 		} catch ( \Exception $exception ) {
-			if ( $exception->getMessage() === 'INVALID_REQUESTER_INFO' ) {
+			if ( $exception->getMessage() === 'INVALID_REQUESTER_INFO' || $exception->getMessage() === 'Invalid Requester member state' ) {
 				return self::vies_request( $result, $vat_number, $country_code, $vat_prefix_for_country, true );
 			}
 

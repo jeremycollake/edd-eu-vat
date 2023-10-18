@@ -204,7 +204,7 @@ class Settings implements Registerable, Service {
 					'name'        => __( 'Country', 'edd-eu-vat' ),
 					'desc'        => __( 'Select the country where your business is based. This will be used on invoices.', 'edd-eu-vat' ),
 					'type'        => 'select',
-					'options'     => EDD_VATUtil::get_country_list( false ),
+					'options'     => edd_get_country_list(),
 					'chosen'      => true,
 					'placeholder' => __( 'Select a country', 'edd-eu-vat' ),
 					'std'         => edd_get_shop_country(),
