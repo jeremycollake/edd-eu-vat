@@ -68,6 +68,12 @@ interface Plugin
      */
     public function is_woocommerce();
     /**
+     * Is this plugin compatible with WooCommerce HPOS?
+     *
+     * @return boolean true if it's compatible with WooCommerce HPOS.
+     */
+    public function is_hpos_compatible();
+    /**
      * Is this plugin an Easy Digital Downloads extension?
      *
      * @return boolean true if it's an EDD extension.

@@ -272,7 +272,7 @@ class Setup_Wizard implements Bootable, JsonSerializable
     {
         $config = [];
         /** @var Step $step */
-        foreach ($this->steps as $step) {
+        foreach ($this->get_steps() as $step) {
             $config[] = ['key' => $step->get_id(), 'label' => $step->get_name(), 'description' => $step->get_description(), 'heading' => $step->get_title(), 'tooltip' => $step->get_tooltip(), 'hidden' => $step->is_hidden()];
         }
         return $config;
@@ -286,7 +286,7 @@ class Setup_Wizard implements Bootable, JsonSerializable
     {
         $steps = [];
         /** @var Step $step */
-        foreach ($this->steps as $step) {
+        foreach ($this->get_steps() as $step) {
             if ($step->is_hidden()) {
                 $steps[] = $step->get_id();
             }
@@ -300,7 +300,17 @@ class Setup_Wizard implements Bootable, JsonSerializable
      */
     public function get_steps()
     {
-        return $this->steps;
+        $steps = [];
+        foreach ($this->steps as $step) {
+            $steps[$step->get_id()] = $step;
+        }
+        /**
+         * Filter the steps of the wizard.
+         *
+         * @param array $steps list of steps.
+         * @return array
+         */
+        return \apply_filters("{$this->get_slug()}_wizard_steps", $steps);
     }
     /**
      * Boot the setup wizard.
@@ -522,20 +532,18 @@ class Setup_Wizard implements Bootable, JsonSerializable
      */
     public function add_restart_link(string $wc_section_id, string $title_option_id)
     {
-        \add_filter("woocommerce_get_settings_{$wc_section_id}", function ($settings) use($title_option_id) {
-            $url = \add_query_arg(['page' => $this->get_slug()], \admin_url('admin.php'));
-            $title_setting = \wp_list_filter($settings, ['id' => $title_option_id]);
-            if ($title_setting && isset($title_setting[\key($title_setting)]['desc'])) {
-                $desc = $title_setting[\key($title_setting)]['desc'];
-                $p_closing_tag = \strrpos($desc, '</p>');
-                $new_desc = \substr_replace($desc, ' | <a class="barn2-wiz-restart-btn" href="' . \esc_url($url) . '">' . esc_html__('Setup wizard', 'edd-eu-vat') . '</a>', $p_closing_tag, 0);
-                $settings[\key($title_setting)]['desc'] = $new_desc;
+        \add_filter('barn2_plugin_settings_help_links', function ($links, $plugin) use($title_option_id) {
+            if ($plugin->get_slug() !== $this->plugin->get_slug()) {
+                return $links;
             }
-            return $settings;
-        });
+            $url = \add_query_arg(['page' => $this->get_slug()], \admin_url('admin.php'));
+            $links['setup_wizard'] = ['url' => \esc_url($url), 'label' => esc_html__('Setup wizard', 'edd-eu-vat'), 'class' => 'barn2-wiz-restart-btn'];
+            return $links;
+        }, 10, 2);
         \add_action('admin_footer', function () use($wc_section_id) {
             if ($this->is_wc_settings_screen($wc_section_id)) {
                 echo $this->load_wizard_restart_assets();
+                // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
             }
         });
     }

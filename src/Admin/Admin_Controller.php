@@ -2,13 +2,13 @@
 
 namespace Barn2\Plugin\EDD_VAT\Admin;
 
-use Barn2\Plugin\EDD_VAT\Admin\Wizard\Setup_Wizard,
-	Barn2\Plugin\EDD_VAT\Dependencies\Lib\Registerable,
-	Barn2\Plugin\EDD_VAT\Dependencies\Lib\Service,
-	Barn2\Plugin\EDD_VAT\Dependencies\Lib\Util,
-	Barn2\Plugin\EDD_VAT\Dependencies\Lib\Plugin\Licensed_Plugin,
-	Barn2\Plugin\EDD_VAT\Dependencies\Lib\Plugin\Admin\Admin_Links,
-	Barn2\Plugin\EDD_VAT\Dependencies\WPTRT\AdminNotices\Notices;
+use Barn2\Plugin\EDD_VAT\Admin\Wizard\Setup_Wizard;
+use Barn2\Plugin\EDD_VAT\Dependencies\Lib\Registerable;
+use Barn2\Plugin\EDD_VAT\Dependencies\Lib\Service;
+use Barn2\Plugin\EDD_VAT\Dependencies\Lib\Util;
+use Barn2\Plugin\EDD_VAT\Dependencies\Lib\Plugin\Licensed_Plugin;
+use Barn2\Plugin\EDD_VAT\Dependencies\Lib\Plugin\Admin\Admin_Links;
+use Barn2\Plugin\EDD_VAT\Dependencies\WPTRT\AdminNotices\Notices;
 
 /**
  * Main admin class. Responsible for setting up the admin services.
@@ -66,11 +66,10 @@ class Admin_Controller implements Registerable, Service {
 				),
 				[
 					'type'       => 'error',
-					'capability' => 'manage_shop_settings'
+					'capability' => 'manage_shop_settings',
 				]
 			);
 			$notices->boot();
 		}
 	}
-
 }

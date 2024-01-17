@@ -42,8 +42,6 @@ class Notices
     {
         // Add the notice.
         \add_action('admin_notices', [$this, 'the_notices']);
-        // Print the script to the footer.
-        \add_action('admin_footer', [$this, 'print_scripts']);
     }
     /**
      * Add a notice.
@@ -86,6 +84,7 @@ class Notices
         if (isset($this->notices[$id])) {
             return $this->notices[$id];
         }
+        return null;
     }
     /**
      * Get all notices.
@@ -110,22 +109,6 @@ class Notices
         $notices = $this->get_all();
         foreach ($notices as $notice) {
             $notice->the_notice();
-        }
-    }
-    /**
-     * Prints scripts for the notices.
-     *
-     * @access public
-     * @since 1.0
-     * @return void
-     */
-    public function print_scripts()
-    {
-        $notices = $this->get_all();
-        foreach ($notices as $notice) {
-            if ($notice->show()) {
-                $notice->dismiss->print_script();
-            }
         }
     }
 }

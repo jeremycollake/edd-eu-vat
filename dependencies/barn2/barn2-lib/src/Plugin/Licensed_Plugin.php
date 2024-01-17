@@ -2,6 +2,8 @@
 
 namespace Barn2\Plugin\EDD_VAT\Dependencies\Lib\Plugin;
 
+use Barn2\Plugin\EDD_VAT\Dependencies\Lib\Plugin\License\License;
+use Barn2\Plugin\EDD_VAT\Dependencies\Lib\Plugin\License\Admin\License_Setting;
 /**
  * Extends the Plugin interface to add additional functions for licensed plugins.
  *
@@ -16,7 +18,7 @@ interface Licensed_Plugin extends Plugin
     /**
      * Get the plugin license object.
      *
-     * @return Barn2\Lib\Plugin\License\License
+     * @return License
      */
     public function get_license();
     /**
@@ -28,7 +30,7 @@ interface Licensed_Plugin extends Plugin
     /**
      * Get the license setting for the plugin.
      *
-     * @return Barn2\Lib\Plugin\License\Admin\License_Setting
+     * @return License_Setting
      */
     public function get_license_setting();
     /**

@@ -2,9 +2,9 @@
 Contributors: andykeith, barn2media
 Tags: easy digital downloads, edd, vat, checkout, tax
 Requires at least: 5.0
-Tested up to: 6.3
-Requires PHP: 7.2
-Stable tag: 1.5.21
+Tested up to: 6.4.2
+Requires PHP: 7.4
+Stable tag: 1.5.23
 License: GPL-3.0
 License URI: https://www.gnu.org/licenses/gpl.html
 
@@ -22,6 +22,30 @@ This plugin extends the Easy Digital Downloads plugin with EU VAT support.
 1. Enter your license key under Downloads -> Settings -> Extensions -> EU VAT.
 
 == Changelog ==
+
+= 1.5.23 =
+Release date 11 January 2024
+
+ * Tweak: Updated VAT rate for Estonia.
+ * Tweak: Hide "Additional Information" header when you don't have notes.
+ * Tweak: Display appropriate list of countries under the "Country of VAT registration" input inside the setup wizard.
+ * Tweak: Minor changes to the settings panel and steps of the setup wizard.
+ * Fix: Display missing countries under the "Country" input inside the setup wizard.
+ * Dev: Minor internal changes.
+ * Dev: Updated internal libraries.
+ * Dev: Tested up to WP 6.4.2
+
+= 1.5.22 =
+Release date 31 October 2023
+
+ * Tweak: clear the tax rate cache prior to displaying the cart when the checkout block is used.
+ * Tweak: VAT field description hidden when using checkout blocks for consistency.
+ * Tweak: Added payment object and payment ID as extra arguments to the "edd_vat_export_vat_ec_sales_vat_number" filter.
+ * Fix: spacing between the state/province/zip fields and the VAT field.
+ * Dev: Updated internal libraries.
+ * Dev: Tested up to WP 6.3.2
+
+<!--more-->
 
 = 1.5.21 =
 Release date 22 August 2023
@@ -131,8 +155,6 @@ Release date 08 June 2022
  * Tweak: updated barn2 libraries.
  * Tweak: updated language files.
  * Dev: tested up to WordPress 6.0.
-
-<!--more-->
 
 = 1.5.5 =
 Release date 15 April 2022

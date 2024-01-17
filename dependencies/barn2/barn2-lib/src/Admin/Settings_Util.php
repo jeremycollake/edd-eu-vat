@@ -2,6 +2,7 @@
 
 namespace Barn2\Plugin\EDD_VAT\Dependencies\Lib\Admin;
 
+use Barn2\Plugin\EDD_VAT\Dependencies\Lib\Plugin\Plugin;
 /**
  * Utility functions for the Plugin settings.
  *
@@ -9,7 +10,7 @@ namespace Barn2\Plugin\EDD_VAT\Dependencies\Lib\Admin;
  * @author    Barn2 Plugins <support@barn2.com>
  * @license   GPL-3.0
  * @copyright Barn2 Media Ltd
- * @version   1.0
+ * @version   1.1
  */
 class Settings_Util
 {
@@ -48,23 +49,45 @@ class Settings_Util
         return \implode(' ', $custom_attributes);
     }
     /**
-     * Return the description for the main title of a settings tab/section
-     * including the links below the description
-     * (as a filterable array of [ 'url', 'label', 'class' ])
+     * Return the help links for the plugin settings page - Documentation, Support, etc.
      *
-     * @param Barn2\Lib\Plugin $plugin
-     * @param string           $description The text of the description
+     * @param Plugin $plugin The plugin object
+     * @return string The formatted help links
+     */
+    public static function get_help_links(Plugin $plugin)
+    {
+        /**
+         * Filters the list of help links used at the top of the plugin settings page.
+         *
+         * @param array $links
+         *   The array of help links. Each link is an array containing the following keys:
+         *   - url: The link URL
+         *   - label: The link label
+         *   - class (optional): The link class.
+         *   - target (optional): If the link should open in a new tab, set this to '_blank'
+         * @since 1.1
+         */
+        $links = \apply_filters('barn2_plugin_settings_help_links', ['doc' => ['url' => $plugin->get_documentation_url(), 'label' => __('Documentation', 'edd-eu-vat'), 'target' => '_blank'], 'support' => ['url' => $plugin->get_support_url(), 'label' => __('Support', 'edd-eu-vat'), 'target' => '_blank']], $plugin);
+        $links = \apply_filters_deprecated('barn2_plugins_title_links', [$links, $plugin], '1.1', 'barn2_plugin_settings_help_links');
+        return \implode(' | ', \array_map(function ($link) {
+            $class = !empty($link['class']) ? \sprintf(' class="%s"', \esc_attr($link['class'])) : '';
+            $target = !empty($link['target']) ? \sprintf(' target="%s"', \esc_attr($link['target'])) : '';
+            return \sprintf('<a href="%s"%s%s>%s</a>', \esc_url($link['url']), $class, $target, \esc_html($link['label']));
+        }, $links));
+    }
+    /**
+     * Return the description for the main title of a settings tab/section including the links below the description.
+     *
+     * @param Plugin $plugin
+     * @param string $description The text of the description
      *
      * @return string
+     * @depecated Replaced by get_plugin_links
      */
     public static function get_title_description($plugin, $description)
     {
-        $links = \apply_filters('barn2_plugins_title_links', ['doc' => ['url' => $plugin->get_documentation_url(), 'label' => __('Documentation', 'edd-eu-vat'), 'target' => '_blank'], 'support' => ['url' => $plugin->get_support_url(), 'label' => __('Support', 'edd-eu-vat'), 'target' => '_blank']], $plugin);
-        $printed_links = \implode(' | ', \array_map(function ($link) {
-            $target = isset($link['target']) ? \sprintf(' target="%s"', \esc_attr($link['target'])) : '';
-            return \sprintf('<a href="%s"%s>%s</a>', \esc_url($link['url']), $target, \esc_html($link['label']));
-        }, $links));
-        return \sprintf('<p>%s</p><p>%s</p>', $printed_links, \esc_html($description));
+        \_deprecated_function(__METHOD__, '1.1', 'get_plugin_links');
+        return \sprintf('<p>%s</p><p>%s</p>', self::get_help_links($plugin), \esc_html($description));
     }
     /**
      * Check whether the current page, tab and section match the ones the plugin uses

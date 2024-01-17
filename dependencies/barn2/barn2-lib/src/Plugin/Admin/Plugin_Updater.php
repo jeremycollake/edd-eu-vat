@@ -35,7 +35,7 @@ class Plugin_Updater implements Registerable
     }
     public function register()
     {
-        if (\is_admin() || \defined('Barn2\\Plugin\\EDD_VAT\\Dependencies\\WP_CLI') && WP_CLI) {
+        if (\is_admin() || \defined('WP_CLI') && \WP_CLI) {
             if ($this->use_barn2_update_uri()) {
                 \add_filter('update_plugins_barn2.com', [$this, 'update_plugins_barn2_com'], 10, 3);
             } else {

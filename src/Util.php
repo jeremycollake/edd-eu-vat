@@ -32,7 +32,7 @@ class Util {
 					'CZ' => 21.0, // Czech Republic
 					'DE' => 19.0, // Germany
 					'DK' => 25.0, // Denmark
-					'EE' => 20.0, // Estonia
+					'EE' => 22.0, // Estonia
 					'ES' => 21.0, // Spain
 					'FI' => 24.0, // Finland
 					'FR' => 20.0, // France

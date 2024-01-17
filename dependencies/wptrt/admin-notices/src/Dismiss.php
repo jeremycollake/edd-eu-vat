@@ -50,6 +50,7 @@ class Dismiss
      * @since 1.0
      * @param string $id     A unique ID for this notice. Can contain lowercase characters and underscores.
      * @param string $prefix The prefix that will be used for the option/user-meta.
+     * @param string $scope  Controls where the dismissal will be saved: user or global.
      */
     public function __construct($id, $prefix, $scope = 'global')
     {
@@ -59,49 +60,42 @@ class Dismiss
         $this->scope = \in_array($scope, ['global', 'user'], \true) ? $scope : 'global';
         // Handle AJAX requests to dismiss the notice.
         \add_action('wp_ajax_wptrt_dismiss_notice', [$this, 'ajax_maybe_dismiss_notice']);
+        // Print the script after common.js.
+        \add_action('admin_enqueue_scripts', array($this, 'add_script'));
     }
     /**
      * Print the script for dismissing the notice.
      *
-     * @access private
      * @since 1.0
      * @return void
      */
-    public function print_script()
+    public function add_script()
     {
-        // Create a nonce.
+        $id = \esc_attr($this->id);
         $nonce = \wp_create_nonce('wptrt_dismiss_notice_' . $this->id);
-        ?>
-		<script>
-		window.addEventListener( 'load', function() {
-			var dismissBtn  = document.querySelector( '#wptrt-notice-<?php 
-        echo \esc_attr($this->id);
-        ?> .notice-dismiss' );
+        $admin_ajax_url = \esc_url(\admin_url('admin-ajax.php'));
+        $script = <<<EOD
+jQuery( function() {
+    var dismissBtn  = document.querySelector( '#wptrt-notice-{$id} .notice-dismiss' );
 
-			// Add an event listener to the dismiss button.
-			dismissBtn.addEventListener( 'click', function( event ) {
-				var httpRequest = new XMLHttpRequest(),
-					postData    = '';
+    // Add an event listener to the dismiss button.
+    dismissBtn.addEventListener( 'click', function( event ) {
+    \tvar httpRequest = new XMLHttpRequest(),
+    \t\tpostData    = '';
 
-				// Build the data to send in our request.
-				// Data has to be formatted as a string here.
-				postData += 'id=<?php 
-        echo \esc_attr(\rawurlencode($this->id));
-        ?>';
-				postData += '&action=wptrt_dismiss_notice';
-				postData += '&nonce=<?php 
-        echo \esc_html($nonce);
-        ?>';
+    \t// Build the data to send in our request.
+    \t// Data has to be formatted as a string here.
+    \tpostData += 'id={$id}';
+    \tpostData += '&action=wptrt_dismiss_notice';
+    \tpostData += '&nonce={$nonce}';
 
-				httpRequest.open( 'POST', '<?php 
-        echo \esc_url(\admin_url('admin-ajax.php'));
-        ?>' );
-				httpRequest.setRequestHeader( 'Content-Type', 'application/x-www-form-urlencoded' )
-				httpRequest.send( postData );
-			});
-		});
-		</script>
-		<?php 
+    \thttpRequest.open( 'POST', '{$admin_ajax_url}' );
+    \thttpRequest.setRequestHeader( 'Content-Type', 'application/x-www-form-urlencoded' )
+    \thttpRequest.send( postData );
+    });
+});
+EOD;
+        \wp_add_inline_script('common', $script, 'after');
     }
     /**
      * Check if the notice has been dismissed or not.

@@ -1,9 +1,9 @@
 <?php
 namespace Barn2\Plugin\EDD_VAT;
 
-use Barn2\Plugin\EDD_VAT\Dependencies\Lib\Registerable,
-	Barn2\Plugin\EDD_VAT\Dependencies\Lib\Service,
-	Barn2\Plugin\EDD_VAT\Util;
+use Barn2\Plugin\EDD_VAT\Dependencies\Lib\Registerable;
+use Barn2\Plugin\EDD_VAT\Dependencies\Lib\Service;
+use Barn2\Plugin\EDD_VAT\Util;
 
 /**
  * Handles the VAT integration on the EDD Checkout.
@@ -69,7 +69,7 @@ class Checkout_Handler implements Registerable, Service {
 		add_action( 'edd_insert_payment', [ $this, 'insert_payment' ], 10, 2 );
 
 		// Refresh on login.
-		//add_action( 'wp_login', [ $this, 'clear_vat_on_login' ], 10, 2 );
+		// add_action( 'wp_login', [ $this, 'clear_vat_on_login' ], 10, 2 );
 
 		// Debug util on purchase receipt page.
 		add_action( 'edd_order_receipt_before_table', [ $this, 'debug_receipt' ], 10, 2 );
@@ -121,6 +121,11 @@ class Checkout_Handler implements Registerable, Service {
 		// Handle VAT number
 		$this->handle_vat_input();
 
+		// Clear tax rate if checkout has blocks. See #78.
+		if ( function_exists( '\\EDD\\Blocks\\Checkout\\Functions\\checkout_has_blocks' ) && \EDD\Blocks\Checkout\Functions\checkout_has_blocks() ) {
+			EDD()->cart->set_tax_rate( null );
+		}
+
 		// Get updated cart
 		ob_start();
 		edd_checkout_cart();
@@ -135,7 +140,7 @@ class Checkout_Handler implements Registerable, Service {
 			'tax_rate'         => html_entity_decode( edd_get_formatted_tax_rate(), ENT_COMPAT, 'UTF-8' ),
 			'total'            => html_entity_decode( edd_cart_total( false ), ENT_COMPAT, 'UTF-8' ),
 			'total_raw'        => edd_get_cart_total(),
-			'vat_check_result' => $this->get_vat_check_result()
+			'vat_check_result' => $this->get_vat_check_result(),
 		];
 
 		edd_debug_log( 'EUVAT: ajax_vat_check response: ' . print_r( $response, true ) );
@@ -148,7 +153,7 @@ class Checkout_Handler implements Registerable, Service {
 	 * Recalculate taxes via AJAX
 	 */
 	public function ajax_edd_recalculate_taxes() {
-		$nonce = isset( $_POST['nonce'] ) ? sanitize_text_field( $_POST['nonce'] ) : '';
+		$nonce          = isset( $_POST['nonce'] ) ? sanitize_text_field( $_POST['nonce'] ) : '';
 		$nonce_verified = wp_verify_nonce( $nonce, 'edd-checkout-address-fields' );
 
 		if ( ! $nonce_verified ) {
@@ -187,7 +192,6 @@ class Checkout_Handler implements Registerable, Service {
 			$this->cart_vat->clear();
 			edd_debug_log( 'EUVAT: cleared VAT on login for user: ' . $user_login );
 		}
-
 	}
 
 	/**
@@ -204,7 +208,7 @@ class Checkout_Handler implements Registerable, Service {
 		} elseif ( apply_filters( 'edd_vat_apply_eu_vat_automatically', true ) ) {
 			$edd_tax_rates = edd_get_tax_rates(
 				[
-					'number' => 9999
+					'number' => 9999,
 				]
 			);
 
@@ -214,9 +218,12 @@ class Checkout_Handler implements Registerable, Service {
 
 			// check if Easy Digital Downloads is version 3.0.0 or higher and check for the "status" key.
 			if ( version_compare( EDD_VERSION, '3.0.0', '>=' ) ) {
-				$edd_tax_rates = array_filter( $edd_tax_rates, function( $sub_array ) {
-					return isset( $sub_array['status'] ) && 'active' === $sub_array['status'];
-				} );
+				$edd_tax_rates = array_filter(
+					$edd_tax_rates,
+					function ( $sub_array ) {
+						return isset( $sub_array['status'] ) && 'active' === $sub_array['status'];
+					}
+				);
 			}
 
 			// Pluck all tax rates from EDD settings, keyed by country code.
@@ -229,12 +236,16 @@ class Checkout_Handler implements Registerable, Service {
 			}
 		}
 
-		edd_debug_log( 'EUVAT: tax_rate called with args: ' . print_r(
-			[
-				'$rate' => $rate,
-				'$country' => $country,
-				'$state' => $state
-			], true ) );
+		edd_debug_log(
+			'EUVAT: tax_rate called with args: ' . print_r(
+				[
+					'$rate'    => $rate,
+					'$country' => $country,
+					'$state'   => $state,
+				],
+				true
+			)
+		);
 
 		return $rate;
 	}
@@ -267,11 +278,15 @@ class Checkout_Handler implements Registerable, Service {
 			);
 		}
 
-		edd_debug_log( 'EUVAT: cart_tax called with arguments: ' . print_r(
-			[
-				'$cart_tax' => $cart_tax,
-				'reverse_charged' => $this->cart_vat->is_reverse_charged(),
-			], true ) );
+		edd_debug_log(
+			'EUVAT: cart_tax called with arguments: ' . print_r(
+				[
+					'$cart_tax'       => $cart_tax,
+					'reverse_charged' => $this->cart_vat->is_reverse_charged(),
+				],
+				true
+			)
+		);
 
 		return $cart_tax;
 	}
@@ -350,22 +365,31 @@ class Checkout_Handler implements Registerable, Service {
 			edd_update_payment_meta( $payment_id, '_edd_payment_vat_consultation_number', $this->cart_vat->get_vat_details()->consultation_number );
 		}
 
-		edd_debug_log( 'EUVAT: insert_payment arguments: ' . print_r(
-			[
-				'details' => $this->cart_vat->get_vat_details(),
-				'reverse_charged' => $this->cart_vat->is_reverse_charged(),
-				'payment_id' => $payment_id,
-				'country_code' => $country_code
-			], true ) );
+		edd_debug_log(
+			'EUVAT: insert_payment arguments: ' . print_r(
+				[
+					'details'         => $this->cart_vat->get_vat_details(),
+					'reverse_charged' => $this->cart_vat->is_reverse_charged(),
+					'payment_id'      => $payment_id,
+					'country_code'    => $country_code,
+				],
+				true
+			)
+		);
 
 		if ( edd_is_debug_mode() ) {
-			edd_insert_payment_note( $payment_id, print_r(
-				[
-					'details' => $this->cart_vat->get_vat_details(),
-					'reverse_charged' => $this->cart_vat->is_reverse_charged(),
-					'payment_id' => $payment_id,
-					'country_code' => $country_code
-				], true ) );
+			edd_insert_payment_note(
+				$payment_id,
+				print_r(
+					[
+						'details'         => $this->cart_vat->get_vat_details(),
+						'reverse_charged' => $this->cart_vat->is_reverse_charged(),
+						'payment_id'      => $payment_id,
+						'country_code'    => $country_code,
+					],
+					true
+				)
+			);
 		}
 	}
 
@@ -473,7 +497,7 @@ class Checkout_Handler implements Registerable, Service {
 	 */
 	public function ajax_reconcile_payment_note() {
 
-		$nonce = isset( $_POST['nonce'] ) ? sanitize_text_field( $_POST['nonce'] ) : '';
+		$nonce          = isset( $_POST['nonce'] ) ? sanitize_text_field( $_POST['nonce'] ) : '';
 		$nonce_verified = wp_verify_nonce( $nonce, 'euvat-debug' );
 
 		if ( ! $nonce_verified ) {
@@ -484,11 +508,10 @@ class Checkout_Handler implements Registerable, Service {
 		$debug_data = isset( $_POST['logged'] ) ? json_decode( stripslashes( $_POST['logged'] ), true ) : [];
 
 		if ( edd_is_debug_mode() ) {
-			edd_insert_payment_note( $payment_id, print_r( Util::clean( $debug_data ) , true ) );
+			edd_insert_payment_note( $payment_id, print_r( Util::clean( $debug_data ), true ) );
 		}
 
 		wp_send_json_success( $debug_data );
-
 	}
 
 	/**
@@ -505,8 +528,6 @@ class Checkout_Handler implements Registerable, Service {
 			return;
 		}
 
-		echo '<div id="eddeuvat-order-debug" data-order-id="'. absint( $order->id ) .'"></div>';
-
+		echo '<div id="eddeuvat-order-debug" data-order-id="' . absint( $order->id ) . '"></div>';
 	}
-
 }

@@ -32,13 +32,12 @@ class License_Notices implements Registerable
     {
         \add_action('admin_init', [$this, 'add_notices'], 50);
         \add_action('barn2_license_activated_' . $this->plugin->get_id(), [$this, 'cleanup_transients']);
-        \add_action('admin_enqueue_scripts', [$this, 'load_scripts']);
         \add_action('wp_ajax_barn2_dismiss_notice', [$this, 'ajax_dismiss_notice']);
     }
     public function add_notices()
     {
-        // Don't add notices if we're doing a post (e.g. saving the settings).
-        if (isset($_SERVER['REQUEST_METHOD']) && 'POST' === $_SERVER['REQUEST_METHOD']) {
+        // Don't add notices if we're doing a post (e.g. saving the settings) or if it's a WooCommerce plugin and WooCommerce is not installed.
+        if (isset($_SERVER['REQUEST_METHOD']) && 'POST' === $_SERVER['REQUEST_METHOD'] || $this->plugin->is_woocommerce() && !Util::is_woocommerce_active() || $this->plugin->is_edd() && !Util::is_edd_active() || \apply_filters('barn2_plugin_hide_license_notices', \false, $this->plugin)) {
             return;
         }
         $license = $this->plugin->get_license();
@@ -58,15 +57,8 @@ class License_Notices implements Registerable
     }
     private function maybe_add_notice($notice_type, $notice_callback)
     {
-        // Don't add the notice if it's a WooCommerce plugin and WooCommerce is not installed, as license page won't be available.
-        if ($this->plugin->is_woocommerce() && !Util::is_woocommerce_active()) {
-            return;
-        }
-        // Ditto for EDD plugins.
-        if ($this->plugin->is_edd() && !Util::is_edd_active()) {
-            return;
-        }
         if (!$this->is_notice_dismissed($notice_type)) {
+            \add_action('admin_enqueue_scripts', [$this, 'load_scripts']);
             \add_action('admin_notices', $notice_callback, 50);
         }
     }

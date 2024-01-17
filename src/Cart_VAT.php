@@ -1,9 +1,9 @@
 <?php
 namespace Barn2\Plugin\EDD_VAT;
 
-use Barn2\Plugin\EDD_VAT\Dependencies\Lib\Registerable,
-	Barn2\Plugin\EDD_VAT\Dependencies\Lib\Service,
-	Barn2\Plugin\EDD_VAT\Util;
+use Barn2\Plugin\EDD_VAT\Dependencies\Lib\Registerable;
+use Barn2\Plugin\EDD_VAT\Dependencies\Lib\Service;
+use Barn2\Plugin\EDD_VAT\Util;
 
 /**
  * Stores the current state of VAT in the EDD cart.
@@ -166,5 +166,4 @@ class Cart_VAT implements Registerable, Service {
 			$this->vat_details        = null;
 		}
 	}
-
 }

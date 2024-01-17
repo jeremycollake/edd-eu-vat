@@ -103,7 +103,7 @@ class Batch_VAT_EC_Sales_Payments_Export extends \EDD_Batch_Export {
 
 				$data[] = [
 					'country'    => $payment->address['country'],
-					'vat_number' => apply_filters( 'edd_vat_export_vat_ec_sales_vat_number', str_replace( $payment->address['country'], '', $tax_number ) ),
+					'vat_number' => apply_filters( 'edd_vat_export_vat_ec_sales_vat_number', str_replace( $payment->address['country'], '', $tax_number ), $payment->ID, $payment ),
 					'amount'     => $this->round_payment_amount( $payment ),
 					'indicator'  => 3,
 				];

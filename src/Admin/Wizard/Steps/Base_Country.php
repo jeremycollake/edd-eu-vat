@@ -21,9 +21,9 @@ class Base_Country extends Step {
 	 */
 	public function __construct() {
 		$this->set_id( 'base-country' );
-		$this->set_name( esc_html__( 'Base Country', 'edd-eu-vat' ) );
-		$this->set_description( esc_html__( ' Choose whether to allow customers from your home country to reverse charge the VAT.', 'edd-eu-vat' ) );
-		$this->set_title( esc_html__( 'Base Country', 'edd-eu-vat' ) );
+		$this->set_name( esc_html__( 'Reverse charge', 'edd-eu-vat' ) );
+		$this->set_description( esc_html__( 'Allow customers from your home country to reverse charge the VAT.', 'edd-eu-vat' ) );
+		$this->set_title( esc_html__( 'Reverse charge', 'edd-eu-vat' ) );
 	}
 
 	/**

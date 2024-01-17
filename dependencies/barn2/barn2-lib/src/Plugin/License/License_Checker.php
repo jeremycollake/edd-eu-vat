@@ -36,6 +36,6 @@ class License_Checker extends Scheduled_Task implements Schedulable
     }
     protected function get_interval()
     {
-        return 'daily';
+        return 'weekly';
     }
 }

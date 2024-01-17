@@ -8,8 +8,6 @@ use Barn2\Plugin\EDD_VAT\Dependencies\Lib\Plugin\License\Admin\License_Notices;
 use Barn2\Plugin\EDD_VAT\Dependencies\Lib\Plugin\License\EDD_Licensing;
 use Barn2\Plugin\EDD_VAT\Dependencies\Lib\Plugin\License\License_Checker;
 use Barn2\Plugin\EDD_VAT\Dependencies\Lib\Plugin\License\Plugin_License;
-use Barn2\Plugin\EDD_VAT\Dependencies\Lib\Registerable;
-use Barn2\Plugin\EDD_VAT\Dependencies\Lib\Util;
 /**
  * Extends Simple_Plugin to add additional functions for premium plugins (i.e. with a license key).
  *
@@ -17,11 +15,10 @@ use Barn2\Plugin\EDD_VAT\Dependencies\Lib\Util;
  * @author    Barn2 Plugins <support@barn2.com>
  * @license   GPL-3.0
  * @copyright Barn2 Media Ltd
- * @version   1.2
+ * @version   2.0
  */
-class Premium_Plugin extends Simple_Plugin implements Registerable, Licensed_Plugin
+class Premium_Plugin extends Simple_Plugin implements Licensed_Plugin
 {
-    private $services = [];
     /**
      * Constructs a new premium plugin with the supplied plugin data.
      *
@@ -42,23 +39,19 @@ class Premium_Plugin extends Simple_Plugin implements Registerable, Licensed_Plu
     {
         parent::__construct(\array_merge(['license_setting_path' => '', 'legacy_db_prefix' => ''], $data));
         $this->data['license_setting_path'] = \ltrim($this->data['license_setting_path'], '/');
-        $this->services['license'] = new Plugin_License($this->get_id(), EDD_Licensing::instance(), $this->get_legacy_db_prefix());
-        $this->services['plugin_updater'] = new Plugin_Updater($this, EDD_Licensing::instance());
-        $this->services['license_checker'] = new License_Checker($this->get_file(), $this->get_license());
-        $this->services['license_setting'] = new License_Key_Setting($this->get_license(), $this->is_woocommerce(), $this->is_edd());
-        $this->services['license_notices'] = new License_Notices($this);
-    }
-    public function register()
-    {
-        Util::register_services($this->services);
+        $this->add_service('license', new Plugin_License($this->get_id(), EDD_Licensing::instance(), $this->get_legacy_db_prefix()), \true);
+        $this->add_service('plugin_updater', new Plugin_Updater($this, EDD_Licensing::instance()), \true);
+        $this->add_service('license_checker', new License_Checker($this->get_file(), $this->get_license()), \true);
+        $this->add_service('license_setting', new License_Key_Setting($this->get_license(), $this->is_woocommerce(), $this->is_edd()), \true);
+        $this->add_service('license_notices', new License_Notices($this), \true);
     }
     public function get_license()
     {
-        return $this->services['license'];
+        return $this->get_service('license');
     }
     public function get_license_setting()
     {
-        return $this->services['license_setting'];
+        return $this->get_service('license_setting');
     }
     public function has_valid_license()
     {

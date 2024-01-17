@@ -1,11 +1,11 @@
 <?php
 namespace Barn2\Plugin\EDD_VAT;
 
-use Barn2\Plugin\EDD_VAT\Dependencies\Lib\Registerable,
-	Barn2\Plugin\EDD_VAT\Dependencies\Lib\Service,
-	Barn2\Plugin\EDD_VAT\Util,
-	EDD_Payment,
-	WP_Post;
+use Barn2\Plugin\EDD_VAT\Dependencies\Lib\Registerable;
+use Barn2\Plugin\EDD_VAT\Dependencies\Lib\Service;
+use Barn2\Plugin\EDD_VAT\Util;
+use EDD_Payment;
+use WP_Post;
 
 /**
  * Adds VAT information to the purchase receipt [edd_receipt] shortcode.
@@ -47,7 +47,6 @@ class Purchase_Receipt implements Registerable, Service {
 		}
 
 		return $code;
-
 	}
 
 	/**
@@ -239,5 +238,4 @@ class Purchase_Receipt implements Registerable, Service {
 
 		return $output . $receipt_invoice_html;
 	}
-
 }

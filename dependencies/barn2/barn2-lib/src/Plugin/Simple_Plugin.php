@@ -2,6 +2,9 @@
 
 namespace Barn2\Plugin\EDD_VAT\Dependencies\Lib\Plugin;
 
+use Barn2\Plugin\EDD_VAT\Dependencies\Lib\Registerable;
+use Barn2\Plugin\EDD_VAT\Dependencies\Lib\Service_Container;
+use Barn2\Plugin\EDD_VAT\Dependencies\Lib\Service_Provider;
 use Barn2\Plugin\EDD_VAT\Dependencies\Lib\Util;
 /**
  * Basic implementation of the Plugin interface which stores core data about a
@@ -11,10 +14,11 @@ use Barn2\Plugin\EDD_VAT\Dependencies\Lib\Util;
  * @author    Barn2 Plugins <support@barn2.com>
  * @license   GPL-3.0
  * @copyright Barn2 Media Ltd
- * @version   1.3.1
+ * @version   2.0
  */
-class Simple_Plugin implements Plugin
+class Simple_Plugin implements Plugin, Registerable, Service_Provider
 {
+    use Service_Container;
     protected $file;
     protected $data;
     private $basename = null;
@@ -37,7 +41,7 @@ class Simple_Plugin implements Plugin
      */
     public function __construct(array $data)
     {
-        $this->data = \array_merge(['id' => 0, 'name' => '', 'version' => '', 'file' => null, 'is_woocommerce' => \false, 'is_edd' => \false, 'documentation_path' => '', 'settings_path' => ''], $data);
+        $this->data = \array_merge(['id' => 0, 'name' => '', 'version' => '', 'file' => null, 'is_woocommerce' => \false, 'is_edd' => \false, 'documentation_path' => '', 'settings_path' => '', 'is_hpos_compatible' => \true], $data);
         $this->data['id'] = (int) $this->data['id'];
         $this->data['documentation_path'] = \ltrim($this->data['documentation_path'], '/');
         $this->data['settings_path'] = \ltrim($this->data['settings_path'], '/');
@@ -52,6 +56,13 @@ class Simple_Plugin implements Plugin
         } elseif ($this->is_woocommerce()) {
             $this->data['is_edd'] = \false;
         }
+    }
+    public function register()
+    {
+        if ($this->is_woocommerce()) {
+            Util::declare_hpos_compatibility($this->get_file(), $this->is_hpos_compatible());
+        }
+        $this->register_core_services();
     }
     /**
      * Get the plugin ID, usually the EDD Download ID.
@@ -116,10 +127,10 @@ class Simple_Plugin implements Plugin
      *
      * If a relative path is supplied, this will be appended to the plugin directory path.
      *
-     * @since 1.3.1 Added $relative_path parameter.
-     *
      * @param string $relative_path Optional. A relative path to append to the plugin directory path.
      * @return string The plugin directory path.
+     * @since 1.3.1 Added $relative_path parameter.
+     *
      */
     public function get_dir_path($relative_path = '')
     {
@@ -133,10 +144,10 @@ class Simple_Plugin implements Plugin
      *
      * If a relative path is supplied, this will be appended to the plugin directory URL.
      *
-     * @since 1.3.1 Added $relative_path parameter.
-     *
      * @param string $relative_path Optional. A relative path to append to the plugin directory path.
      * @return string (URL)
+     * @since 1.3.1 Added $relative_path parameter.
+     *
      */
     public function get_dir_url($relative_path = '')
     {
@@ -153,6 +164,15 @@ class Simple_Plugin implements Plugin
     public function is_woocommerce()
     {
         return (bool) $this->data['is_woocommerce'];
+    }
+    /**
+     * Is this plugin compatible with WooCommerce HPOS?
+     *
+     * @return boolean true if it's compatible with WooCommerce HPOS.
+     */
+    public function is_hpos_compatible()
+    {
+        return $this->is_woocommerce() && (bool) $this->data['is_hpos_compatible'];
     }
     /**
      * Is this plugin an Easy Digital Downloads extension?
@@ -193,8 +213,8 @@ class Simple_Plugin implements Plugin
     /**
      * Get the plugin's main file header.
      *
-     * @since 1.3
      * @return array The plugin header data.
+     * @since 1.3
      */
     public function get_plugin_data()
     {
@@ -208,8 +228,8 @@ class Simple_Plugin implements Plugin
      *
      * The textdomain is retrieved from the plugin's main file header.
      *
-     * @since 1.3
      * @return string
+     * @since 1.3
      */
     public function get_textdomain()
     {
@@ -219,13 +239,13 @@ class Simple_Plugin implements Plugin
     /**
      * Register a script with WordPress and set the script translations
      *
-     * @since 1.3
-     * @param  string   $handle        The handle the script is registered with.
-     * @param  string   $relative_path The path to the script file relative to the plugin's root folder.
-     * @param  string[] $deps          The dependencies for this script.
-     * @param  string   $version       The version of the script. It defaults to the plugin version.
-     * @param  bool     $in_footer     Whether to enqueue the script before </body> instead of in the <head>.
+     * @param string   $handle        The handle the script is registered with.
+     * @param string   $relative_path The path to the script file relative to the plugin's root folder.
+     * @param string[] $deps          The dependencies for this script.
+     * @param string   $version       The version of the script. It defaults to the plugin version.
+     * @param bool     $in_footer     Whether to enqueue the script before </body> instead of in the <head>.
      * @return bool                    Whether the script has been registered. True on success, false on failure.
+     * @since 1.3
      */
     public function register_script($handle, $relative_path = '', $deps = [], $version = null, $in_footer = \true)
     {

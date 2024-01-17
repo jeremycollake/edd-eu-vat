@@ -1,9 +1,9 @@
 <?php
 namespace Barn2\Plugin\EDD_VAT\Integrations;
 
-use Barn2\Plugin\EDD_VAT\Dependencies\Lib\Registerable,
-	Barn2\Plugin\EDD_VAT\Dependencies\Lib\Service,
-	Barn2\Plugin\EDD_VAT\Util;
+use Barn2\Plugin\EDD_VAT\Dependencies\Lib\Registerable;
+use Barn2\Plugin\EDD_VAT\Dependencies\Lib\Service;
+use Barn2\Plugin\EDD_VAT\Util;
 
 /**
  * Integrates the plugin with the EDD PDF Invoices plugin.
@@ -53,8 +53,18 @@ class EDD_PDF_Invoices implements Registerable, Service {
 	 * @param mixed $eddpdfi_payment_date
 	 * @param mixed $eddpdfi_payment_status
 	 */
-	public function pdf_template( $eddpdfi_pdf, $eddpdfi_payment, $eddpdfi_payment_meta, $eddpdfi_buyer_info, $eddpdfi_payment_gateway,
-		$eddpdfi_payment_method, $address_line_2_line_height, $company_name, $eddpdfi_payment_date, $eddpdfi_payment_status ) {
+	public function pdf_template(
+		$eddpdfi_pdf,
+		$eddpdfi_payment,
+		$eddpdfi_payment_meta,
+		$eddpdfi_buyer_info,
+		$eddpdfi_payment_gateway,
+		$eddpdfi_payment_method,
+		$address_line_2_line_height,
+		$company_name,
+		$eddpdfi_payment_date,
+		$eddpdfi_payment_status
+	) {
 		global $edd_options;
 
 		if ( ! Util::is_eu_payment( $eddpdfi_payment->ID ) ) {
@@ -255,5 +265,4 @@ class EDD_PDF_Invoices implements Registerable, Service {
 
 		return apply_filters( 'edd_vat_pdf_invoice_template', $template );
 	}
-
 }

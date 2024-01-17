@@ -2,8 +2,8 @@
 
 namespace Barn2\Plugin\EDD_VAT\Admin;
 
-use Barn2\Plugin\EDD_VAT\Dependencies\Lib\Registerable,
-	Barn2\Plugin\EDD_VAT\Dependencies\Lib\Service;
+use Barn2\Plugin\EDD_VAT\Dependencies\Lib\Registerable;
+use Barn2\Plugin\EDD_VAT\Dependencies\Lib\Service;
 
 /**
  * Handles display of VAT info on the Order details in the admin.
@@ -98,5 +98,4 @@ class View_Order implements Registerable, Service {
 		edd_update_payment_meta( $payment_id, '_edd_payment_vat_company_address', $vat_company_address );
 		edd_update_payment_meta( $payment_id, '_edd_payment_vat_consultation_number', $vat_consultation_number );
 	}
-
 }

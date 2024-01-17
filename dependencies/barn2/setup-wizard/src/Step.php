@@ -63,6 +63,33 @@ abstract class Step implements Pluggable
      */
     private $hidden = \false;
     /**
+     * The request object.
+     * This is used to get the submitted values.
+     *
+     * @var \WP_REST_Request
+     */
+    private $request;
+    /**
+     * Set the request object.
+     *
+     * @param \WP_REST_Request $request The request object.
+     * @return Step
+     */
+    public function set_request(\WP_REST_Request $request)
+    {
+        $this->request = $request;
+        return $this;
+    }
+    /**
+     * Get the request object.
+     *
+     * @return \WP_REST_Request
+     */
+    public function get_request()
+    {
+        return $this->request;
+    }
+    /**
      * Attach a plugin to the step.
      *
      * @param object $plugin
