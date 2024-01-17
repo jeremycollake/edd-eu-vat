@@ -2,9 +2,9 @@
 
 namespace Barn2\Plugin\EDD_VAT\Admin;
 
-use Barn2\Plugin\EDD_VAT\Dependencies\Lib\Registerable,
-	Barn2\Plugin\EDD_VAT\Dependencies\Lib\Service,
-	Barn2\Plugin\EDD_VAT\Util;
+use Barn2\Plugin\EDD_VAT\Dependencies\Lib\Registerable;
+use Barn2\Plugin\EDD_VAT\Dependencies\Lib\Service;
+use Barn2\Plugin\EDD_VAT\Util;
 
 /**
  * Adds VAT based email merge tags for use in EDD Emails
@@ -152,5 +152,4 @@ class Email_Tags implements Registerable, Service {
 
 		return $output;
 	}
-
 }

@@ -88,10 +88,10 @@ class Company_Information extends Step {
 				'description' => __( 'Select the country of your company\'s registered VAT address.', 'edd-eu-vat' ),
 				'type'        => 'select',
 				'searchable'  => true,
-				'options'     => $this->format_edd_coutries_for_select(),
+				'options'     => $this->format_euvat_countries_for_select(),
 				'placeholder' => __( 'Select a country', 'edd-eu-vat' ),
 				'value'       => Util::get_country_for_api( edd_get_shop_country() ),
-				'classes'     => [ 'with-separator' ]
+				'classes'     => [ 'with-separator' ],
 			],
 		];
 
@@ -141,7 +141,6 @@ class Company_Information extends Step {
 		edd_update_option( 'edd_vat_address_invoice', $edd_vat_address_invoice );
 
 		return Api::send_success_response();
-
 	}
 
 	/**
@@ -150,17 +149,39 @@ class Company_Information extends Step {
 	 * @return array $select_countries
 	 */
 	private function format_edd_coutries_for_select( $with_moss = true ) {
-		$edd_countries = Util::get_country_list( $with_moss );
+		$edd_countries = edd_get_country_list();
 
 		$select_countries = array_map(
-			function( $country_code, $country_name ) {
+			function ( $country_code, $country_name ) {
 				return [
-					'value'   => $country_code,
+					'value' => $country_code,
 					'label' => html_entity_decode( $country_name ),
 				];
 			},
 			array_keys( $edd_countries ),
 			array_values( $edd_countries )
+		);
+
+		return $select_countries;
+	}
+
+	/**
+	 * Formats the EU VAT countries for the wizard select.
+	 *
+	 * @return array $select_countries
+	 */
+	private function format_euvat_countries_for_select() {
+		$countries = Util::get_country_list();
+
+		$select_countries = array_map(
+			function ( $country_code, $country_name ) {
+				return [
+					'value' => $country_code,
+					'label' => html_entity_decode( $country_name ),
+				];
+			},
+			array_keys( $countries ),
+			array_values( $countries )
 		);
 
 		return $select_countries;

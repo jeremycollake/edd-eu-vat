@@ -1,9 +1,9 @@
 <?php
 namespace Barn2\Plugin\EDD_VAT\Integrations;
 
-use Barn2\Plugin\EDD_VAT\Dependencies\Lib\Registerable,
-	EDD_Payment,
-	EDD_Subscription;
+use Barn2\Plugin\EDD_VAT\Dependencies\Lib\Registerable;
+use EDD_Payment;
+use EDD_Subscription;
 
 /**
  * Handles integration with the EDD Recurring plugin.
@@ -58,5 +58,4 @@ class EDD_Recurring implements Registerable {
 			edd_update_payment_meta( $payment_id, '_edd_payment_vat_company_address', edd_get_payment_meta( $subscription->parent_payment_id, '_edd_payment_vat_company_address', true ) );
 		}
 	}
-
 }

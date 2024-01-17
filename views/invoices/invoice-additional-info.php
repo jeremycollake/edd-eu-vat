@@ -19,13 +19,7 @@ $additional_text = edd_get_option( 'edd-invoices-additional-text' );
 $is_eu_payment = Util::is_eu_payment( $order->ID );
 $payment_vat   = Util::get_payment_vat( $order->ID );
 
-$should_show = false;
-
-if ( ! empty( $notes ) || ! empty( $additional_text ) || $is_eu_payment ) {
-	$should_show = true;
-}
-
-if ( ! $should_show ) {
+if ( empty( $notes ) && empty( $additional_text ) ) {
 	return;
 }
 

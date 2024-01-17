@@ -3,9 +3,10 @@
 namespace Barn2\Plugin\EDD_VAT\Admin;
 
 use Barn2\Plugin\EDD_VAT\Dependencies\Setup_Wizard\Starter;
-use Barn2\Plugin\EDD_VAT\Dependencies\Lib\Plugin\Licensed_Plugin,
-	Barn2\Plugin\EDD_VAT\Dependencies\Lib\Plugin\Plugin_Activation_Listener,
-	Barn2\Plugin\EDD_VAT\Dependencies\Lib\Registerable;
+use Barn2\Plugin\EDD_VAT\Dependencies\Lib\Plugin\Licensed_Plugin;
+use Barn2\Plugin\EDD_VAT\Dependencies\Lib\Plugin\Plugin_Activation_Listener;
+use Barn2\Plugin\EDD_VAT\Dependencies\Lib\Registerable;
+use Barn2\Plugin\EDD_VAT\Util;
 
 /**
  * Plugin Setup
@@ -16,6 +17,7 @@ use Barn2\Plugin\EDD_VAT\Dependencies\Lib\Plugin\Licensed_Plugin,
  * @copyright Barn2 Media Ltd
  */
 class Plugin_Setup implements Plugin_Activation_Listener, Registerable {
+
 	/**
 	 * Plugin's entry file
 	 *
@@ -65,21 +67,20 @@ class Plugin_Setup implements Plugin_Activation_Listener, Registerable {
 	 * @return void
 	 */
 	public function on_activate() {
-
-        /**
+		/**
 		 * Set default for purchase receipt option - EDD does not support defaults via Settings API.
 		 *
 		 * @link https://github.com/easydigitaldownloads/easy-digital-downloads/issues/5187
 		 *
 		 * Only set if settings have never previously been saved - we do this by checking the license key value.
 		 */
-        if ( function_exists( '\edd_update_option' ) && ! $this->plugin->get_license()->exists() ) {
+		if ( function_exists( '\edd_update_option' ) && ! $this->plugin->get_license()->exists() ) {
 			edd_update_option( 'edd_vat_purchase_receipt', '1' );
 		}
 
-        /**
-         * Determine if setup wizard should run.
-         */
+		/**
+		 * Determine if setup wizard should run.
+		 */
 		if ( $this->starter->should_start() ) {
 			$this->starter->create_transient();
 		}
@@ -98,6 +99,10 @@ class Plugin_Setup implements Plugin_Activation_Listener, Registerable {
 	 * @return void
 	 */
 	public function after_plugin_activation() {
+		if ( ! Util::is_edd_active() ) {
+			$this->plugin->add_missing_edd_notice();
+			return;
+		}
 
 		if ( ! $this->starter->detected() ) {
 			return;

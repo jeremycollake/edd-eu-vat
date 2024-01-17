@@ -11,16 +11,21 @@
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
+
+$is_checkout_block = function_exists( '\\EDD\\Blocks\\Checkout\\Functions\\checkout_has_blocks' ) && \EDD\Blocks\Checkout\Functions\checkout_has_blocks();
+
 ?>
 
-<p id="edd-card-vat-wrap">
+<div id="edd-card-vat-wrap">
 	<label for="edd-vat-number" class="edd-label">
 		<?php esc_html_e( 'VAT Number', 'edd-eu-vat' ); ?>
 		<?php if ( $vat_required ) : ?>
 			<span class="edd-required-indicator">*</span>
 		<?php endif; ?>
 	</label>
+	<?php if ( ! $is_checkout_block ) : ?>
 	<span class="edd-description"><?php echo esc_html( apply_filters( 'edd_vat_checkout_vat_field_description', __( 'Enter the VAT number of your company.', 'edd-eu-vat' ) ) ); ?></span>
+	<?php endif; ?>
 	<span class="edd-vat-number-wrap">
 		<input
 			type="text"
@@ -40,4 +45,4 @@ if ( ! defined( 'ABSPATH' ) ) {
 	echo $vat_check_result;
 	// phpcs: disable
 	?>
-</p>
+</div>

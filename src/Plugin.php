@@ -1,14 +1,14 @@
 <?php
 namespace Barn2\Plugin\EDD_VAT;
 
-use Barn2\Plugin\EDD_VAT\Admin\Plugin_Setup,
-	Barn2\Plugin\EDD_VAT\Dependencies\Lib\Registerable,
-	Barn2\Plugin\EDD_VAT\Dependencies\Lib\Translatable,
-	Barn2\Plugin\EDD_VAT\Dependencies\Lib\Service_Provider,
-	Barn2\Plugin\EDD_VAT\Dependencies\Lib\Plugin\Premium_Plugin,
-	Barn2\Plugin\EDD_VAT\Dependencies\Lib\Util as Lib_Util,
-	Barn2\Plugin\EDD_VAT\Dependencies\Lib\Admin\Notices,
-	Barn2\Plugin\EDD_VAT\Dependencies\Lib\Service;
+use Barn2\Plugin\EDD_VAT\Admin\Plugin_Setup;
+use Barn2\Plugin\EDD_VAT\Dependencies\Lib\Registerable;
+use Barn2\Plugin\EDD_VAT\Dependencies\Lib\Translatable;
+use Barn2\Plugin\EDD_VAT\Dependencies\Lib\Service_Provider;
+use Barn2\Plugin\EDD_VAT\Dependencies\Lib\Plugin\Premium_Plugin;
+use Barn2\Plugin\EDD_VAT\Dependencies\Lib\Util as Lib_Util;
+use Barn2\Plugin\EDD_VAT\Dependencies\Lib\Admin\Notices;
+use Barn2\Plugin\EDD_VAT\Dependencies\Lib\Service;
 use Barn2\Plugin\EDD_VAT\Admin\Wizard\Setup_Wizard;
 
 /**
@@ -47,9 +47,12 @@ class Plugin extends Premium_Plugin implements Registerable, Translatable, Servi
 				'is_edd'             => true,
 				'settings_path'      => 'edit.php?post_type=download&page=edd-settings&tab=extensions&section=vat',
 				'documentation_path' => 'kb-categories/edd-eu-vat-kb/',
-				'legacy_db_prefix'   => 'edd_eu_vat'
+				'legacy_db_prefix'   => 'edd_eu_vat',
 			]
 		);
+
+		// Add core service to handle plugin setup.
+		$this->add_service( 'plugin_setup', new Plugin_Setup( $this->get_file(), $this ), true );
 	}
 
 	/**
@@ -58,10 +61,8 @@ class Plugin extends Premium_Plugin implements Registerable, Translatable, Servi
 	public function register() {
 		parent::register();
 
-		$plugin_setup = new Plugin_Setup( $this->get_file(), $this );
-		$plugin_setup->register();
-
 		add_action( 'plugins_loaded', [ $this, 'load_services' ] );
+		add_action( 'plugins_loaded', [ $this, 'register_services' ], 20 );
 		add_action( 'init', [ $this, 'load_textdomain' ] );
 	}
 
@@ -71,44 +72,47 @@ class Plugin extends Premium_Plugin implements Registerable, Translatable, Servi
 	public function load_services() {
 		// Always create the admin service.
 		if ( Lib_Util::is_admin() ) {
-			$this->services['admin'] = new Admin\Admin_Controller( $this );
-		}
-
-		// Bail here if EDD not active.
-		if ( ! Util::is_edd_active() ) {
-			$this->add_missing_edd_notice();
-			return;
+			$this->add_service( 'admin', new Admin\Admin_Controller( $this ) );
 		}
 
 		if ( ! extension_loaded( 'soap' ) ) {
 			$this->add_missing_soap_extension_warning();
 		}
 
-		$this->services['setup_wizard'] = new Setup_Wizard( $this );
+		$this->add_service( 'setup_wizard', new Setup_Wizard( $this ) );
 
 		// Only create these services if license is valid.
 		if ( $this->has_valid_license() ) {
-			$this->services['cart_vat']         = new Cart_VAT();
-			$this->services['checkout_handler'] = new Checkout_Handler( $this->services['cart_vat'], $this->get_template_path() );
-			$this->services['purchase_receipt'] = new Purchase_Receipt();
-			$this->services['scripts']          = new Frontend_Scripts( $this->get_dir_url(), $this->get_version() );
-			$this->services['email_tags']       = new Admin\Email_Tags();
+			$services                     = [];
+			$services['cart_vat']         = new Cart_VAT();
+			$services['checkout_handler'] = new Checkout_Handler( $services['cart_vat'], $this->get_template_path() );
+			$services['purchase_receipt'] = new Purchase_Receipt();
+			$services['scripts']          = new Frontend_Scripts( $this->get_dir_url(), $this->get_version() );
+			$services['email_tags']       = new Admin\Email_Tags();
 
 			// Integrations
-			$this->services['recurring']       = new Integrations\EDD_Recurring();
-			$this->services['invoices']        = new Integrations\EDD_Invoices();
-			$this->services['pdf_invoices']    = new Integrations\EDD_PDF_Invoices();
-			$this->services['temporary_rates'] = new Integrations\Temporary_VAT_Rates();
+			$services['recurring']       = new Integrations\EDD_Recurring();
+			$services['invoices']        = new Integrations\EDD_Invoices();
+			$services['pdf_invoices']    = new Integrations\EDD_PDF_Invoices();
+			$services['temporary_rates'] = new Integrations\Temporary_VAT_Rates();
+
+			foreach ( $services as $service_key => $service ) {
+				$this->add_service( $service_key, $service );
+			}
 
 			if ( Lib_Util::is_admin() ) {
-				$this->services['view_order']      = new Admin\View_Order( $this->get_template_path() );
-				$this->services['payments_export'] = new Admin\Export\Payments_Export();
-				$this->services['vat_export']      = new Admin\Export\VAT_Payments_Export( $this->get_template_path() );
-				$this->services['ec_sales_export'] = new Admin\Export\VAT_EC_Sales_Payments_Export( $this->get_template_path() );
+				$admin_services = [
+					'view_order'      => new Admin\View_Order( $this->get_template_path() ),
+					'payments_export' => new Admin\Export\Payments_Export(),
+					'vat_export'      => new Admin\Export\VAT_Payments_Export( $this->get_template_path() ),
+					'ec_sales_export' => new Admin\Export\VAT_EC_Sales_Payments_Export( $this->get_template_path() ),
+				];
+
+				foreach ( $admin_services as $service_key => $service ) {
+					$this->add_service( $service_key, $service );
+				}
 			}
 		}
-
-		Lib_Util::register_services( $this->services );
 	}
 
 	/**
@@ -116,28 +120,6 @@ class Plugin extends Premium_Plugin implements Registerable, Translatable, Servi
 	 */
 	public function load_textdomain() {
 		load_plugin_textdomain( 'edd-eu-vat', false, $this->get_slug() . '/languages' );
-	}
-
-	/**
-	 * Retrieve a registered plugin Service.
-	 *
-	 * @param string $id
-	 * @return Service
-	 */
-	public function get_service( $id ) {
-		if ( isset( $this->services[ $id ] ) ) {
-			return $this->services[ $id ];
-		}
-		return null;
-	}
-
-	/**
-	 * Returns the registered Services.
-	 *
-	 * @return Service[]
-	 */
-	public function get_services() {
-		return $this->services;
 	}
 
 	/**
@@ -152,7 +134,7 @@ class Plugin extends Premium_Plugin implements Registerable, Translatable, Servi
 	/**
 	 * Adds EDD requirement notice.
 	 */
-	private function add_missing_edd_notice() {
+	public function add_missing_edd_notice() {
 		$notices = new Notices();
 		$notices->add(
 			'edd_eu_vat_edd_inactive',
@@ -165,7 +147,7 @@ class Plugin extends Premium_Plugin implements Registerable, Translatable, Servi
 			),
 			[
 				'type'       => 'error',
-				'capability' => 'install_plugins'
+				'capability' => 'install_plugins',
 			]
 		);
 		$notices->boot();
@@ -182,7 +164,7 @@ class Plugin extends Premium_Plugin implements Registerable, Translatable, Servi
 			__( 'Easy Digital Downloads EU VAT requires the PHP Soap extension to be installed in order to validate EU VAT numbers.', 'edd-eu-vat' ),
 			[
 				'type'       => 'warning',
-				'capability' => 'install_plugins'
+				'capability' => 'install_plugins',
 			]
 		);
 		$notices->boot();

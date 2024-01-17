@@ -32,6 +32,14 @@ class Notice
      */
     private $id;
     /**
+     * The notice title.
+     *
+     * @access private
+     * @since 1.0
+     * @var string
+     */
+    private $title;
+    /**
      * The notice message.
      *
      * @access private
@@ -112,7 +120,7 @@ class Notice
          * Allow filtering the allowed HTML tags array.
          *
          * @since 1.0.2
-         * @param array The list of allowed HTML tags.
+         * @param array $allowed_html The list of allowed HTML tags.
          * @return array
          */
         $this->allowed_html = \apply_filters('wptrt_admin_notices_allowed_html', $this->allowed_html);
@@ -178,7 +186,7 @@ class Notice
     {
         $classes = ['notice', 'is-dismissible'];
         // Make sure the defined type is allowed.
-        $this->options['type'] = \in_array($this->options['type'], $this->allowed_types) ? $this->options['type'] : 'info';
+        $this->options['type'] = \in_array($this->options['type'], $this->allowed_types, \true) ? $this->options['type'] : 'info';
         // Add the class for notice-type.
         $classes[] = 'notice-' . $this->options['type'];
         // Do we want alt styles?
@@ -231,7 +239,9 @@ class Notice
         if (!\function_exists('get_current_screen')) {
             require_once \ABSPATH . 'wp-admin/includes/screen.php';
         }
+        /** @var \WP_Screen $current_screen */
+        $current_screen = \get_current_screen();
         // Check if we're on one of the defined screens.
-        return \in_array(\get_current_screen()->id, $this->options['screens'], \true);
+        return \in_array($current_screen->id, $this->options['screens'], \true);
     }
 }

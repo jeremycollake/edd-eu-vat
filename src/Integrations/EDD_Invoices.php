@@ -1,9 +1,9 @@
 <?php
 namespace Barn2\Plugin\EDD_VAT\Integrations;
 
-use Barn2\Plugin\EDD_VAT\Dependencies\Lib\Registerable,
-	Barn2\Plugin\EDD_VAT\Dependencies\Lib\Service,
-	Barn2\Plugin\EDD_VAT\Util;
+use Barn2\Plugin\EDD_VAT\Dependencies\Lib\Registerable;
+use Barn2\Plugin\EDD_VAT\Dependencies\Lib\Service;
+use Barn2\Plugin\EDD_VAT\Util;
 
 use function Barn2\Plugin\EDD_VAT\edd_eu_vat;
 
@@ -45,7 +45,6 @@ class EDD_Invoices implements Registerable, Service {
 		add_action( 'edd_invoices_invoice_items_table', [ $this, 'add_additional_info' ], 15 );
 		add_action( 'edd_invoices_after_customer_details', [ $this, 'add_customer_vat' ] );
 		add_action( 'edd_invoices_invoice_additional_info', [ $this, 'additional_info' ] );
-
 	}
 
 	/**
@@ -56,7 +55,7 @@ class EDD_Invoices implements Registerable, Service {
 	public function disable_default_templates() {
 		add_action(
 			'after_setup_theme',
-			function() {
+			function () {
 				remove_action( 'edd_invoices_invoice_contacts', 'edd_invoices_do_invoice_contacts' );
 				remove_action( 'edd_invoices_invoice_additional_info', 'edd_invoices_invoice_do_additional_info' );
 			}
@@ -160,7 +159,6 @@ class EDD_Invoices implements Registerable, Service {
 		}
 
 		return $value;
-
 	}
 
 	/**
@@ -254,5 +252,4 @@ class EDD_Invoices implements Registerable, Service {
 			<?php
 		endif;
 	}
-
 }

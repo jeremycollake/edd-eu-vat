@@ -2,12 +2,12 @@
 
 namespace Barn2\Plugin\EDD_VAT\Admin\Wizard;
 
-use Barn2\Plugin\EDD_VAT\Admin\Wizard\Steps,
-	Barn2\Plugin\EDD_VAT\Dependencies\Lib\Plugin\License\EDD_Licensing,
-	Barn2\Plugin\EDD_VAT\Dependencies\Lib\Plugin\License\Plugin_License,
-	Barn2\Plugin\EDD_VAT\Dependencies\Lib\Plugin\Licensed_Plugin,
-	Barn2\Plugin\EDD_VAT\Dependencies\Lib\Registerable,
-	Barn2\Plugin\EDD_VAT\Dependencies\Lib\Util as Lib_Util;
+use Barn2\Plugin\EDD_VAT\Admin\Wizard\Steps;
+use Barn2\Plugin\EDD_VAT\Dependencies\Lib\Plugin\License\EDD_Licensing;
+use Barn2\Plugin\EDD_VAT\Dependencies\Lib\Plugin\License\Plugin_License;
+use Barn2\Plugin\EDD_VAT\Dependencies\Lib\Plugin\Licensed_Plugin;
+use Barn2\Plugin\EDD_VAT\Dependencies\Lib\Registerable;
+use Barn2\Plugin\EDD_VAT\Dependencies\Lib\Util as Lib_Util;
 use Barn2\Plugin\EDD_VAT\Dependencies\Setup_Wizard\Setup_Wizard as Wizard;
 
 /**
@@ -46,11 +46,13 @@ class Setup_Wizard implements Registerable {
 			[
 				'skip_url'        => admin_url( 'edit.php?post_type=download&page=edd-settings&tab=extensions&section=vat' ),
 				'license_tooltip' => esc_html__( 'The licence key is contained in your order confirmation email.', 'edd-eu-vat' ),
+				'plugin_slug'     => 'easy-digital-downloads-eu-vat',
 			]
 		);
 
 		$wizard->add_edd_api( EDD_Licensing::class );
 		$wizard->add_license_class( Plugin_License::class );
+		$wizard->add_restart_link( 'edd-eu-vat-setup-wizard', 'edd-eu-vat-setup-wizard-restart' );
 
 		$this->wizard = $wizard;
 	}
@@ -94,5 +96,4 @@ class Setup_Wizard implements Registerable {
 		</style>
 		<?php
 	}
-
 }

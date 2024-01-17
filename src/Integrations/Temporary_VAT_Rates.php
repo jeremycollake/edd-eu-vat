@@ -1,10 +1,10 @@
 <?php
 namespace Barn2\Plugin\EDD_VAT\Integrations;
 
-use DateTimeImmutable,
-	DateTimeZone,
-	Barn2\Plugin\EDD_VAT\Dependencies\Lib\Service,
-	Barn2\Plugin\EDD_VAT\Dependencies\Lib\Registerable;
+use DateTimeImmutable;
+use DateTimeZone;
+use Barn2\Plugin\EDD_VAT\Dependencies\Lib\Service;
+use Barn2\Plugin\EDD_VAT\Dependencies\Lib\Registerable;
 
 /**
  * Temporary VAT rate adjustments.
@@ -62,22 +62,21 @@ class Temporary_VAT_Rates implements Service, Registerable {
 					'rate'     => 16.0,
 					'timezone' => 'Europe/Berlin',
 					'from'     => '2020-07-01',
-					'to'       => '2021-01-01'
+					'to'       => '2021-01-01',
 				],
 				'IE' => [
 					'rate'     => 21.0,
 					'timezone' => 'Europe/Dublin',
 					'from'     => '2020-09-01',
-					'to'       => '2021-03-01'
+					'to'       => '2021-03-01',
 				],
 				'LU' => [
 					'rate'     => 16.0,
 					'timezone' => 'Europe/Luxembourg',
 					'from'     => '2023-01-01',
-					'to'       => '2023-12-31'
-				]
+					'to'       => '2023-12-31',
+				],
 			]
 		);
 	}
-
 }

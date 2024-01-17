@@ -2,12 +2,13 @@
 
 namespace Barn2\Plugin\EDD_VAT\Admin;
 
+use Barn2\Plugin\EDD_VAT\Dependencies\Lib\Admin\Settings_Util;
 use Barn2\Plugin\EDD_VAT\Util as EDD_VATUtil;
-use Barn2\Plugin\EDD_VAT\Dependencies\Lib\Registerable,
-	Barn2\Plugin\EDD_VAT\Dependencies\Lib\Service,
-	Barn2\Plugin\EDD_VAT\Dependencies\Lib\Util,
-	Barn2\Plugin\EDD_VAT\Dependencies\Lib\Plugin\Licensed_Plugin,
-	Barn2\Plugin\EDD_VAT\Dependencies\Lib\Plugin\License\Admin\License_Setting;
+use Barn2\Plugin\EDD_VAT\Dependencies\Lib\Registerable;
+use Barn2\Plugin\EDD_VAT\Dependencies\Lib\Service;
+use Barn2\Plugin\EDD_VAT\Dependencies\Lib\Util;
+use Barn2\Plugin\EDD_VAT\Dependencies\Lib\Plugin\Licensed_Plugin;
+use Barn2\Plugin\EDD_VAT\Dependencies\Lib\Plugin\License\Admin\License_Setting;
 
 /**
  * Registrations of the EDD settings page.
@@ -123,7 +124,7 @@ class Settings implements Registerable, Service {
 					'id'   => 'edd_vat_settings',
 					'name' => '<h3>' . __( 'EU VAT', 'edd-eu-vat' ) . '</h3>',
 					'desc' => $this->get_help_links(),
-					'type' => 'descriptive_text'
+					'type' => 'descriptive_text',
 				],
 				$this->license_setting->get_license_key_setting(),
 				$this->license_setting->get_license_override_setting(),
@@ -136,7 +137,7 @@ class Settings implements Registerable, Service {
 				[
 					'id'   => 'edd_vat_reverse_charge_base_country',
 					'name' => __( 'Reverse Charge in Home Country?', 'edd-eu-vat' ),
-					'desc' => __( 'If your store is based in the EU or the UK, check this to reverse charge VAT for customers with a valid VAT number who are in your home country.', 'edd-eu-vat' ),
+					'desc' => __( 'Allow VAT reverse charge for customers with a valid VAT number who are based in your home country.', 'edd-eu-vat' ),
 					'type' => 'checkbox',
 				],
 				[
@@ -149,7 +150,7 @@ class Settings implements Registerable, Service {
 					'id'   => 'edd_vat_address_header',
 					'name' => '<h3>' . __( 'Company Information', 'edd-eu-vat' ) . '</h3>',
 					'desc' => __( 'The following information about your company will be displayed on the order details page and purchase receipt email.', 'edd-eu-vat' ),
-					'type' => 'descriptive_text'
+					'type' => 'descriptive_text',
 				],
 				[
 					'id'   => 'edd_vat_company_name',
@@ -209,25 +210,25 @@ class Settings implements Registerable, Service {
 					'placeholder' => __( 'Select a country', 'edd-eu-vat' ),
 					'std'         => edd_get_shop_country(),
 					'data'        => [
-						'nonce' => wp_create_nonce( 'edd-country-field-nonce' )
+						'nonce' => wp_create_nonce( 'edd-country-field-nonce' ),
 					],
 				],
 				[
-					'id'          => 'edd_vat_address_country',
-					'name'        => __( 'Country of VAT registration', 'edd-eu-vat' ),
-					'desc'        => __( 'Select the country of your company\'s registered VAT address.', 'edd-eu-vat' ),
-					'type'        => 'select',
-					'options'     => EDD_VATUtil::get_country_list(),
-					'chosen'      => true,
-					'placeholder' => __( 'Select a country', 'edd-eu-vat' ),
+					'id'            => 'edd_vat_address_country',
+					'name'          => __( 'Country of VAT registration', 'edd-eu-vat' ),
+					'desc'          => __( 'Select the country of your company\'s registered VAT address.', 'edd-eu-vat' ),
+					'type'          => 'select',
+					'options'       => EDD_VATUtil::get_country_list(),
+					'chosen'        => true,
+					'placeholder'   => __( 'Select a country', 'edd-eu-vat' ),
 					'tooltip_title' => __( 'Country setup', 'edd-eu-vat' ),
-					'tooltip_desc' => __( 'Select the country that issued your company’s VAT number. If you are based in Northern Ireland and have a VAT number beginning with XI then you should select “Northern Ireland”. If your VAT number begins with EU then you should select “EU MOSS Number”', 'edd-eu-vat' ),
-					'std'         => edd_get_shop_country(),
-					'data'        => [
-						'nonce' => wp_create_nonce( 'edd-country-field-nonce' )
+					'tooltip_desc'  => __( 'Select the country that issued your company’s VAT number. If you are based in Northern Ireland and have a VAT number beginning with XI then you should select “Northern Ireland”. If your VAT number begins with EU then you should select “EU MOSS Number”', 'edd-eu-vat' ),
+					'std'           => edd_get_shop_country(),
+					'data'          => [
+						'nonce' => wp_create_nonce( 'edd-country-field-nonce' ),
 					],
 				],
-			]
+			],
 		];
 
 		// Remove settings if the plugin isn't enabled. These settings can't be used anywhere else.
@@ -236,7 +237,7 @@ class Settings implements Registerable, Service {
 
 			foreach ( $vat_settings['vat'] as $key => $setting ) {
 				if ( isset( $setting['id'] ) && in_array( $setting['id'], $to_remove, true ) ) {
-					unset( $vat_settings['vat'][$key] );
+					unset( $vat_settings['vat'][ $key ] );
 				}
 			}
 		}
@@ -267,15 +268,9 @@ class Settings implements Registerable, Service {
 	 */
 	private function get_help_links() {
 		return sprintf(
-			'<p class="barn2-support-links">%s | %s | %s</p>',
-			Util::format_link( $this->plugin->get_documentation_url(), __( 'Documentation', 'edd-eu-vat' ) ),
-			Util::format_link( $this->plugin->get_support_url(), __( 'Support', 'edd-eu-vat' ) ),
-			sprintf(
-				'<a class="barn2-wiz-restart-btn" href="%s">%s</a>',
-				add_query_arg( [ 'page' => $this->plugin->get_slug() . '-setup-wizard' ], admin_url( 'admin.php' ) ),
-				__( 'Setup wizard', 'edd-eu-vat' )
-			)
+			'<p>%s</p><p>%s</p>',
+			Settings_Util::get_help_links( $this->plugin ), // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+			''
 		);
 	}
-
 }
