@@ -56,7 +56,7 @@ class Util
     public static function clean($var)
     {
         if (\is_array($var)) {
-            return \array_map('self::clean', $var);
+            return \array_map([__CLASS__, 'clean'], $var);
         } else {
             return \is_scalar($var) ? \sanitize_text_field($var) : $var;
         }

@@ -25,13 +25,6 @@ class Plugin extends Premium_Plugin implements Registerable, Translatable, Servi
 	const ITEM_ID = 146171;
 
 	/**
-	 * Services Container
-	 *
-	 * @var array $services
-	 */
-	private $services = [];
-
-	/**
 	 * Constructs and initalizes an EDD VAT plugin instance.
 	 *
 	 * @param string $file The main plugin __FILE__
@@ -70,6 +63,11 @@ class Plugin extends Premium_Plugin implements Registerable, Translatable, Servi
 	 * Setup the plugin services.
 	 */
 	public function load_services() {
+		// Check if EDD Easy Digital Downloads is active.
+		if ( ! Lib_Util::is_edd_active() ) {
+			return;
+		}
+
 		// Always create the admin service.
 		if ( Lib_Util::is_admin() ) {
 			$this->add_service( 'admin', new Admin\Admin_Controller( $this ) );

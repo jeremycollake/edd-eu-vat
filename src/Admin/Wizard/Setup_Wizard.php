@@ -47,6 +47,7 @@ class Setup_Wizard implements Registerable {
 				'skip_url'        => admin_url( 'edit.php?post_type=download&page=edd-settings&tab=extensions&section=vat' ),
 				'license_tooltip' => esc_html__( 'The licence key is contained in your order confirmation email.', 'edd-eu-vat' ),
 				'plugin_slug'     => 'easy-digital-downloads-eu-vat',
+				'utm_id' => 'vat',
 			]
 		);
 
