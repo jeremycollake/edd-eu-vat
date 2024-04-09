@@ -149,6 +149,10 @@ class Batch_VAT_Payments_Export extends \EDD_Batch_Export {
 		$total_steps = $this->get_total_steps();
 		$cache_key   = 'edd_eu_vat_export_' . $this->export_key;
 
+		if( ! $total_steps ) {
+			return false;
+		}
+
 		// handle our batch steps
 		if ( $this->step === $total_steps ) {
 			// FiNAL OR ONLY STEP: Do a final totals addition if necessary, and then print the CSV rows.
