@@ -2,9 +2,9 @@
 Contributors: andykeith, barn2media
 Tags: easy digital downloads, edd, vat, checkout, tax
 Requires at least: 5.0
-Tested up to: 6.4.2
+Tested up to: 6.4.3
 Requires PHP: 7.4
-Stable tag: 1.5.23
+Stable tag: 1.5.24
 License: GPL-3.0
 License URI: https://www.gnu.org/licenses/gpl.html
 
@@ -22,6 +22,13 @@ This plugin extends the Easy Digital Downloads plugin with EU VAT support.
 1. Enter your license key under Downloads -> Settings -> Extensions -> EU VAT.
 
 == Changelog ==
+
+= 1.5.24 =
+Release date 02 April 2024
+
+ * Fix: fatal error when activating the plugin while EDD is not active.
+ * Fix: VAT "Billed To" section not visible due to payment key not longer available via global variable.
+ * Dev: Updated internal libraries.
 
 = 1.5.23 =
 Release date 11 January 2024

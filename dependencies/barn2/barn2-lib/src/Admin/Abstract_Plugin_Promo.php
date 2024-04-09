@@ -74,12 +74,11 @@ abstract class Abstract_Plugin_Promo
                 \set_transient('barn2_plugin_review_banner_' . $plugin_id, $review_content, 7 * \DAY_IN_SECONDS);
             }
         }
-        $plugins_installed = Util::get_installed_barn2_plugins() ?: [];
+        $plugins_installed = \array_column(Util::get_installed_barn2_plugins() ?: [], 'ITEM_ID');
         if (\false === $promo_response_data || !\is_array($promo_response_data)) {
             $promo_content_url = Util::barn2_api_url('/wp-json/promos/v1/get/' . $plugin_id . '?_=' . \gmdate('mdY'));
             $promo_content_url = \add_query_arg('source', \rawurlencode(\get_bloginfo('url')), $promo_content_url);
             if ($plugins_installed) {
-                $plugins_installed = \array_column($plugins_installed, 'ITEM_ID');
                 $promo_content_url = \add_query_arg('plugins_installed', \implode(',', $plugins_installed), $promo_content_url);
             }
             $promo_response = \wp_remote_get($promo_content_url, ['sslverify' => \defined('WP_DEBUG') && \WP_DEBUG ? \false : \true]);

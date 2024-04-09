@@ -148,6 +148,11 @@ class Settings_API_Helper implements Registerable, Conditional
     {
         if (!empty($args['desc'])) {
             $allowed_html = ['a' => ['class' => [], 'style' => [], 'target' => [], 'href' => []], 'span' => ['class' => [], 'style' => []], 'button' => ['class' => [], 'style' => [], 'type' => [], 'name' => [], 'value' => []], 'br' => [], 'strong' => [], 'img' => ['src' => [], 'alt' => [], 'width' => [], 'height' => [], 'class' => []]];
+            $is_page_select = 'select' === $args['type'] && isset($args['show_page']) && !empty($args['show_page']);
+            // Add a link to the page if it's a select field and a page is selected.
+            if ($is_page_select) {
+                $args['desc'] .= ' <a href="' . \esc_url(\get_permalink($args['show_page'])) . '" target="_blank">' . esc_html__('[View page]', 'edd-eu-vat') . '</a>';
+            }
             echo '<p class="description">' . \wp_kses($args['desc'], $allowed_html) . '</p>';
         }
     }

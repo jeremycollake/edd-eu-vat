@@ -118,6 +118,8 @@ class Purchase_Receipt implements Registerable, Service {
 			$payment_key = $session['purchase_key'];
 		} elseif ( $edd_receipt_args['payment_key'] ) {
 			$payment_key = $edd_receipt_args['payment_key'];
+		} elseif ( isset( $edd_receipt_args['id'] ) ) {
+			$payment_key = edd_get_payment_key( $edd_receipt_args['id'] );
 		}
 		// phpcs:enable
 

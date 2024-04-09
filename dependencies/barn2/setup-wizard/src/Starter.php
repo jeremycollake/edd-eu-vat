@@ -78,7 +78,7 @@ class Starter
      */
     public function redirect()
     {
-        $url = \add_query_arg(['page' => $this->slug], \admin_url());
+        $url = \add_query_arg(['page' => $this->slug], \admin_url('admin.php'));
         \wp_safe_redirect($url);
         exit;
     }

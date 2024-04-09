@@ -2,14 +2,14 @@
 # This file is distributed under the GNU General Public License v3.0.
 msgid ""
 msgstr ""
-"Project-Id-Version: Easy Digital Downloads - EU VAT 1.5.23\n"
+"Project-Id-Version: Easy Digital Downloads - EU VAT 1.5.24\n"
 "Report-Msgid-Bugs-To: https://barn2.com/support-center/\n"
 "Last-Translator: Barn2 Plugins <support@barn2.com>\n"
 "Language-Team: Barn2 Plugins <support@barn2.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2024-01-11T00:00:00+00:00\n"
+"POT-Creation-Date: 2024-04-03T00:00:00+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.8.1\n"
 "X-Domain: edd-eu-vat\n"
@@ -34,7 +34,11 @@ msgstr ""
 msgid "https://barn2.com"
 msgstr ""
 
-#: dependencies/barn2/barn2-lib/src/Admin/Settings_API_Helper.php:507
+#: dependencies/barn2/barn2-lib/src/Admin/Settings_API_Helper.php:154
+msgid "[View page]"
+msgstr ""
+
+#: dependencies/barn2/barn2-lib/src/Admin/Settings_API_Helper.php:512
 #: dependencies/barn2/barn2-lib/src/WooCommerce/Admin/Custom_Settings_Fields.php:138
 msgid "Size"
 msgstr ""
@@ -243,8 +247,8 @@ msgstr ""
 msgid "The %1$s plugin requires WooCommerce %2$s or greater. Please update your WooCommerce setup first."
 msgstr ""
 
-#: dependencies/barn2/barn2-lib/src/WooCommerce/Admin/Plugin_Promo.php:95
 #: dependencies/barn2/barn2-lib/src/WooCommerce/Admin/Plugin_Promo.php:97
+#: dependencies/barn2/barn2-lib/src/WooCommerce/Admin/Plugin_Promo.php:99
 msgid "Save changes"
 msgstr ""
 
@@ -439,7 +443,8 @@ msgid "Reverse Charge in Home Country?"
 msgstr ""
 
 #: dist/edd-eu-vat/src/Admin/Settings.php:140
-msgid "If your store is based in the EU or the UK, check this to reverse charge VAT for customers with a valid VAT number who are in your home country."
+#: src/Admin/Settings.php:140
+msgid "Allow VAT reverse charge for customers with a valid VAT number who are based in your home country."
 msgstr ""
 
 #: dist/edd-eu-vat/src/Admin/Settings.php:145
@@ -618,11 +623,14 @@ msgstr ""
 
 #: dist/edd-eu-vat/src/Admin/Wizard/Steps/Base_Country.php:24
 #: dist/edd-eu-vat/src/Admin/Wizard/Steps/Base_Country.php:26
-msgid "Base Country"
+#: src/Admin/Wizard/Steps/Base_Country.php:24
+#: src/Admin/Wizard/Steps/Base_Country.php:26
+msgid "Reverse charge"
 msgstr ""
 
 #: dist/edd-eu-vat/src/Admin/Wizard/Steps/Base_Country.php:25
-msgid " Choose whether to allow customers from your home country to reverse charge the VAT."
+#: src/Admin/Wizard/Steps/Base_Country.php:25
+msgid "Allow customers from your home country to reverse charge the VAT."
 msgstr ""
 
 #: dist/edd-eu-vat/src/Admin/Wizard/Steps/Base_Country.php:45
@@ -757,10 +765,10 @@ msgstr ""
 #. translators: %s: VAT number
 #: dist/edd-eu-vat/src/Integrations/EDD_Invoices.php:234
 #: dist/edd-eu-vat/src/Integrations/EDD_PDF_Invoices.php:87
-#: dist/edd-eu-vat/src/Purchase_Receipt.php:160
+#: dist/edd-eu-vat/src/Purchase_Receipt.php:162
 #: src/Integrations/EDD_Invoices.php:234
 #: src/Integrations/EDD_PDF_Invoices.php:87
-#: src/Purchase_Receipt.php:160
+#: src/Purchase_Receipt.php:162
 msgid "VAT number: %s"
 msgstr ""
 
@@ -768,10 +776,10 @@ msgstr ""
 #. translators: %s: Company Name
 #: dist/edd-eu-vat/src/Integrations/EDD_Invoices.php:238
 #: dist/edd-eu-vat/src/Integrations/EDD_PDF_Invoices.php:92
-#: dist/edd-eu-vat/src/Purchase_Receipt.php:164
+#: dist/edd-eu-vat/src/Purchase_Receipt.php:166
 #: src/Integrations/EDD_Invoices.php:238
 #: src/Integrations/EDD_PDF_Invoices.php:92
-#: src/Purchase_Receipt.php:164
+#: src/Purchase_Receipt.php:166
 msgid "Company name: %s"
 msgstr ""
 
@@ -779,54 +787,54 @@ msgstr ""
 #. translators: %s: Company Address
 #: dist/edd-eu-vat/src/Integrations/EDD_Invoices.php:242
 #: dist/edd-eu-vat/src/Integrations/EDD_PDF_Invoices.php:97
-#: dist/edd-eu-vat/src/Purchase_Receipt.php:168
+#: dist/edd-eu-vat/src/Purchase_Receipt.php:170
 #: src/Integrations/EDD_Invoices.php:242
 #: src/Integrations/EDD_PDF_Invoices.php:97
-#: src/Purchase_Receipt.php:168
+#: src/Purchase_Receipt.php:170
 msgid "Address: %s"
 msgstr ""
 
 #: dist/edd-eu-vat/src/Integrations/EDD_Invoices.php:249
 #: dist/edd-eu-vat/src/Integrations/EDD_PDF_Invoices.php:136
-#: dist/edd-eu-vat/src/Purchase_Receipt.php:184
+#: dist/edd-eu-vat/src/Purchase_Receipt.php:186
 #: dist/edd-eu-vat/views/payment-postbox-vat.php:52
 #: src/Integrations/EDD_Invoices.php:249
 #: src/Integrations/EDD_PDF_Invoices.php:136
-#: src/Purchase_Receipt.php:184
+#: src/Purchase_Receipt.php:186
 #: views/payment-postbox-vat.php:52
 msgid "VAT Details"
 msgstr ""
 
 #. translators: %1$s: HTML <a href> EDD WordPress.org link %2$s: HTML </a>
-#: dist/edd-eu-vat/src/Plugin.php:144
-#: src/Plugin.php:144
+#: dist/edd-eu-vat/src/Plugin.php:142
+#: src/Plugin.php:142
 msgid "Please install and activate %1$sEasy Digital Downloads%2$s in order to use the EU VAT extension."
 msgstr ""
 
-#: dist/edd-eu-vat/src/Plugin.php:164
-#: src/Plugin.php:164
+#: dist/edd-eu-vat/src/Plugin.php:162
+#: src/Plugin.php:162
 msgid "Easy Digital Downloads EU VAT requires the PHP Soap extension to be installed in order to validate EU VAT numbers."
 msgstr ""
 
-#: dist/edd-eu-vat/src/Purchase_Receipt.php:178
-#: src/Purchase_Receipt.php:178
+#: dist/edd-eu-vat/src/Purchase_Receipt.php:180
+#: src/Purchase_Receipt.php:180
 msgid "Billed To"
 msgstr ""
 
 #. translators: %s is the VAT number
-#: dist/edd-eu-vat/src/Purchase_Receipt.php:209
-#: src/Purchase_Receipt.php:209
+#: dist/edd-eu-vat/src/Purchase_Receipt.php:211
+#: src/Purchase_Receipt.php:211
 msgid "EU VAT number: %s"
 msgstr ""
 
 #. translators: %s is the VAT number
-#: dist/edd-eu-vat/src/Purchase_Receipt.php:214
-#: src/Purchase_Receipt.php:214
+#: dist/edd-eu-vat/src/Purchase_Receipt.php:216
+#: src/Purchase_Receipt.php:216
 msgid "UK VAT number: %s"
 msgstr ""
 
-#: dist/edd-eu-vat/src/Purchase_Receipt.php:221
-#: src/Purchase_Receipt.php:221
+#: dist/edd-eu-vat/src/Purchase_Receipt.php:223
+#: src/Purchase_Receipt.php:223
 msgid "Sold By"
 msgstr ""
 
@@ -1106,17 +1114,4 @@ msgstr ""
 #: dist/edd-eu-vat/views/payment-postbox-vat.php:89
 #: views/payment-postbox-vat.php:89
 msgid "IP address:"
-msgstr ""
-
-#: src/Admin/Settings.php:140
-msgid "Allow VAT reverse charge for customers with a valid VAT number who are based in your home country."
-msgstr ""
-
-#: src/Admin/Wizard/Steps/Base_Country.php:24
-#: src/Admin/Wizard/Steps/Base_Country.php:26
-msgid "Reverse charge"
-msgstr ""
-
-#: src/Admin/Wizard/Steps/Base_Country.php:25
-msgid "Allow customers from your home country to reverse charge the VAT."
 msgstr ""
