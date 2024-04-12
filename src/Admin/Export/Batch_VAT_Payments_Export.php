@@ -222,7 +222,7 @@ class Batch_VAT_Payments_Export extends \EDD_Batch_Export {
 
 		$all_payments_count = edd_count_payments( $args );
 
-		$total      = $all_payments_count->edd_subscription + $all_payments_count->publish;
+		$total      = $all_payments_count->edd_subscription + $all_payments_count->publish + $all_payments_count->complete;
 		$percentage = 100;
 
 		if ( $total > 0 ) {
