@@ -30,13 +30,13 @@ class Cache
     public static function remember($key, $callback, $group = '', $expire = 0)
     {
         $found = \false;
-        $cached = \wp_cache_get($key, $group, \false, $found);
+        $cached = wp_cache_get($key, $group, \false, $found);
         if (\false !== $found) {
             return $cached;
         }
         $value = $callback();
-        if (!\is_wp_error($value)) {
-            \wp_cache_set($key, $value, $group, $expire);
+        if (!is_wp_error($value)) {
+            wp_cache_set($key, $value, $group, $expire);
         }
         return $value;
     }
@@ -53,9 +53,9 @@ class Cache
     public static function forget($key, $group = '', $default = null)
     {
         $found = \false;
-        $cached = \wp_cache_get($key, $group, \false, $found);
+        $cached = wp_cache_get($key, $group, \false, $found);
         if (\false !== $found) {
-            \wp_cache_delete($key, $group);
+            wp_cache_delete($key, $group);
             return $cached;
         }
         return $default;
@@ -73,13 +73,13 @@ class Cache
      */
     public static function remember_transient($key, $callback, $expire = 0)
     {
-        $cached = \get_transient($key);
+        $cached = get_transient($key);
         if (\false !== $cached) {
             return $cached;
         }
         $value = $callback();
-        if (!\is_wp_error($value)) {
-            \set_transient($key, $value, $expire);
+        if (!is_wp_error($value)) {
+            set_transient($key, $value, $expire);
         }
         return $value;
     }
@@ -94,9 +94,9 @@ class Cache
      */
     public static function forget_transient($key, $default = null)
     {
-        $cached = \get_transient($key);
+        $cached = get_transient($key);
         if (\false !== $cached) {
-            \delete_transient($key);
+            delete_transient($key);
             return $cached;
         }
         return $default;
@@ -114,13 +114,13 @@ class Cache
      */
     public static function remember_site_transient($key, $callback, $expire = 0)
     {
-        $cached = \get_site_transient($key);
+        $cached = get_site_transient($key);
         if (\false !== $cached) {
             return $cached;
         }
         $value = $callback();
-        if (!\is_wp_error($value)) {
-            \set_site_transient($key, $value, $expire);
+        if (!is_wp_error($value)) {
+            set_site_transient($key, $value, $expire);
         }
         return $value;
     }
@@ -135,9 +135,9 @@ class Cache
      */
     public static function forget_site_transient($key, $default = null)
     {
-        $cached = \get_site_transient($key);
+        $cached = get_site_transient($key);
         if (\false !== $cached) {
-            \delete_site_transient($key);
+            delete_site_transient($key);
             return $cached;
         }
         return $default;

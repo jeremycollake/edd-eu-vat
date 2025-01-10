@@ -37,8 +37,8 @@ class Premium_Plugin extends Simple_Plugin implements Licensed_Plugin
      */
     public function __construct(array $data)
     {
-        parent::__construct(\array_merge(['license_setting_path' => '', 'legacy_db_prefix' => ''], $data));
-        $this->data['license_setting_path'] = \ltrim($this->data['license_setting_path'], '/');
+        parent::__construct(array_merge(['license_setting_path' => '', 'legacy_db_prefix' => ''], $data));
+        $this->data['license_setting_path'] = ltrim($this->data['license_setting_path'], '/');
         $this->add_service('license', new Plugin_License($this->get_id(), EDD_Licensing::instance(), $this->get_legacy_db_prefix()), \true);
         $this->add_service('plugin_updater', new Plugin_Updater($this, EDD_Licensing::instance()), \true);
         $this->add_service('license_checker', new License_Checker($this->get_file(), $this->get_license()), \true);
@@ -60,7 +60,7 @@ class Premium_Plugin extends Simple_Plugin implements Licensed_Plugin
     public function get_license_page_url()
     {
         // Default to plugin settings URL if there's no license setting path.
-        return !empty($this->data['license_setting_path']) ? \admin_url($this->data['license_setting_path']) : parent::get_settings_page_url();
+        return !empty($this->data['license_setting_path']) ? admin_url($this->data['license_setting_path']) : parent::get_settings_page_url();
     }
     public function get_legacy_db_prefix()
     {

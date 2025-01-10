@@ -35,15 +35,15 @@ class Plugin_Updater implements Registerable
     }
     public function register()
     {
-        if (\is_admin() || \defined('WP_CLI') && \WP_CLI) {
+        if (is_admin() || defined('WP_CLI') && \WP_CLI) {
             if ($this->use_barn2_update_uri()) {
-                \add_filter('update_plugins_barn2.com', [$this, 'update_plugins_barn2_com'], 10, 3);
+                add_filter('update_plugins_barn2.com', [$this, 'update_plugins_barn2_com'], 10, 3);
             } else {
-                \add_filter('pre_set_site_transient_update_plugins', [$this, 'check_update']);
+                add_filter('pre_set_site_transient_update_plugins', [$this, 'check_update']);
             }
-            \add_filter('plugins_api', [$this, 'get_plugin_details'], 10, 3);
-            \add_action('in_plugin_update_message-' . $this->plugin->get_basename(), [$this, 'update_available_notice'], 10, 2);
-            \add_filter('plugin_auto_update_setting_html', [$this, 'auto_update_setting_html'], 10, 2);
+            add_filter('plugins_api', [$this, 'get_plugin_details'], 10, 3);
+            add_action('in_plugin_update_message-' . $this->plugin->get_basename(), [$this, 'update_available_notice'], 10, 2);
+            add_filter('plugin_auto_update_setting_html', [$this, 'auto_update_setting_html'], 10, 2);
         }
     }
     /**
@@ -60,10 +60,10 @@ class Plugin_Updater implements Registerable
     public function check_update($transient_data)
     {
         global $pagenow;
-        if (!\is_object($transient_data)) {
+        if (!is_object($transient_data)) {
             $transient_data = new \stdClass();
         }
-        if ('plugins.php' == $pagenow && \is_multisite()) {
+        if ('plugins.php' == $pagenow && is_multisite()) {
             return $transient_data;
         }
         $basename = $this->plugin->get_basename();
@@ -74,7 +74,7 @@ class Plugin_Updater implements Registerable
         $latest_version = $this->get_latest_version();
         if (\false !== $latest_version && isset($latest_version->new_version)) {
             $update_plugin = $this->format_version_info_for_plugin_update($latest_version);
-            if (\version_compare($this->plugin->get_version(), $latest_version->new_version, '<')) {
+            if (version_compare($this->plugin->get_version(), $latest_version->new_version, '<')) {
                 $transient_data->response[$basename] = $update_plugin;
             } else {
                 $transient_data->no_update[$basename] = $update_plugin;
@@ -116,11 +116,11 @@ class Plugin_Updater implements Registerable
      */
     public function use_barn2_update_uri()
     {
-        if (\version_compare(\get_bloginfo('version'), '5.8', '<')) {
+        if (version_compare(get_bloginfo('version'), '5.8', '<')) {
             return \false;
         }
         $plugin_data = Util::get_plugin_data($this->plugin);
-        return isset($plugin_data['UpdateURI']) && \false !== \strpos($plugin_data['UpdateURI'], 'barn2.com');
+        return isset($plugin_data['UpdateURI']) && \false !== strpos($plugin_data['UpdateURI'], 'barn2.com');
     }
     /**
      * Updates information on the "View version x.x details" page with custom data.
@@ -138,7 +138,7 @@ class Plugin_Updater implements Registerable
         if (!isset($args->slug) || $args->slug !== $this->plugin->get_slug()) {
             return $data;
         }
-        if (!($version_info = $this->get_latest_version())) {
+        if (!$version_info = $this->get_latest_version()) {
             return $data;
         }
         return $this->format_version_info_for_plugin_details_modal($version_info);
@@ -148,10 +148,10 @@ class Plugin_Updater implements Registerable
         // Add note about license key if no automatic update available (i.e. no update package).
         if (empty($response->package)) {
             $license_page = $this->plugin->get_license_page_url();
-            $settings_link_open = $license_page ? '<a href="' . \esc_url($license_page) . '">' : '';
+            $settings_link_open = $license_page ? '<a href="' . esc_url($license_page) . '">' : '';
             $settings_link_close = $license_page ? '</a>' : '';
             // phpcs:disable WordPress.Security.EscapeOutput
-            \printf(' <em>%s</em>', \sprintf(
+            printf(' <em>%s</em>', sprintf(
                 /* translators: 1: licence key link start, 2: license key link end */
                 __('Activate %1$syour license key%2$s to enable updates.', 'edd-eu-vat'),
                 $settings_link_open,
@@ -190,7 +190,7 @@ class Plugin_Updater implements Registerable
             return $version_info;
         }
         // Prevent automatic plugin update if license is invalid. Clearing the package URL will do this.
-        if (!$this->plugin->get_license()->is_valid() || !\apply_filters('barn2_plugin_allow_automatic_update', \true, $this->plugin)) {
+        if (!$this->plugin->get_license()->is_valid() || !apply_filters('barn2_plugin_allow_automatic_update', \true, $this->plugin)) {
             $version_info->package = '';
         }
         return $version_info;
@@ -207,8 +207,8 @@ class Plugin_Updater implements Registerable
         if ($plugin_file !== $this->plugin->get_basename()) {
             return $html;
         }
-        if (!$this->plugin->get_license()->is_valid() || !\apply_filters('barn2_plugin_allow_automatic_update', \true, $this->plugin)) {
-            $html = \sprintf('<em>%s</em>', __('Auto-updates unavailable.', 'edd-eu-vat'));
+        if (!$this->plugin->get_license()->is_valid() || !apply_filters('barn2_plugin_allow_automatic_update', \true, $this->plugin)) {
+            $html = sprintf('<em>%s</em>', __('Auto-updates unavailable.', 'edd-eu-vat'));
         }
         return $html;
     }
@@ -237,23 +237,23 @@ class Plugin_Updater implements Registerable
     }
     private function get_cached_version_info()
     {
-        $cache = \get_transient($this->get_cache_key());
+        $cache = get_transient($this->get_cache_key());
         return $cache ? $cache : \false;
     }
     private function set_cached_version_info($version_info)
     {
         // We cache the version info for 4 hours, to reduce the number of API requests.
-        \set_transient($this->get_cache_key(), $version_info, 4 * \HOUR_IN_SECONDS);
+        set_transient($this->get_cache_key(), $version_info, 4 * \HOUR_IN_SECONDS);
     }
     private function get_cache_key()
     {
         if (null === $this->cache_key) {
-            $this->cache_key = 'barn2_plugin_update_' . \md5(\serialize($this->plugin->get_id() . $this->plugin->get_license()->get_license_key() . $this->is_beta_testing()));
+            $this->cache_key = 'barn2_plugin_update_' . md5(serialize($this->plugin->get_id() . $this->plugin->get_license()->get_license_key() . $this->is_beta_testing()));
         }
         return $this->cache_key;
     }
     private function is_beta_testing()
     {
-        return \apply_filters('barn2_plugin_is_beta_testing_' . $this->plugin->get_slug(), \false);
+        return apply_filters('barn2_plugin_is_beta_testing_' . $this->plugin->get_slug(), \false);
     }
 }

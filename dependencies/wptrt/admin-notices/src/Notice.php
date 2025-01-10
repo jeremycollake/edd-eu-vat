@@ -111,7 +111,7 @@ class Notice
         $this->id = $id;
         $this->title = $title;
         $this->message = $message;
-        $this->options = \wp_parse_args($options, $this->options);
+        $this->options = wp_parse_args($options, $this->options);
         // Sanity check: Early exit if ID or message are empty.
         if (!$this->id || !$this->message) {
             return;
@@ -123,7 +123,7 @@ class Notice
          * @param array $allowed_html The list of allowed HTML tags.
          * @return array
          */
-        $this->allowed_html = \apply_filters('wptrt_admin_notices_allowed_html', $this->allowed_html);
+        $this->allowed_html = apply_filters('wptrt_admin_notices_allowed_html', $this->allowed_html);
         // Instantiate the Dismiss object.
         $this->dismiss = new Dismiss($this->id, $this->options['option_prefix'], $this->options['scope']);
     }
@@ -143,11 +143,11 @@ class Notice
         $html = $this->get_title();
         $html .= $this->get_message();
         // Print the notice.
-        \printf(
+        printf(
             '<div id="%1$s" class="%2$s">%3$s</div>',
-            'wptrt-notice-' . \esc_attr($this->id),
+            'wptrt-notice-' . esc_attr($this->id),
             // The ID.
-            \esc_attr($this->get_classes()),
+            esc_attr($this->get_classes()),
             // The classes.
             $html
         );
@@ -162,7 +162,7 @@ class Notice
     public function show()
     {
         // Don't show if the user doesn't have the required capability.
-        if (!\current_user_can($this->options['capability'])) {
+        if (!current_user_can($this->options['capability'])) {
             return \false;
         }
         // Don't show if we're not on the right screen.
@@ -186,7 +186,7 @@ class Notice
     {
         $classes = ['notice', 'is-dismissible'];
         // Make sure the defined type is allowed.
-        $this->options['type'] = \in_array($this->options['type'], $this->allowed_types, \true) ? $this->options['type'] : 'info';
+        $this->options['type'] = in_array($this->options['type'], $this->allowed_types, \true) ? $this->options['type'] : 'info';
         // Add the class for notice-type.
         $classes[] = 'notice-' . $this->options['type'];
         // Do we want alt styles?
@@ -194,7 +194,7 @@ class Notice
             $classes[] = 'notice-alt';
         }
         // Combine classes to a string.
-        return \implode(' ', $classes);
+        return implode(' ', $classes);
     }
     /**
      * Returns the title.
@@ -209,7 +209,7 @@ class Notice
         if (!$this->title) {
             return '';
         }
-        return \sprintf('<h2 class="notice-title">%s</h2>', \wp_strip_all_tags($this->title));
+        return sprintf('<h2 class="notice-title">%s</h2>', wp_strip_all_tags($this->title));
     }
     /**
      * Returns the message.
@@ -220,7 +220,7 @@ class Notice
      */
     public function get_message()
     {
-        return \wpautop(\wp_kses($this->message, $this->allowed_html));
+        return wpautop(wp_kses($this->message, $this->allowed_html));
     }
     /**
      * Evaluate if we're on the right place depending on the "screens" argument.
@@ -236,12 +236,12 @@ class Notice
             return \true;
         }
         // Make sure the get_current_screen function exists.
-        if (!\function_exists('get_current_screen')) {
+        if (!function_exists('get_current_screen')) {
             require_once \ABSPATH . 'wp-admin/includes/screen.php';
         }
         /** @var \WP_Screen $current_screen */
-        $current_screen = \get_current_screen();
+        $current_screen = get_current_screen();
         // Check if we're on one of the defined screens.
-        return \in_array($current_screen->id, $this->options['screens'], \true);
+        return in_array($current_screen->id, $this->options['screens'], \true);
     }
 }

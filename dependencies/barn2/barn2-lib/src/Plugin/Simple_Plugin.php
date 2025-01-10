@@ -41,10 +41,10 @@ class Simple_Plugin implements Plugin, Registerable, Service_Provider
      */
     public function __construct(array $data)
     {
-        $this->data = \array_merge(['id' => 0, 'name' => '', 'version' => '', 'file' => null, 'is_woocommerce' => \false, 'is_edd' => \false, 'documentation_path' => '', 'settings_path' => '', 'is_hpos_compatible' => \true], $data);
+        $this->data = array_merge(['id' => 0, 'name' => '', 'version' => '', 'file' => null, 'is_woocommerce' => \false, 'is_edd' => \false, 'documentation_path' => '', 'settings_path' => '', 'is_hpos_compatible' => \true], $data);
         $this->data['id'] = (int) $this->data['id'];
-        $this->data['documentation_path'] = \ltrim($this->data['documentation_path'], '/');
-        $this->data['settings_path'] = \ltrim($this->data['settings_path'], '/');
+        $this->data['documentation_path'] = ltrim($this->data['documentation_path'], '/');
+        $this->data['settings_path'] = ltrim($this->data['settings_path'], '/');
         // Check for 'item_id' in case 'id' not set.
         if (!$this->get_id() && !empty($this->data['item_id'])) {
             $this->data['id'] = (int) $this->data['item_id'];
@@ -108,7 +108,7 @@ class Simple_Plugin implements Plugin, Registerable, Service_Provider
     public function get_slug()
     {
         $dir_path = $this->get_dir_path();
-        return !empty($dir_path) ? \basename($dir_path) : '';
+        return !empty($dir_path) ? basename($dir_path) : '';
     }
     /**
      * Get the 'basename' for the plugin (e.g. my-plugin/my-plugin.php).
@@ -118,7 +118,7 @@ class Simple_Plugin implements Plugin, Registerable, Service_Provider
     public function get_basename()
     {
         if (null === $this->basename) {
-            $this->basename = !empty($this->data['file']) ? \plugin_basename($this->data['file']) : '';
+            $this->basename = !empty($this->data['file']) ? plugin_basename($this->data['file']) : '';
         }
         return $this->basename;
     }
@@ -135,9 +135,9 @@ class Simple_Plugin implements Plugin, Registerable, Service_Provider
     public function get_dir_path($relative_path = '')
     {
         if (null === $this->dir_path) {
-            $this->dir_path = !empty($this->data['file']) ? \plugin_dir_path($this->data['file']) : '';
+            $this->dir_path = !empty($this->data['file']) ? plugin_dir_path($this->data['file']) : '';
         }
-        return $this->dir_path . \ltrim($relative_path, '/');
+        return $this->dir_path . ltrim($relative_path, '/');
     }
     /**
      * Get the URL to the plugin folder.
@@ -152,9 +152,9 @@ class Simple_Plugin implements Plugin, Registerable, Service_Provider
     public function get_dir_url($relative_path = '')
     {
         if (null === $this->dir_url) {
-            $this->dir_url = !empty($this->data['file']) ? \plugin_dir_url($this->data['file']) : '';
+            $this->dir_url = !empty($this->data['file']) ? plugin_dir_url($this->data['file']) : '';
         }
-        return $this->dir_url . \ltrim($relative_path, '/');
+        return $this->dir_url . ltrim($relative_path, '/');
     }
     /**
      * Is this plugin a WooCommerce extension?
@@ -190,7 +190,7 @@ class Simple_Plugin implements Plugin, Registerable, Service_Provider
      */
     public function get_documentation_url()
     {
-        return \esc_url(Util::KNOWLEDGE_BASE_URL . '/' . $this->data['documentation_path']);
+        return esc_url(Util::KNOWLEDGE_BASE_URL . '/' . $this->data['documentation_path']);
     }
     /**
      * Get the support URL for this plugin.
@@ -208,7 +208,7 @@ class Simple_Plugin implements Plugin, Registerable, Service_Provider
      */
     public function get_settings_page_url()
     {
-        return !empty($this->data['settings_path']) ? \admin_url($this->data['settings_path']) : '';
+        return !empty($this->data['settings_path']) ? admin_url($this->data['settings_path']) : '';
     }
     /**
      * Get the plugin's main file header.
@@ -218,7 +218,7 @@ class Simple_Plugin implements Plugin, Registerable, Service_Provider
      */
     public function get_plugin_data()
     {
-        if (\is_null($this->plugin_data)) {
+        if (is_null($this->plugin_data)) {
             $this->plugin_data = Util::get_plugin_data($this);
         }
         return $this->plugin_data;
@@ -249,9 +249,9 @@ class Simple_Plugin implements Plugin, Registerable, Service_Provider
      */
     public function register_script($handle, $relative_path = '', $deps = [], $version = null, $in_footer = \true)
     {
-        $registered = \wp_register_script($handle, $this->get_dir_url($relative_path), $deps, $version ?? $this->get_version(), $in_footer);
-        if ($registered && \in_array('wp-i18n', $deps, \true)) {
-            \wp_set_script_translations($handle, $this->get_textdomain(), $this->get_dir_path('languages'));
+        $registered = wp_register_script($handle, $this->get_dir_url($relative_path), $deps, $version ?? $this->get_version(), $in_footer);
+        if ($registered && in_array('wp-i18n', $deps, \true)) {
+            wp_set_script_translations($handle, $this->get_textdomain(), $this->get_dir_path('languages'));
         }
         return $registered;
     }

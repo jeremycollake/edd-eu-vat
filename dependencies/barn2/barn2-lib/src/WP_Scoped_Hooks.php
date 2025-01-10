@@ -27,10 +27,10 @@ class WP_Scoped_Hooks
     {
         $this->hooks = ['added' => [], 'removed' => []];
         if ($this->start_hook) {
-            \remove_action($this->start_hook, [$this, 'register']);
+            remove_action($this->start_hook, [$this, 'register']);
         }
         if ($this->end_hook) {
-            \remove_action($this->end_hook, [$this, 'reset']);
+            remove_action($this->end_hook, [$this, 'reset']);
         }
     }
     public function add_action($tag, $function, $priority = 10, $accepted_args = 1)
@@ -54,27 +54,27 @@ class WP_Scoped_Hooks
         if ($start_hook && $end_hook) {
             $this->start_hook = $start_hook;
             $this->end_hook = $end_hook;
-            \add_action($start_hook, [$this, 'register']);
-            \add_action($end_hook, [$this, 'reset']);
+            add_action($start_hook, [$this, 'register']);
+            add_action($end_hook, [$this, 'reset']);
         }
     }
     public function register()
     {
-        \array_walk($this->hooks['added'], [$this, 'array_walk_add_filter']);
-        $this->hooks['removed'] = \array_filter($this->hooks['removed'], [$this, 'array_walk_remove_filter']);
+        array_walk($this->hooks['added'], [$this, 'array_walk_add_filter']);
+        $this->hooks['removed'] = array_filter($this->hooks['removed'], [$this, 'array_walk_remove_filter']);
     }
     public function reset()
     {
-        \array_walk($this->hooks['added'], [$this, 'array_walk_remove_filter']);
-        \array_walk($this->hooks['removed'], [$this, 'array_walk_add_filter']);
+        array_walk($this->hooks['added'], [$this, 'array_walk_remove_filter']);
+        array_walk($this->hooks['removed'], [$this, 'array_walk_add_filter']);
         $this->initialize();
     }
     private function array_walk_add_filter($hook)
     {
-        \add_filter($hook[0], $hook[1], $hook[2], $hook[3]);
+        add_filter($hook[0], $hook[1], $hook[2], $hook[3]);
     }
     private function array_walk_remove_filter($hook)
     {
-        return \remove_filter($hook[0], $hook[1], $hook[2], $hook[3]);
+        return remove_filter($hook[0], $hook[1], $hook[2], $hook[3]);
     }
 }

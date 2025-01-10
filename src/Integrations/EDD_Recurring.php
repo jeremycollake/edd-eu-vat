@@ -30,8 +30,18 @@ class EDD_Recurring implements Registerable {
 	 * @param EDD_Subscription $subscription
 	 */
 	public function insert_subscription_payment( EDD_Payment $payment, EDD_Subscription $subscription ) {
+		/**
+		 * Filter the parent payment ID to use for the subscription payment.
+		 * This allows other plugins to modify the payment ID if required.
+		 *
+		 * @param int $parent_payment_id The parent payment ID.
+		 * @param EDD_Payment $payment The payment object.
+		 * @param EDD_Subscription $subscription The subscription object.
+		 * @return int
+		 */
+		$parent_payment_id = apply_filters( 'edd_vat_recurring_subscription_parent_payment_id', $subscription->parent_payment_id, $payment, $subscription );
 
-		if ( empty( $subscription->parent_payment_id ) ) {
+		if ( empty( $parent_payment_id ) ) {
 			return;
 		}
 
@@ -46,16 +56,16 @@ class EDD_Recurring implements Registerable {
 		 */
 		$payment_id = apply_filters( 'edd_vat_recurring_insert_subscription_payment_id', $payment->ID, $payment, $subscription );
 
-		edd_update_payment_meta( $payment_id, '_edd_payment_vat_reverse_charged', edd_get_payment_meta( $subscription->parent_payment_id, '_edd_payment_vat_reverse_charged', true ) );
-		edd_update_payment_meta( $payment_id, '_edd_payment_vat_is_eu', edd_get_payment_meta( $subscription->parent_payment_id, '_edd_payment_vat_is_eu', true ) );
+		edd_update_payment_meta( $payment_id, '_edd_payment_vat_reverse_charged', edd_get_payment_meta( $parent_payment_id, '_edd_payment_vat_reverse_charged', true ) );
+		edd_update_payment_meta( $payment_id, '_edd_payment_vat_is_eu', edd_get_payment_meta( $parent_payment_id, '_edd_payment_vat_is_eu', true ) );
 
-		$vat_number = edd_get_payment_meta( $subscription->parent_payment_id, '_edd_payment_vat_number', true );
+		$vat_number = edd_get_payment_meta( $parent_payment_id, '_edd_payment_vat_number', true );
 
 		if ( $vat_number ) {
 			edd_update_payment_meta( $payment_id, '_edd_payment_vat_number', $vat_number );
-			edd_update_payment_meta( $payment_id, '_edd_payment_vat_number_valid', edd_get_payment_meta( $subscription->parent_payment_id, '_edd_payment_vat_number_valid', true ) );
-			edd_update_payment_meta( $payment_id, '_edd_payment_vat_company_name', edd_get_payment_meta( $subscription->parent_payment_id, '_edd_payment_vat_company_name', true ) );
-			edd_update_payment_meta( $payment_id, '_edd_payment_vat_company_address', edd_get_payment_meta( $subscription->parent_payment_id, '_edd_payment_vat_company_address', true ) );
+			edd_update_payment_meta( $payment_id, '_edd_payment_vat_number_valid', edd_get_payment_meta( $parent_payment_id, '_edd_payment_vat_number_valid', true ) );
+			edd_update_payment_meta( $payment_id, '_edd_payment_vat_company_name', edd_get_payment_meta( $parent_payment_id, '_edd_payment_vat_company_name', true ) );
+			edd_update_payment_meta( $payment_id, '_edd_payment_vat_company_address', edd_get_payment_meta( $parent_payment_id, '_edd_payment_vat_company_address', true ) );
 		}
 	}
 }

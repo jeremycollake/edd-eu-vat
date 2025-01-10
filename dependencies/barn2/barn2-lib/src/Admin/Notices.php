@@ -18,7 +18,7 @@ class Notices extends AdminNoticesNotices
      */
     public function __construct()
     {
-        \add_filter('wptrt_admin_notices_allowed_html', [__CLASS__, 'filter_allowed_html']);
+        add_filter('wptrt_admin_notices_allowed_html', [__CLASS__, 'filter_allowed_html']);
     }
     /**
      * Filter allowed html in notices.

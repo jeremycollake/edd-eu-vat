@@ -20,20 +20,20 @@ class Settings_Util
     }
     public static function checkbox_setting_to_bool($value)
     {
-        return \in_array($value, ['yes', \true], \true) ? \true : \false;
+        return in_array($value, ['yes', \true], \true) ? \true : \false;
     }
     public static function get_checkbox_option($option, $default = \false)
     {
-        return self::checkbox_setting_to_bool(\get_option($option, $default));
+        return self::checkbox_setting_to_bool(get_option($option, $default));
     }
     public static function get_custom_attributes($field)
     {
         $custom_attributes = [];
-        if (!empty($field['custom_attributes']) && \is_array($field['custom_attributes'])) {
+        if (!empty($field['custom_attributes']) && is_array($field['custom_attributes'])) {
             foreach ($field['custom_attributes'] as $attribute => $attribute_value) {
-                $custom_attributes[] = \esc_attr($attribute) . '="' . \esc_attr($attribute_value) . '"';
+                $custom_attributes[] = esc_attr($attribute) . '="' . esc_attr($attribute_value) . '"';
             }
         }
-        return \implode(' ', $custom_attributes);
+        return implode(' ', $custom_attributes);
     }
 }

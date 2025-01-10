@@ -34,7 +34,7 @@ class Util {
 					'DK' => 25.0, // Denmark
 					'EE' => 22.0, // Estonia
 					'ES' => 21.0, // Spain
-					'FI' => 24.0, // Finland
+					'FI' => 25.5, // Finland
 					'FR' => 20.0, // France
 					'GB' => 20.0, // United Kingdom
 					'GR' => 24.0, // Greece

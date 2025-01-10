@@ -55,13 +55,13 @@ class Dismiss
     public function __construct($id, $prefix, $scope = 'global')
     {
         // Set the object properties.
-        $this->id = \sanitize_key($id);
-        $this->prefix = \sanitize_key($prefix);
-        $this->scope = \in_array($scope, ['global', 'user'], \true) ? $scope : 'global';
+        $this->id = sanitize_key($id);
+        $this->prefix = sanitize_key($prefix);
+        $this->scope = in_array($scope, ['global', 'user'], \true) ? $scope : 'global';
         // Handle AJAX requests to dismiss the notice.
-        \add_action('wp_ajax_wptrt_dismiss_notice', [$this, 'ajax_maybe_dismiss_notice']);
+        add_action('wp_ajax_wptrt_dismiss_notice', [$this, 'ajax_maybe_dismiss_notice']);
         // Print the script after common.js.
-        \add_action('admin_enqueue_scripts', array($this, 'add_script'));
+        add_action('admin_enqueue_scripts', array($this, 'add_script'));
     }
     /**
      * Print the script for dismissing the notice.
@@ -71,9 +71,9 @@ class Dismiss
      */
     public function add_script()
     {
-        $id = \esc_attr($this->id);
-        $nonce = \wp_create_nonce('wptrt_dismiss_notice_' . $this->id);
-        $admin_ajax_url = \esc_url(\admin_url('admin-ajax.php'));
+        $id = esc_attr($this->id);
+        $nonce = wp_create_nonce('wptrt_dismiss_notice_' . $this->id);
+        $admin_ajax_url = esc_url(admin_url('admin-ajax.php'));
         $script = <<<EOD
 jQuery( function() {
     var dismissBtn  = document.querySelector( '#wptrt-notice-{$id} .notice-dismiss' );
@@ -95,7 +95,7 @@ jQuery( function() {
     });
 });
 EOD;
-        \wp_add_inline_script('common', $script, 'after');
+        wp_add_inline_script('common', $script, 'after');
     }
     /**
      * Check if the notice has been dismissed or not.
@@ -108,9 +108,9 @@ EOD;
     {
         // Check if the notice has been dismissed when using user-meta.
         if ('user' === $this->scope) {
-            return \get_user_meta(\get_current_user_id(), "{$this->prefix}_{$this->id}", \true);
+            return get_user_meta(get_current_user_id(), "{$this->prefix}_{$this->id}", \true);
         }
-        return \get_option("{$this->prefix}_{$this->id}");
+        return get_option("{$this->prefix}_{$this->id}");
     }
     /**
      * Run check to see if we need to dismiss the notice.
@@ -131,7 +131,7 @@ EOD;
             return;
         }
         // Security check: Make sure nonce is OK.
-        \check_ajax_referer('wptrt_dismiss_notice_' . $this->id, 'nonce', \true);
+        check_ajax_referer('wptrt_dismiss_notice_' . $this->id, 'nonce', \true);
         // If we got this far, we need to dismiss the notice.
         $this->dismiss_notice();
     }
@@ -145,9 +145,9 @@ EOD;
     private function dismiss_notice()
     {
         if ('user' === $this->scope) {
-            \update_user_meta(\get_current_user_id(), "{$this->prefix}_{$this->id}", \true);
+            update_user_meta(get_current_user_id(), "{$this->prefix}_{$this->id}", \true);
             return;
         }
-        \update_option("{$this->prefix}_{$this->id}", \true, \false);
+        update_option("{$this->prefix}_{$this->id}", \true, \false);
     }
 }
