@@ -19,9 +19,9 @@ class Plugin_Promo extends Abstract_Plugin_Promo implements Registerable
      */
     public function register()
     {
-        \add_action('barn2_before_plugin_settings', [$this, 'render_settings_start'], 10, 1);
-        \add_action('barn2_after_plugin_settings', [$this, 'render_settings_end'], 10, 1);
-        \add_action('admin_enqueue_scripts', [$this, 'maybe_load_styles']);
+        add_action('barn2_before_plugin_settings', [$this, 'render_settings_start'], 10, 1);
+        add_action('barn2_after_plugin_settings', [$this, 'render_settings_end'], 10, 1);
+        add_action('admin_enqueue_scripts', [$this, 'maybe_load_styles']);
     }
     /**
      * Load the plugin promo CSS.
@@ -30,10 +30,10 @@ class Plugin_Promo extends Abstract_Plugin_Promo implements Registerable
      */
     public function maybe_load_styles($hook)
     {
-        $parsed_url = \wp_parse_url($this->plugin->get_settings_page_url());
+        $parsed_url = wp_parse_url($this->plugin->get_settings_page_url());
         if (isset($parsed_url['query'])) {
-            \parse_str($parsed_url['query'], $args);
-            if (isset($args['page']) && \false !== \strpos($hook, $args['page'])) {
+            parse_str($parsed_url['query'], $args);
+            if (isset($args['page']) && \false !== strpos($hook, $args['page'])) {
                 parent::load_styles();
             }
         }
@@ -44,7 +44,7 @@ class Plugin_Promo extends Abstract_Plugin_Promo implements Registerable
             return;
         }
         echo '<div class="barn2-promo-wrap">';
-        echo '<div class="barn2-promo-inner barn2-settings ' . \esc_attr($this->plugin->get_slug() . '-settings') . '">';
+        echo '<div class="barn2-promo-inner barn2-settings ' . esc_attr($this->plugin->get_slug() . '-settings') . '">';
     }
     public function render_settings_end($plugin_id)
     {

@@ -70,7 +70,7 @@ class Api implements JsonSerializable
      */
     public function register_api_routes()
     {
-        \add_action('rest_api_init', [$this, 'register_routes']);
+        add_action('rest_api_init', [$this, 'register_routes']);
     }
     /**
      * Check if a given request has admin access.
@@ -80,7 +80,7 @@ class Api implements JsonSerializable
      */
     public function check_permissions($request)
     {
-        return \wp_verify_nonce($request->get_header('x-wp-nonce'), 'wp_rest') && \current_user_can('manage_options');
+        return wp_verify_nonce($request->get_header('x-wp-nonce'), 'wp_rest') && current_user_can('manage_options');
     }
     /**
      * Get the api namespace for the steps.
@@ -98,8 +98,8 @@ class Api implements JsonSerializable
      */
     public function register_routes()
     {
-        \register_rest_route($this->get_api_namespace(), 'steps', [['methods' => 'GET', 'callback' => [$this, 'get_steps'], 'permission_callback' => '__return_true'], ['methods' => 'POST', 'callback' => [$this, 'save_fields'], 'permission_callback' => [$this, 'check_permissions']]]);
-        \register_rest_route($this->get_api_namespace(), 'license', [['methods' => 'GET', 'callback' => [$this, 'get_license'], 'permission_callback' => [$this, 'check_permissions']], ['methods' => 'POST', 'callback' => [$this, 'handle_license'], 'permission_callback' => [$this, 'check_permissions']]]);
+        register_rest_route($this->get_api_namespace(), 'steps', [['methods' => 'GET', 'callback' => [$this, 'get_steps'], 'permission_callback' => '__return_true'], ['methods' => 'POST', 'callback' => [$this, 'save_fields'], 'permission_callback' => [$this, 'check_permissions']]]);
+        register_rest_route($this->get_api_namespace(), 'license', [['methods' => 'GET', 'callback' => [$this, 'get_license'], 'permission_callback' => [$this, 'check_permissions']], ['methods' => 'POST', 'callback' => [$this, 'handle_license'], 'permission_callback' => [$this, 'check_permissions']]]);
     }
     /**
      * Find a step given it's key.
@@ -129,7 +129,7 @@ class Api implements JsonSerializable
         foreach ($this->steps as $step) {
             if ($step instanceof Deferrable) {
                 $details = $step->get_step_details();
-                $config[] = \array_merge(['key' => $step->get_id(), 'fields' => $step->get_fields(), 'hidden' => $step->is_hidden()], $details);
+                $config[] = array_merge(['key' => $step->get_id(), 'fields' => $step->get_fields(), 'hidden' => $step->is_hidden()], $details);
             } else {
                 $config[] = ['key' => $step->get_id(), 'label' => $step->get_name(), 'description' => $step->get_description(), 'heading' => $step->get_title(), 'tooltip' => $step->get_tooltip(), 'fields' => $step->get_fields(), 'hidden' => $step->is_hidden()];
             }
@@ -171,7 +171,7 @@ class Api implements JsonSerializable
      */
     private function get_license_details()
     {
-        if (!\method_exists($this->get_plugin(), 'get_license')) {
+        if (!method_exists($this->get_plugin(), 'get_license')) {
             return ['status' => '', 'exists' => \false, 'key' => '', 'status_help_text' => '', 'error_message' => '', 'free_plugin' => \true];
         }
         $license_handler = $this->get_plugin()->get_license();
@@ -195,12 +195,12 @@ class Api implements JsonSerializable
         if (empty($license_key)) {
             return self::send_error_response(['message' => __('Please enter a license key.', 'edd-eu-vat')]);
         }
-        if (!\in_array($action, $allowed_actions, \true)) {
+        if (!in_array($action, $allowed_actions, \true)) {
             return self::send_error_response(['message' => __('Invalid action requested.', 'edd-eu-vat')]);
         }
         switch ($action) {
             case 'activate':
-                $license_handler->activate(\sanitize_text_field($license_key));
+                $license_handler->activate(sanitize_text_field($license_key));
                 break;
             case 'check':
                 $license_handler->refresh();
@@ -219,7 +219,7 @@ class Api implements JsonSerializable
      */
     public static function send_success_response($data = [])
     {
-        $response = \array_merge(['success' => \true], $data);
+        $response = array_merge(['success' => \true], $data);
         return new WP_REST_Response($response, 200);
     }
     /**
@@ -230,7 +230,7 @@ class Api implements JsonSerializable
      */
     public static function send_error_response($data = [])
     {
-        $response = \array_merge(['success' => \false], $data);
+        $response = array_merge(['success' => \false], $data);
         return new WP_REST_Response($response, 403);
     }
     #[\ReturnTypeWillChange]

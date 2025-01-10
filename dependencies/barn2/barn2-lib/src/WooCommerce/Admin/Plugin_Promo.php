@@ -45,12 +45,12 @@ class Plugin_Promo extends Abstract_Plugin_Promo implements Registerable
             return;
         }
         foreach (['barn2_promo_start', 'barn2_promo_end'] as $promo_field) {
-            if (!\has_action("woocommerce_admin_field_{$promo_field}")) {
-                \add_action("woocommerce_admin_field_{$promo_field}", [$this, "{$promo_field}_field"]);
+            if (!has_action("woocommerce_admin_field_{$promo_field}")) {
+                add_action("woocommerce_admin_field_{$promo_field}", [$this, "{$promo_field}_field"]);
             }
         }
-        \add_filter('woocommerce_get_settings_' . $this->tab, [$this, 'add_plugin_promo_field'], 11, 2);
-        \add_action('admin_enqueue_scripts', [$this, 'load_styles']);
+        add_filter('woocommerce_get_settings_' . $this->tab, [$this, 'add_plugin_promo_field'], 11, 2);
+        add_action('admin_enqueue_scripts', [$this, 'load_styles']);
     }
     public function add_plugin_promo_field($settings, $current_section)
     {
@@ -58,7 +58,7 @@ class Plugin_Promo extends Abstract_Plugin_Promo implements Registerable
         if ($this->section && $current_section !== $this->section) {
             return $settings;
         }
-        $promo_fields = \array_filter($settings, function ($field) {
+        $promo_fields = array_filter($settings, function ($field) {
             return isset($field['type']) && 'barn2_promo_start' === $field['type'];
         });
         // Bail if a 'barn2_promo_start' field is already present.
@@ -70,7 +70,7 @@ class Plugin_Promo extends Abstract_Plugin_Promo implements Registerable
             return $settings;
         }
         // Wrap the settings in a promo start and promo end field.
-        \array_unshift($settings, ['id' => 'barn2_promo_start', 'type' => 'barn2_promo_start']);
+        array_unshift($settings, ['id' => 'barn2_promo_start', 'type' => 'barn2_promo_start']);
         $settings[] = ['id' => 'barn2_promo_end', 'type' => 'barn2_promo_end'];
         return $settings;
     }
@@ -79,7 +79,7 @@ class Plugin_Promo extends Abstract_Plugin_Promo implements Registerable
         ?>
 		<div class="barn2-promo-wrap">
 		<div class="barn2-promo-inner barn2-settings <?php 
-        echo \esc_attr($this->plugin->get_slug() . '-settings');
+        echo esc_attr($this->plugin->get_slug() . '-settings');
         ?>">
 		<?php 
     }

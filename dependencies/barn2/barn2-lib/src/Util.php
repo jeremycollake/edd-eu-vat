@@ -31,15 +31,15 @@ class Util
         if (empty($link_text)) {
             $link_text = __('Read more', 'edd-eu-vat');
         }
-        return self::format_link(self::barn2_url($relative_path), \esc_html($link_text), $new_tab);
+        return self::format_link(self::barn2_url($relative_path), esc_html($link_text), $new_tab);
     }
     public static function barn2_url($relative_path)
     {
-        return \esc_url(\trailingslashit(self::BARN2_URL) . \ltrim($relative_path, '/'));
+        return esc_url(trailingslashit(self::BARN2_URL) . ltrim($relative_path, '/'));
     }
     public static function barn2_api_url($relative_path)
     {
-        return \esc_url(\trailingslashit(self::BARN2_API_URL) . \ltrim($relative_path, '/'));
+        return esc_url(trailingslashit(self::BARN2_API_URL) . ltrim($relative_path, '/'));
     }
     public static function format_barn2_link_open($relative_path, $new_tab = \false)
     {
@@ -47,12 +47,12 @@ class Util
     }
     public static function format_link($url, $link_text, $new_tab = \false)
     {
-        return \sprintf('%1$s%2$s</a>', self::format_link_open($url, $new_tab), $link_text);
+        return sprintf('%1$s%2$s</a>', self::format_link_open($url, $new_tab), $link_text);
     }
     public static function format_link_open($url, $new_tab = \false)
     {
         $target = $new_tab ? ' target="_blank"' : '';
-        return \sprintf('<a href="%1$s"%2$s>', \esc_url($url), $target);
+        return sprintf('<a href="%1$s"%2$s>', esc_url($url), $target);
     }
     /**
      * Format a Barn2 store URL.
@@ -61,7 +61,7 @@ class Util
      */
     public static function store_url($relative_path)
     {
-        return self::EDD_STORE_URL . '/' . \ltrim($relative_path, ' /');
+        return self::EDD_STORE_URL . '/' . ltrim($relative_path, ' /');
     }
     public static function format_store_link($relative_path, $link_text, $new_tab = \true)
     {
@@ -80,7 +80,7 @@ class Util
         if ($discount_code) {
             $args['discount'] = $discount_code;
         }
-        return self::store_url('?' . \http_build_query($args));
+        return self::store_url('?' . http_build_query($args));
     }
     /**
      * Returns true if the current request is a WP admin request.
@@ -89,7 +89,7 @@ class Util
      */
     public static function is_admin()
     {
-        return \is_admin();
+        return is_admin();
     }
     /**
      * Returns true if the current request is a front-end request, e.g. viewing a page or post.
@@ -98,7 +98,7 @@ class Util
      */
     public static function is_front_end()
     {
-        return (!\is_admin() || \defined('DOING_AJAX')) && !\defined('DOING_CRON');
+        return (!is_admin() || defined('DOING_AJAX')) && !defined('DOING_CRON');
     }
     /**
      * Returns true if WooCommerce is active.
@@ -107,7 +107,7 @@ class Util
      */
     public static function is_woocommerce_active()
     {
-        return \class_exists('WooCommerce');
+        return class_exists('WooCommerce');
     }
     /**
      * Returns true if WooCommerce Product Addons is active.
@@ -116,7 +116,7 @@ class Util
      */
     public static function is_product_addons_active()
     {
-        return \class_exists('WC_Product_Addons');
+        return class_exists('WC_Product_Addons');
     }
     /**
      * Returns true if EDD is active.
@@ -125,7 +125,7 @@ class Util
      */
     public static function is_edd_active()
     {
-        return \class_exists('Easy_Digital_Downloads');
+        return class_exists('Easy_Digital_Downloads');
     }
     /**
      * Returns true if Advanced Custom Fields or Advanced Custom Fields Pro is active.
@@ -134,7 +134,7 @@ class Util
      */
     public static function is_acf_active()
     {
-        return \class_exists('ACF');
+        return class_exists('ACF');
     }
     /**
      * Returns true if the plugin instance returned by $function is an active Barn2 plugin.
@@ -145,9 +145,9 @@ class Util
      */
     public static function is_barn2_plugin_active($function)
     {
-        if (\function_exists($function)) {
+        if (function_exists($function)) {
             $instance = $function();
-            return \method_exists((object) $instance, 'has_valid_license') && $instance->has_valid_license();
+            return method_exists((object) $instance, 'has_valid_license') && $instance->has_valid_license();
         }
         return \false;
     }
@@ -159,7 +159,7 @@ class Util
      */
     public static function is_protected_categories_active()
     {
-        return self::is_barn2_plugin_active('\\Barn2\\Plugin\\WC_Protected_Categories\\wpc');
+        return self::is_barn2_plugin_active('\Barn2\Plugin\WC_Protected_Categories\wpc');
     }
     /**
      * Returns true if WooCommerce Product Table is active and has a valid license.
@@ -169,7 +169,7 @@ class Util
      */
     public static function is_product_table_active()
     {
-        return self::is_barn2_plugin_active('\\Barn2\\Plugin\\WC_Product_Table\\wpt');
+        return self::is_barn2_plugin_active('\Barn2\Plugin\WC_Product_Table\wpt');
     }
     /**
      * Returns true if WooCommerce Quick View Pro is active and has a valid license.
@@ -179,7 +179,7 @@ class Util
      */
     public static function is_quick_view_pro_active()
     {
-        return self::is_barn2_plugin_active('\\Barn2\\Plugin\\WC_Quick_View_Pro\\wqv');
+        return self::is_barn2_plugin_active('\Barn2\Plugin\WC_Quick_View_Pro\wqv');
     }
     /**
      * Returns true if WooCommerce Restaurant Ordering is active and has a valid license.
@@ -189,7 +189,7 @@ class Util
      */
     public static function is_restaurant_ordering_active()
     {
-        return self::is_barn2_plugin_active('\\Barn2\\Plugin\\WC_Restaurant_Ordering\\wro');
+        return self::is_barn2_plugin_active('\Barn2\Plugin\WC_Restaurant_Ordering\wro');
     }
     /**
      * Returns true if WooCommerce Fast Cart is active and has a valid license.
@@ -199,7 +199,7 @@ class Util
      */
     public static function is_fast_cart_active()
     {
-        return self::is_barn2_plugin_active('\\Barn2\\Plugin\\WC_Fast_Cart\\wfc');
+        return self::is_barn2_plugin_active('\Barn2\Plugin\WC_Fast_Cart\wfc');
     }
     /**
      * Get the script suffix used when registering/queuing JS and CSS, based on SCRIPT_DEBUG.
@@ -208,7 +208,7 @@ class Util
      */
     public static function get_script_suffix()
     {
-        return \defined('SCRIPT_DEBUG') && \SCRIPT_DEBUG ? '' : '.min';
+        return defined('SCRIPT_DEBUG') && \SCRIPT_DEBUG ? '' : '.min';
     }
     /**
      * Register the Services in the given array.
@@ -217,7 +217,7 @@ class Util
      */
     public static function register_services($services)
     {
-        \array_map(function ($service) {
+        array_map(function ($service) {
             if ($service instanceof Conditional && !$service->is_required()) {
                 return;
             }
@@ -249,15 +249,15 @@ class Util
     public static function get_script_dependencies($plugin, $filename)
     {
         $script_dependencies_file = $plugin->get_dir_path() . 'assets/js/wp-dependencies.json';
-        $script_dependencies = \file_exists($script_dependencies_file) ? \file_get_contents($script_dependencies_file) : \false;
+        $script_dependencies = file_exists($script_dependencies_file) ? file_get_contents($script_dependencies_file) : \false;
         // bail if the wp-dependencies.json file doesn't exist
         if ($script_dependencies === \false) {
             return ['dependencies' => [], 'version' => ''];
         }
-        $script_dependencies = \json_decode($script_dependencies, \true);
+        $script_dependencies = json_decode($script_dependencies, \true);
         // if the asset doesn't exist, and the path is relative to the 'js' directory then try a full path
-        if (!isset($script_dependencies[$filename]) && \strpos($filename, './assets/js') === \false && isset($script_dependencies[\sprintf('./assets/js/%s', $filename)])) {
-            $filename = \sprintf('./assets/js/%s', $filename);
+        if (!isset($script_dependencies[$filename]) && strpos($filename, './assets/js') === \false && isset($script_dependencies[sprintf('./assets/js/%s', $filename)])) {
+            $filename = sprintf('./assets/js/%s', $filename);
         }
         if (!isset($script_dependencies[$filename])) {
             return ['dependencies' => [], 'version' => ''];
@@ -277,18 +277,18 @@ class Util
     public static function create_page($slug, $option = '', $page_title = '', $page_content = '', $post_parent = 0)
     {
         global $wpdb;
-        $slug = \esc_sql($slug);
-        $option_value = \get_option($option);
+        $slug = esc_sql($slug);
+        $option_value = get_option($option);
         if ($option_value > 0) {
-            $page_object = \get_post($option_value);
-            if ($page_object && 'page' === $page_object->post_type && !\in_array($page_object->post_status, ['pending', 'trash', 'future', 'auto-draft'], \true)) {
+            $page_object = get_post($option_value);
+            if ($page_object && 'page' === $page_object->post_type && !in_array($page_object->post_status, ['pending', 'trash', 'future', 'auto-draft'], \true)) {
                 // Valid page is already in place.
                 return $page_object->ID;
             }
         }
-        if (\strlen($page_content) > 0) {
+        if (strlen($page_content) > 0) {
             // Search for an existing page with the specified page content (typically a shortcode).
-            $shortcode = \str_replace(['<!-- wp:shortcode -->', '<!-- /wp:shortcode -->'], '', $page_content);
+            $shortcode = str_replace(['<!-- wp:shortcode -->', '<!-- /wp:shortcode -->'], '', $page_content);
             $valid_page_found = $wpdb->get_var($wpdb->prepare("SELECT ID FROM {$wpdb->posts} WHERE post_type='page' AND post_status NOT IN ( 'pending', 'trash', 'future', 'auto-draft' ) AND post_content LIKE %s LIMIT 1;", "%{$shortcode}%"));
         } else {
             // Search for an existing page with the specified page slug.
@@ -296,12 +296,12 @@ class Util
         }
         if ($valid_page_found) {
             if ($option) {
-                \update_option($option, $valid_page_found);
+                update_option($option, $valid_page_found);
             }
             return $valid_page_found;
         }
         // Search for a matching valid trashed page.
-        if (\strlen($page_content) > 0) {
+        if (strlen($page_content) > 0) {
             // Search for an existing page with the specified page content (typically a shortcode).
             $trashed_page_found = $wpdb->get_var($wpdb->prepare("SELECT ID FROM {$wpdb->posts} WHERE post_type='page' AND post_status = 'trash' AND post_content LIKE %s LIMIT 1;", "%{$page_content}%"));
         } else {
@@ -311,13 +311,13 @@ class Util
         if ($trashed_page_found) {
             $page_id = $trashed_page_found;
             $page_data = ['ID' => $page_id, 'post_status' => 'publish'];
-            \wp_update_post($page_data);
+            wp_update_post($page_data);
         } else {
             $page_data = ['post_status' => 'publish', 'post_type' => 'page', 'post_author' => 1, 'post_name' => $slug, 'post_title' => $page_title, 'post_content' => $page_content, 'post_parent' => $post_parent, 'comment_status' => 'closed'];
-            $page_id = \wp_insert_post($page_data);
+            $page_id = wp_insert_post($page_data);
         }
         if ($option) {
-            \update_option($option, $page_id);
+            update_option($option, $page_id);
         }
         return $page_id;
     }
@@ -330,12 +330,12 @@ class Util
      */
     public static function barn2_kses_post(string $string)
     {
-        $allowed_html = \wp_kses_allowed_html('post');
+        $allowed_html = wp_kses_allowed_html('post');
         if (isset($allowed_html['img'])) {
             $allowed_html['img']['srcset'] = \true;
             $allowed_html['img']['sizes'] = \true;
         }
-        return \wp_kses($string, $allowed_html);
+        return wp_kses($string, $allowed_html);
     }
     /**
      * Get the plugin data from the plugin header
@@ -346,10 +346,10 @@ class Util
      */
     public static function get_plugin_data(Plugin $plugin)
     {
-        if (!\function_exists('get_plugin_data')) {
+        if (!function_exists('get_plugin_data')) {
             require_once \ABSPATH . 'wp-admin/includes/plugin.php';
         }
-        return \get_plugin_data($plugin->get_file());
+        return get_plugin_data($plugin->get_file(), \false, \false);
     }
     /**
      * Loops through all active plugins on the user's website and returns ones that are authored by Barn2
@@ -358,21 +358,21 @@ class Util
      */
     public static function get_installed_barn2_plugins()
     {
-        if (!\function_exists('get_plugins')) {
+        if (!function_exists('get_plugins')) {
             require_once \ABSPATH . 'wp-admin/includes/plugin.php';
         }
         $plugin_dir = \WP_PLUGIN_DIR;
-        $current_plugins = \get_plugins();
+        $current_plugins = get_plugins();
         $barn2_installed = [];
         foreach ($current_plugins as $slug => $data) {
-            if (\false !== \stripos($data['Author'], 'Barn2 Plugins')) {
-                if (\is_readable("{$plugin_dir}/{$slug}")) {
-                    $plugin_contents = \file_get_contents("{$plugin_dir}/{$slug}");
-                    if (\preg_match('/namespace ([0-9A-Za-z_\\\\]+);/', $plugin_contents, $namespace)) {
-                        $classname = $namespace[1] . '\\Plugin';
-                        if (\class_exists($classname) && \defined("{$classname}::ITEM_ID")) {
+            if (\false !== stripos($data['Author'], 'Barn2 Plugins')) {
+                if (is_readable("{$plugin_dir}/{$slug}")) {
+                    $plugin_contents = file_get_contents("{$plugin_dir}/{$slug}");
+                    if (preg_match('/namespace ([0-9A-Za-z_\\\\]+);/', $plugin_contents, $namespace)) {
+                        $classname = $namespace[1] . '\Plugin';
+                        if (class_exists($classname) && defined("{$classname}::ITEM_ID")) {
                             if ($id = $classname::ITEM_ID ?? null) {
-                                $data['ITEM_ID'] = \absint($id);
+                                $data['ITEM_ID'] = absint($id);
                                 $barn2_installed[] = $data;
                             }
                         }
@@ -383,6 +383,20 @@ class Util
         return $barn2_installed;
     }
     /**
+     * Check if a plugin is installed on the WordPress site (whether active or not).
+     *
+     * @param string $plugin_file The plugin file relative to the plugins directory. e.g. my-plugin/my-plugin.php
+     * @return bool
+     */
+    public static function is_plugin_installed($plugin_file)
+    {
+        if (!function_exists('get_plugins')) {
+            require_once \ABSPATH . 'wp-admin/includes/plugin.php';
+        }
+        $plugins = get_plugins();
+        return isset($plugins[$plugin_file]);
+    }
+    /**
      * Sanitize anything.
      *
      * @param mixed $var the thing to sanitize.
@@ -390,24 +404,24 @@ class Util
      */
     public static function clean($var)
     {
-        if (\is_array($var)) {
-            return \array_map('self::clean', $var);
+        if (is_array($var)) {
+            return array_map([__CLASS__, 'clean'], $var);
         } else {
-            return \is_scalar($var) ? \sanitize_text_field($var) : $var;
+            return is_scalar($var) ? sanitize_text_field($var) : $var;
         }
     }
     /**
-     * Declare compatibility with the High-Performance Order Storage 
+     * Declare compatibility with the High-Performance Order Storage
      * feature in WooCommerce.
-     * 
+     *
      * @param string $plugin_entry_file The main plugin file.
      * @param bool $compatible Whether the plugin is compatible with HPOS.
      * @return void
      */
     public static function declare_hpos_compatibility($plugin_entry_file, $compatible = \true)
     {
-        \add_action('before_woocommerce_init', function () use($plugin_entry_file, $compatible) {
-            if (\class_exists(\Automattic\WooCommerce\Utilities\FeaturesUtil::class)) {
+        add_action('before_woocommerce_init', function () use ($plugin_entry_file, $compatible) {
+            if (class_exists(\Automattic\WooCommerce\Utilities\FeaturesUtil::class)) {
                 \Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility('custom_order_tables', $plugin_entry_file, $compatible);
             }
         });

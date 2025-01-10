@@ -2,14 +2,14 @@
 # This file is distributed under the GNU General Public License v3.0.
 msgid ""
 msgstr ""
-"Project-Id-Version: Easy Digital Downloads - EU VAT 1.5.24\n"
+"Project-Id-Version: Easy Digital Downloads - EU VAT 1.5.27\n"
 "Report-Msgid-Bugs-To: https://barn2.com/support-center/\n"
 "Last-Translator: Barn2 Plugins <support@barn2.com>\n"
 "Language-Team: Barn2 Plugins <support@barn2.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2024-04-03T00:00:00+00:00\n"
+"POT-Creation-Date: 2024-12-03T00:00:00+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.8.1\n"
 "X-Domain: edd-eu-vat\n"
@@ -102,7 +102,6 @@ msgid "License key"
 msgstr ""
 
 #: dependencies/barn2/barn2-lib/src/Plugin/License/Admin/License_Key_Setting.php:109
-#: dist/edd-eu-vat/src/Admin/Wizard/Setup_Wizard.php:48
 #: src/Admin/Wizard/Setup_Wizard.php:48
 msgid "The licence key is contained in your order confirmation email."
 msgstr ""
@@ -112,7 +111,6 @@ msgid "License Key"
 msgstr ""
 
 #: dependencies/barn2/barn2-lib/src/Plugin/License/Admin/License_Key_Setting.php:131
-#: dist/edd-eu-vat/views/checkout-vat-field.php:39
 #: views/checkout-vat-field.php:39
 msgid "Check"
 msgstr ""
@@ -265,35 +263,32 @@ msgid "Invalid action requested."
 msgstr ""
 
 #. translators: %s: The name of the plugin.
-#: dependencies/barn2/setup-wizard/src/Setup_Wizard.php:343
+#: dependencies/barn2/setup-wizard/src/Setup_Wizard.php:344
 msgid "%s setup wizard"
 msgstr ""
 
-#: dependencies/barn2/setup-wizard/src/Setup_Wizard.php:433
-#: dependencies/barn2/setup-wizard/src/Setup_Wizard.php:506
-#: dist/edd-eu-vat/src/Admin/Settings.php:89
+#: dependencies/barn2/setup-wizard/src/Setup_Wizard.php:434
+#: dependencies/barn2/setup-wizard/src/Setup_Wizard.php:507
 #: src/Admin/Settings.php:89
 msgid "Warning: This will overwrite your existing settings for %s. Are you sure you want to continue?"
 msgstr ""
 
-#: dependencies/barn2/setup-wizard/src/Setup_Wizard.php:483
-#: dependencies/barn2/setup-wizard/src/Setup_Wizard.php:491
-#: dependencies/barn2/setup-wizard/src/Setup_Wizard.php:540
+#: dependencies/barn2/setup-wizard/src/Setup_Wizard.php:484
+#: dependencies/barn2/setup-wizard/src/Setup_Wizard.php:492
+#: dependencies/barn2/setup-wizard/src/Setup_Wizard.php:541
 msgid "Setup wizard"
 msgstr ""
 
-#: dependencies/barn2/setup-wizard/src/Setup_Wizard.php:486
+#: dependencies/barn2/setup-wizard/src/Setup_Wizard.php:487
 msgid "If you need to access the setup wizard again, please click on the button below."
 msgstr ""
 
 #: dependencies/barn2/setup-wizard/src/Steps/Cross_Selling.php:23
-#: dist/edd-eu-vat/src/Admin/Wizard/Steps/Upsell.php:22
 #: src/Admin/Wizard/Steps/Upsell.php:22
 msgid "More"
 msgstr ""
 
 #: dependencies/barn2/setup-wizard/src/Steps/Cross_Selling.php:24
-#: dist/edd-eu-vat/src/Admin/Wizard/Steps/Upsell.php:24
 #: src/Admin/Wizard/Steps/Upsell.php:24
 msgid "Extra features"
 msgstr ""
@@ -303,7 +298,6 @@ msgid "Enhance your site with these fantastic plugins from Barn2."
 msgstr ""
 
 #: dependencies/barn2/setup-wizard/src/Steps/Ready.php:23
-#: dist/edd-eu-vat/src/Admin/Wizard/Steps/Completed.php:21
 #: src/Admin/Wizard/Steps/Completed.php:21
 msgid "Ready"
 msgstr ""
@@ -314,7 +308,6 @@ msgstr ""
 
 #: dependencies/barn2/setup-wizard/src/Steps/Welcome.php:25
 #: dependencies/barn2/setup-wizard/src/Steps/Welcome_Free.php:24
-#: dist/edd-eu-vat/src/Admin/Wizard/Steps/License_Verification.php:23
 #: src/Admin/Wizard/Steps/License_Verification.php:23
 msgid "Welcome"
 msgstr ""
@@ -324,41 +317,30 @@ msgid "Select an option"
 msgstr ""
 
 #. translators: %1$s: HTML <strong> %2$s: HTML </strong> %3$s: HTML <a href> - tax settings page  %4$s: HTML </a>
-#: dist/edd-eu-vat/src/Admin/Admin_Controller.php:61
 #: src/Admin/Admin_Controller.php:61
 msgid "%1$sEasy Digital Downloads%2$s - Please %3$senable taxes%4$s in order to use the EU VAT extension."
 msgstr ""
 
-#: dist/edd-eu-vat/src/Admin/Email_Tags.php:40
 #: src/Admin/Email_Tags.php:40
 msgid "The VAT rate and amount charged, falls back to {tax} if not an EU payment"
 msgstr ""
 
-#: dist/edd-eu-vat/src/Admin/Email_Tags.php:45
 #: src/Admin/Email_Tags.php:45
 msgid "The customer's VAT number if provided"
 msgstr ""
 
-#: dist/edd-eu-vat/src/Admin/Email_Tags.php:50
 #: src/Admin/Email_Tags.php:50
 msgid "Your company name"
 msgstr ""
 
-#: dist/edd-eu-vat/src/Admin/Email_Tags.php:55
 #: src/Admin/Email_Tags.php:55
 msgid "The registered VAT number for your company"
 msgstr ""
 
-#: dist/edd-eu-vat/src/Admin/Email_Tags.php:60
 #: src/Admin/Email_Tags.php:60
 msgid "The registered address for your company"
 msgstr ""
 
-#: dist/edd-eu-vat/src/Admin/Email_Tags.php:100
-#: dist/edd-eu-vat/src/Integrations/EDD_Invoices.php:199
-#: dist/edd-eu-vat/src/Integrations/EDD_PDF_Invoices.php:102
-#: dist/edd-eu-vat/src/Purchase_Receipt.php:73
-#: dist/edd-eu-vat/views/payment-postbox-vat.php:71
 #: src/Admin/Email_Tags.php:100
 #: src/Integrations/EDD_Invoices.php:199
 #: src/Integrations/EDD_PDF_Invoices.php:102
@@ -367,229 +349,168 @@ msgstr ""
 msgid "VAT reverse charged"
 msgstr ""
 
-#: dist/edd-eu-vat/src/Admin/Export/Batch_VAT_EC_Sales_Payments_Export.php:41
 #: src/Admin/Export/Batch_VAT_EC_Sales_Payments_Export.php:41
 msgid "EU Country Code"
 msgstr ""
 
-#: dist/edd-eu-vat/src/Admin/Export/Batch_VAT_EC_Sales_Payments_Export.php:42
 #: src/Admin/Export/Batch_VAT_EC_Sales_Payments_Export.php:42
 msgid "VAT Registration Number"
 msgstr ""
 
-#: dist/edd-eu-vat/src/Admin/Export/Batch_VAT_EC_Sales_Payments_Export.php:43
 #: src/Admin/Export/Batch_VAT_EC_Sales_Payments_Export.php:43
 msgid "Value of Supplies"
 msgstr ""
 
-#: dist/edd-eu-vat/src/Admin/Export/Batch_VAT_EC_Sales_Payments_Export.php:44
 #: src/Admin/Export/Batch_VAT_EC_Sales_Payments_Export.php:44
 msgid "Indicator"
 msgstr ""
 
-#: dist/edd-eu-vat/src/Admin/Export/Batch_VAT_Payments_Export.php:41
-#: dist/edd-eu-vat/src/Admin/Settings.php:205
-#: dist/edd-eu-vat/src/Admin/Wizard/Steps/Company_Information.php:66
 #: src/Admin/Export/Batch_VAT_Payments_Export.php:41
 #: src/Admin/Settings.php:205
 #: src/Admin/Wizard/Steps/Company_Information.php:66
 msgid "Country"
 msgstr ""
 
-#: dist/edd-eu-vat/src/Admin/Export/Batch_VAT_Payments_Export.php:42
 #: src/Admin/Export/Batch_VAT_Payments_Export.php:42
 msgid "Standard VAT Rate"
 msgstr ""
 
-#: dist/edd-eu-vat/src/Admin/Export/Batch_VAT_Payments_Export.php:43
 #: src/Admin/Export/Batch_VAT_Payments_Export.php:43
 msgid "Value of Items (Excluding VAT)"
 msgstr ""
 
-#: dist/edd-eu-vat/src/Admin/Export/Batch_VAT_Payments_Export.php:44
-#: dist/edd-eu-vat/src/Admin/View_Order.php:54
 #: src/Admin/Export/Batch_VAT_Payments_Export.php:44
 #: src/Admin/View_Order.php:54
 msgid "VAT"
 msgstr ""
 
-#: dist/edd-eu-vat/src/Admin/Export/Payments_Export.php:37
-#: dist/edd-eu-vat/views/checkout-vat-field.php:21
 #: src/Admin/Export/Payments_Export.php:37
 #: views/checkout-vat-field.php:21
 msgid "VAT Number"
 msgstr ""
 
-#: dist/edd-eu-vat/src/Admin/Settings.php:109
-#: dist/edd-eu-vat/src/Admin/Settings.php:125
 #: src/Admin/Settings.php:109
 #: src/Admin/Settings.php:125
 msgid "EU VAT"
 msgstr ""
 
-#: dist/edd-eu-vat/src/Admin/Settings.php:133
 #: src/Admin/Settings.php:133
 msgid "Order Details Page"
 msgstr ""
 
-#: dist/edd-eu-vat/src/Admin/Settings.php:134
 #: src/Admin/Settings.php:134
 msgid "Include VAT information on the order details page."
 msgstr ""
 
-#: dist/edd-eu-vat/src/Admin/Settings.php:139
 #: src/Admin/Settings.php:139
 msgid "Reverse Charge in Home Country?"
 msgstr ""
 
-#: dist/edd-eu-vat/src/Admin/Settings.php:140
 #: src/Admin/Settings.php:140
 msgid "Allow VAT reverse charge for customers with a valid VAT number who are based in your home country."
 msgstr ""
 
-#: dist/edd-eu-vat/src/Admin/Settings.php:145
 #: src/Admin/Settings.php:145
 msgid "Show website address?"
 msgstr ""
 
-#: dist/edd-eu-vat/src/Admin/Settings.php:146
 #: src/Admin/Settings.php:146
 msgid "Check this box if you would like your website address to be shown on the invoice."
 msgstr ""
 
-#: dist/edd-eu-vat/src/Admin/Settings.php:151
-#: dist/edd-eu-vat/src/Admin/Wizard/Steps/Company_Information.php:24
-#: dist/edd-eu-vat/src/Admin/Wizard/Steps/Company_Information.php:26
 #: src/Admin/Settings.php:151
 #: src/Admin/Wizard/Steps/Company_Information.php:24
 #: src/Admin/Wizard/Steps/Company_Information.php:26
 msgid "Company Information"
 msgstr ""
 
-#: dist/edd-eu-vat/src/Admin/Settings.php:152
 #: src/Admin/Settings.php:152
 msgid "The following information about your company will be displayed on the order details page and purchase receipt email."
 msgstr ""
 
-#: dist/edd-eu-vat/src/Admin/Settings.php:157
-#: dist/edd-eu-vat/src/Admin/Wizard/Steps/Company_Information.php:37
 #: src/Admin/Settings.php:157
 #: src/Admin/Wizard/Steps/Company_Information.php:37
 msgid "Company Name"
 msgstr ""
 
-#: dist/edd-eu-vat/src/Admin/Settings.php:158
-#: dist/edd-eu-vat/src/Admin/Wizard/Steps/Company_Information.php:38
 #: src/Admin/Settings.php:158
 #: src/Admin/Wizard/Steps/Company_Information.php:38
 msgid "Enter your company name."
 msgstr ""
 
-#: dist/edd-eu-vat/src/Admin/Settings.php:163
 #: src/Admin/Settings.php:163
 msgid "Company Email"
 msgstr ""
 
-#: dist/edd-eu-vat/src/Admin/Settings.php:164
 #: src/Admin/Settings.php:164
 msgid "Enter the email address that will appear on the invoice."
 msgstr ""
 
-#: dist/edd-eu-vat/src/Admin/Settings.php:169
-#: dist/edd-eu-vat/src/Admin/Wizard/Steps/Company_Information.php:43
 #: src/Admin/Settings.php:169
 #: src/Admin/Wizard/Steps/Company_Information.php:43
 msgid "EU VAT Number"
 msgstr ""
 
-#: dist/edd-eu-vat/src/Admin/Settings.php:170
-#: dist/edd-eu-vat/src/Admin/Wizard/Steps/Company_Information.php:44
 #: src/Admin/Settings.php:170
 #: src/Admin/Wizard/Steps/Company_Information.php:44
 msgid "Enter the registered EU VAT number of your company."
 msgstr ""
 
-#: dist/edd-eu-vat/src/Admin/Settings.php:175
-#: dist/edd-eu-vat/src/Admin/Wizard/Steps/Company_Information.php:49
 #: src/Admin/Settings.php:175
 #: src/Admin/Wizard/Steps/Company_Information.php:49
 msgid "UK VAT Number"
 msgstr ""
 
-#: dist/edd-eu-vat/src/Admin/Settings.php:176
-#: dist/edd-eu-vat/src/Admin/Wizard/Steps/Company_Information.php:50
 #: src/Admin/Settings.php:176
 #: src/Admin/Wizard/Steps/Company_Information.php:50
 msgid "Enter the registered UK VAT number of your company."
 msgstr ""
 
-#: dist/edd-eu-vat/src/Admin/Settings.php:181
-#: dist/edd-eu-vat/src/Admin/Wizard/Steps/Company_Information.php:55
 #: src/Admin/Settings.php:181
 #: src/Admin/Wizard/Steps/Company_Information.php:55
 msgid "Address Line 1"
 msgstr ""
 
-#: dist/edd-eu-vat/src/Admin/Settings.php:182
-#: dist/edd-eu-vat/src/Admin/Wizard/Steps/Company_Information.php:56
 #: src/Admin/Settings.php:182
 #: src/Admin/Wizard/Steps/Company_Information.php:56
 msgid "Enter line 1 of your company's registered VAT address."
 msgstr ""
 
-#: dist/edd-eu-vat/src/Admin/Settings.php:187
-#: dist/edd-eu-vat/src/Admin/Wizard/Steps/Company_Information.php:61
 #: src/Admin/Settings.php:187
 #: src/Admin/Wizard/Steps/Company_Information.php:61
 msgid "Address Line 2"
 msgstr ""
 
-#: dist/edd-eu-vat/src/Admin/Settings.php:188
-#: dist/edd-eu-vat/src/Admin/Wizard/Steps/Company_Information.php:62
 #: src/Admin/Settings.php:188
 #: src/Admin/Wizard/Steps/Company_Information.php:62
 msgid "Enter line 2 of your company's registered VAT address if required."
 msgstr ""
 
-#: dist/edd-eu-vat/src/Admin/Settings.php:193
-#: dist/edd-eu-vat/src/Admin/Wizard/Steps/Company_Information.php:76
 #: src/Admin/Settings.php:193
 #: src/Admin/Wizard/Steps/Company_Information.php:76
 msgid "City / State"
 msgstr ""
 
-#: dist/edd-eu-vat/src/Admin/Settings.php:194
-#: dist/edd-eu-vat/src/Admin/Wizard/Steps/Company_Information.php:77
 #: src/Admin/Settings.php:194
 #: src/Admin/Wizard/Steps/Company_Information.php:77
 msgid "Enter the city / state of your company's registered VAT address."
 msgstr ""
 
-#: dist/edd-eu-vat/src/Admin/Settings.php:199
-#: dist/edd-eu-vat/src/Admin/Wizard/Steps/Company_Information.php:82
 #: src/Admin/Settings.php:199
 #: src/Admin/Wizard/Steps/Company_Information.php:82
 msgid "Zip / Postal Code"
 msgstr ""
 
-#: dist/edd-eu-vat/src/Admin/Settings.php:200
-#: dist/edd-eu-vat/src/Admin/Wizard/Steps/Company_Information.php:83
 #: src/Admin/Settings.php:200
 #: src/Admin/Wizard/Steps/Company_Information.php:83
 msgid "Enter the zip / postal code of your company's registered VAT address."
 msgstr ""
 
-#: dist/edd-eu-vat/src/Admin/Settings.php:206
-#: dist/edd-eu-vat/src/Admin/Wizard/Steps/Company_Information.php:67
 #: src/Admin/Settings.php:206
 #: src/Admin/Wizard/Steps/Company_Information.php:67
 msgid "Select the country where your business is based. This will be used on invoices."
 msgstr ""
 
-#: dist/edd-eu-vat/src/Admin/Settings.php:210
-#: dist/edd-eu-vat/src/Admin/Settings.php:223
-#: dist/edd-eu-vat/src/Admin/Wizard/Steps/Company_Information.php:71
-#: dist/edd-eu-vat/src/Admin/Wizard/Steps/Company_Information.php:92
 #: src/Admin/Settings.php:210
 #: src/Admin/Settings.php:223
 #: src/Admin/Wizard/Steps/Company_Information.php:71
@@ -597,164 +518,128 @@ msgstr ""
 msgid "Select a country"
 msgstr ""
 
-#: dist/edd-eu-vat/src/Admin/Settings.php:218
-#: dist/edd-eu-vat/src/Admin/Wizard/Steps/Company_Information.php:87
 #: src/Admin/Settings.php:218
 #: src/Admin/Wizard/Steps/Company_Information.php:87
 msgid "Country of VAT registration"
 msgstr ""
 
-#: dist/edd-eu-vat/src/Admin/Settings.php:219
-#: dist/edd-eu-vat/src/Admin/Wizard/Steps/Company_Information.php:88
 #: src/Admin/Settings.php:219
 #: src/Admin/Wizard/Steps/Company_Information.php:88
 msgid "Select the country of your company's registered VAT address."
 msgstr ""
 
-#: dist/edd-eu-vat/src/Admin/Settings.php:224
 #: src/Admin/Settings.php:224
 msgid "Country setup"
 msgstr ""
 
-#: dist/edd-eu-vat/src/Admin/Settings.php:225
 #: src/Admin/Settings.php:225
 msgid "Select the country that issued your company’s VAT number. If you are based in Northern Ireland and have a VAT number beginning with XI then you should select “Northern Ireland”. If your VAT number begins with EU then you should select “EU MOSS Number”"
 msgstr ""
 
-#: dist/edd-eu-vat/src/Admin/Wizard/Steps/Base_Country.php:24
-#: dist/edd-eu-vat/src/Admin/Wizard/Steps/Base_Country.php:26
 #: src/Admin/Wizard/Steps/Base_Country.php:24
 #: src/Admin/Wizard/Steps/Base_Country.php:26
 msgid "Reverse charge"
 msgstr ""
 
-#: dist/edd-eu-vat/src/Admin/Wizard/Steps/Base_Country.php:25
 #: src/Admin/Wizard/Steps/Base_Country.php:25
 msgid "Allow customers from your home country to reverse charge the VAT."
 msgstr ""
 
-#: dist/edd-eu-vat/src/Admin/Wizard/Steps/Base_Country.php:45
 #: src/Admin/Wizard/Steps/Base_Country.php:45
 msgid "Reverse Charge in Base Country?"
 msgstr ""
 
-#: dist/edd-eu-vat/src/Admin/Wizard/Steps/Base_Country.php:46
 #: src/Admin/Wizard/Steps/Base_Country.php:46
 msgid "Yes"
 msgstr ""
 
 #. translators: %s: EDD Base Country
-#: dist/edd-eu-vat/src/Admin/Wizard/Steps/Base_Country.php:48
 #: src/Admin/Wizard/Steps/Base_Country.php:48
 msgid "Allow the VAT reverse charge for customers based in your home country%s."
 msgstr ""
 
-#: dist/edd-eu-vat/src/Admin/Wizard/Steps/Company_Information.php:25
 #: src/Admin/Wizard/Steps/Company_Information.php:25
 msgid " Enter your company details which will be displayed on the order details page and purchase receipt email."
 msgstr ""
 
-#: dist/edd-eu-vat/src/Admin/Wizard/Steps/Completed.php:22
 #: src/Admin/Wizard/Steps/Completed.php:22
 msgid "Complete Setup"
 msgstr ""
 
-#: dist/edd-eu-vat/src/Admin/Wizard/Steps/Completed.php:23
 #: src/Admin/Wizard/Steps/Completed.php:23
 msgid "Congratulations, you have finished setting up the plugin! Your customers from EU countries will now automatically be charged the correct rate of VAT, and can reverse charge the VAT on the checkout if they have a valid European VAT number."
 msgstr ""
 
-#: dist/edd-eu-vat/src/Admin/Wizard/Steps/License_Verification.php:22
 #: src/Admin/Wizard/Steps/License_Verification.php:22
 msgid "Welcome to Easy Digital Downloads EU VAT"
 msgstr ""
 
-#: dist/edd-eu-vat/src/Admin/Wizard/Steps/License_Verification.php:24
 #: src/Admin/Wizard/Steps/License_Verification.php:24
 msgid "Start charging EU VAT in no time."
 msgstr ""
 
-#: dist/edd-eu-vat/src/Admin/Wizard/Steps/License_Verification.php:25
 #: src/Admin/Wizard/Steps/License_Verification.php:25
 msgid "Use this setup wizard to enable EU VAT in your store. You can change these options later on the plugin settings page or by relaunching the setup wizard."
 msgstr ""
 
-#: dist/edd-eu-vat/src/Admin/Wizard/Steps/Upsell.php:23
 #: src/Admin/Wizard/Steps/Upsell.php:23
 msgid "Enhance your store with these fantastic plugins from Barn2."
 msgstr ""
 
 #. translators: %s is the formatted tax amount
-#: dist/edd-eu-vat/src/Checkout_Handler.php:266
 #: src/Checkout_Handler.php:266
 msgid "[VAT reverse charged] %s"
 msgstr ""
 
-#: dist/edd-eu-vat/src/Checkout_Handler.php:425
 #: src/Checkout_Handler.php:425
 msgid "VAT number valid - reverse charge applied."
 msgstr ""
 
 #. translators: %s: Country name
-#: dist/edd-eu-vat/src/Checkout_Handler.php:428
 #: src/Checkout_Handler.php:428
 msgid "Your VAT number is valid, but we cannot apply the reverse charge in %s."
 msgstr ""
 
-#: dist/edd-eu-vat/src/Checkout_Handler.php:464
-#: dist/edd-eu-vat/src/Frontend_Scripts.php:64
 #: src/Checkout_Handler.php:464
 #: src/Frontend_Scripts.php:64
 msgid "Please enter a VAT number."
 msgstr ""
 
-#: dist/edd-eu-vat/src/Checkout_Handler.php:467
-#: dist/edd-eu-vat/src/Frontend_Scripts.php:65
 #: src/Checkout_Handler.php:467
 #: src/Frontend_Scripts.php:65
 msgid "Please select a country."
 msgstr ""
 
-#: dist/edd-eu-vat/src/Checkout_Handler.php:470
 #: src/Checkout_Handler.php:470
 msgid "The VAT number is invalid."
 msgstr ""
 
-#: dist/edd-eu-vat/src/Checkout_Handler.php:473
 #: src/Checkout_Handler.php:473
 msgid "The VAT number applies to EU countries only."
 msgstr ""
 
-#: dist/edd-eu-vat/src/Checkout_Handler.php:476
 #: src/Checkout_Handler.php:476
 msgid "Your billing country must match the country for the VAT number."
 msgstr ""
 
-#: dist/edd-eu-vat/src/Checkout_Handler.php:479
 #: src/Checkout_Handler.php:479
 msgid "The country or VAT number is invalid."
 msgstr ""
 
-#: dist/edd-eu-vat/src/Checkout_Handler.php:482
 #: src/Checkout_Handler.php:482
 msgid "We're having trouble checking your VAT number. Please try again or contact our support team."
 msgstr ""
 
-#: dist/edd-eu-vat/src/Checkout_Handler.php:485
 #: src/Checkout_Handler.php:485
 msgid "We're having trouble checking your VAT number. The VIES service is unreachable."
 msgstr ""
 
-#: dist/edd-eu-vat/src/Frontend_Scripts.php:66
 #: src/Frontend_Scripts.php:66
 msgid "There was an error trying to validate your VAT number, please try reloading the page or try again later."
 msgstr ""
 
 #. translators: %s is the VAT tax rate
 #. translators: %s is the VAT tax rate.
-#: dist/edd-eu-vat/src/Integrations/EDD_Invoices.php:205
-#: dist/edd-eu-vat/src/Integrations/EDD_PDF_Invoices.php:105
-#: dist/edd-eu-vat/src/Purchase_Receipt.php:77
 #: src/Integrations/EDD_Invoices.php:205
 #: src/Integrations/EDD_PDF_Invoices.php:105
 #: src/Purchase_Receipt.php:77
@@ -763,9 +648,6 @@ msgstr ""
 
 #. translators: %s is the VAT number
 #. translators: %s: VAT number
-#: dist/edd-eu-vat/src/Integrations/EDD_Invoices.php:234
-#: dist/edd-eu-vat/src/Integrations/EDD_PDF_Invoices.php:87
-#: dist/edd-eu-vat/src/Purchase_Receipt.php:162
 #: src/Integrations/EDD_Invoices.php:234
 #: src/Integrations/EDD_PDF_Invoices.php:87
 #: src/Purchase_Receipt.php:162
@@ -774,9 +656,6 @@ msgstr ""
 
 #. translators: %s is the registered company name
 #. translators: %s: Company Name
-#: dist/edd-eu-vat/src/Integrations/EDD_Invoices.php:238
-#: dist/edd-eu-vat/src/Integrations/EDD_PDF_Invoices.php:92
-#: dist/edd-eu-vat/src/Purchase_Receipt.php:166
 #: src/Integrations/EDD_Invoices.php:238
 #: src/Integrations/EDD_PDF_Invoices.php:92
 #: src/Purchase_Receipt.php:166
@@ -785,19 +664,12 @@ msgstr ""
 
 #. translators: %s is the registered company address
 #. translators: %s: Company Address
-#: dist/edd-eu-vat/src/Integrations/EDD_Invoices.php:242
-#: dist/edd-eu-vat/src/Integrations/EDD_PDF_Invoices.php:97
-#: dist/edd-eu-vat/src/Purchase_Receipt.php:170
 #: src/Integrations/EDD_Invoices.php:242
 #: src/Integrations/EDD_PDF_Invoices.php:97
 #: src/Purchase_Receipt.php:170
 msgid "Address: %s"
 msgstr ""
 
-#: dist/edd-eu-vat/src/Integrations/EDD_Invoices.php:249
-#: dist/edd-eu-vat/src/Integrations/EDD_PDF_Invoices.php:136
-#: dist/edd-eu-vat/src/Purchase_Receipt.php:186
-#: dist/edd-eu-vat/views/payment-postbox-vat.php:52
 #: src/Integrations/EDD_Invoices.php:249
 #: src/Integrations/EDD_PDF_Invoices.php:136
 #: src/Purchase_Receipt.php:186
@@ -806,214 +678,169 @@ msgid "VAT Details"
 msgstr ""
 
 #. translators: %1$s: HTML <a href> EDD WordPress.org link %2$s: HTML </a>
-#: dist/edd-eu-vat/src/Plugin.php:142
 #: src/Plugin.php:142
 msgid "Please install and activate %1$sEasy Digital Downloads%2$s in order to use the EU VAT extension."
 msgstr ""
 
-#: dist/edd-eu-vat/src/Plugin.php:162
 #: src/Plugin.php:162
 msgid "Easy Digital Downloads EU VAT requires the PHP Soap extension to be installed in order to validate EU VAT numbers."
 msgstr ""
 
-#: dist/edd-eu-vat/src/Purchase_Receipt.php:180
 #: src/Purchase_Receipt.php:180
 msgid "Billed To"
 msgstr ""
 
 #. translators: %s is the VAT number
-#: dist/edd-eu-vat/src/Purchase_Receipt.php:211
 #: src/Purchase_Receipt.php:211
 msgid "EU VAT number: %s"
 msgstr ""
 
 #. translators: %s is the VAT number
-#: dist/edd-eu-vat/src/Purchase_Receipt.php:216
 #: src/Purchase_Receipt.php:216
 msgid "UK VAT number: %s"
 msgstr ""
 
-#: dist/edd-eu-vat/src/Purchase_Receipt.php:223
 #: src/Purchase_Receipt.php:223
 msgid "Sold By"
 msgstr ""
 
-#: dist/edd-eu-vat/src/Util.php:302
 #: src/Util.php:302
 msgid "Austria"
 msgstr ""
 
-#: dist/edd-eu-vat/src/Util.php:303
 #: src/Util.php:303
 msgid "Belgium"
 msgstr ""
 
-#: dist/edd-eu-vat/src/Util.php:304
 #: src/Util.php:304
 msgid "Bulgaria"
 msgstr ""
 
-#: dist/edd-eu-vat/src/Util.php:305
 #: src/Util.php:305
 msgid "Croatia"
 msgstr ""
 
-#: dist/edd-eu-vat/src/Util.php:306
 #: src/Util.php:306
 msgid "Cyprus"
 msgstr ""
 
-#: dist/edd-eu-vat/src/Util.php:307
 #: src/Util.php:307
 msgid "Czech Republic"
 msgstr ""
 
-#: dist/edd-eu-vat/src/Util.php:308
 #: src/Util.php:308
 msgid "Denmark"
 msgstr ""
 
-#: dist/edd-eu-vat/src/Util.php:309
 #: src/Util.php:309
 msgid "Estonia"
 msgstr ""
 
-#: dist/edd-eu-vat/src/Util.php:310
 #: src/Util.php:310
 msgid "Finland"
 msgstr ""
 
-#: dist/edd-eu-vat/src/Util.php:311
 #: src/Util.php:311
 msgid "France"
 msgstr ""
 
-#: dist/edd-eu-vat/src/Util.php:312
 #: src/Util.php:312
 msgid "Germany"
 msgstr ""
 
-#: dist/edd-eu-vat/src/Util.php:313
 #: src/Util.php:313
 msgid "Greece"
 msgstr ""
 
-#: dist/edd-eu-vat/src/Util.php:314
 #: src/Util.php:314
 msgid "Hungary"
 msgstr ""
 
-#: dist/edd-eu-vat/src/Util.php:315
 #: src/Util.php:315
 msgid "Ireland"
 msgstr ""
 
-#: dist/edd-eu-vat/src/Util.php:316
 #: src/Util.php:316
 msgid "Italy"
 msgstr ""
 
-#: dist/edd-eu-vat/src/Util.php:317
 #: src/Util.php:317
 msgid "Latvia"
 msgstr ""
 
-#: dist/edd-eu-vat/src/Util.php:318
 #: src/Util.php:318
 msgid "Lithuania"
 msgstr ""
 
-#: dist/edd-eu-vat/src/Util.php:319
 #: src/Util.php:319
 msgid "Luxembourg"
 msgstr ""
 
-#: dist/edd-eu-vat/src/Util.php:320
 #: src/Util.php:320
 msgid "Malta"
 msgstr ""
 
-#: dist/edd-eu-vat/src/Util.php:321
 #: src/Util.php:321
 msgid "Netherlands"
 msgstr ""
 
-#: dist/edd-eu-vat/src/Util.php:322
 #: src/Util.php:322
 msgid "Poland"
 msgstr ""
 
-#: dist/edd-eu-vat/src/Util.php:323
 #: src/Util.php:323
 msgid "Portugal"
 msgstr ""
 
-#: dist/edd-eu-vat/src/Util.php:324
 #: src/Util.php:324
 msgid "Romania"
 msgstr ""
 
-#: dist/edd-eu-vat/src/Util.php:325
 #: src/Util.php:325
 msgid "Slovakia"
 msgstr ""
 
-#: dist/edd-eu-vat/src/Util.php:326
 #: src/Util.php:326
 msgid "Slovenia"
 msgstr ""
 
-#: dist/edd-eu-vat/src/Util.php:327
 #: src/Util.php:327
 msgid "Spain"
 msgstr ""
 
-#: dist/edd-eu-vat/src/Util.php:328
 #: src/Util.php:328
 msgid "Sweden"
 msgstr ""
 
-#: dist/edd-eu-vat/src/Util.php:329
 #: src/Util.php:329
 msgid "United Kingdom"
 msgstr ""
 
-#: dist/edd-eu-vat/src/Util.php:345
 #: src/Util.php:345
 msgid "EU MOSS Number"
 msgstr ""
 
-#: dist/edd-eu-vat/src/Util.php:348
 #: src/Util.php:348
 msgid "Northern Ireland"
 msgstr ""
 
-#: dist/edd-eu-vat/views/checkout-vat-field.php:27
 #: views/checkout-vat-field.php:27
 msgid "Enter the VAT number of your company."
 msgstr ""
 
-#: dist/edd-eu-vat/views/checkout-vat-field.php:36
 #: views/checkout-vat-field.php:36
 msgid "e.g. DE123456789"
 msgstr ""
 
-#: dist/edd-eu-vat/views/export-vat-ec-sales-payments.php:17
-#: dist/edd-eu-vat/views/export-vat-ec-sales-payments.php:25
 #: views/export-vat-ec-sales-payments.php:17
 #: views/export-vat-ec-sales-payments.php:25
 msgid "Export EC Sales List Report"
 msgstr ""
 
-#: dist/edd-eu-vat/views/export-vat-ec-sales-payments.php:20
 #: views/export-vat-ec-sales-payments.php:20
 msgid "Download a CSV of all European Sales to VAT-registered customers, which you can use for your EC Sales List tax return."
 msgstr ""
 
-#: dist/edd-eu-vat/views/export-vat-ec-sales-payments.php:27
-#: dist/edd-eu-vat/views/export-vat-ec-sales-payments.php:36
-#: dist/edd-eu-vat/views/export-vat-payments.php:28
-#: dist/edd-eu-vat/views/export-vat-payments.php:38
 #: views/export-vat-ec-sales-payments.php:27
 #: views/export-vat-ec-sales-payments.php:36
 #: views/export-vat-payments.php:28
@@ -1021,10 +848,6 @@ msgstr ""
 msgid "Choose start date"
 msgstr ""
 
-#: dist/edd-eu-vat/views/export-vat-ec-sales-payments.php:41
-#: dist/edd-eu-vat/views/export-vat-ec-sales-payments.php:50
-#: dist/edd-eu-vat/views/export-vat-payments.php:44
-#: dist/edd-eu-vat/views/export-vat-payments.php:54
 #: views/export-vat-ec-sales-payments.php:41
 #: views/export-vat-ec-sales-payments.php:50
 #: views/export-vat-payments.php:44
@@ -1032,86 +855,68 @@ msgstr ""
 msgid "Choose end date"
 msgstr ""
 
-#: dist/edd-eu-vat/views/export-vat-ec-sales-payments.php:60
-#: dist/edd-eu-vat/views/export-vat-payments.php:64
 #: views/export-vat-ec-sales-payments.php:60
 #: views/export-vat-payments.php:64
 msgid "Generate CSV"
 msgstr ""
 
-#: dist/edd-eu-vat/views/export-vat-payments.php:17
-#: dist/edd-eu-vat/views/export-vat-payments.php:25
 #: views/export-vat-payments.php:17
 #: views/export-vat-payments.php:25
 msgid "Export EU VAT Report"
 msgstr ""
 
-#: dist/edd-eu-vat/views/export-vat-payments.php:20
 #: views/export-vat-payments.php:20
 msgid "Download a CSV of all European VAT collected, which you can use for your EU VAT/MOSS tax return."
 msgstr ""
 
-#: dist/edd-eu-vat/views/invoices/eu-invoice-company.php:22
 #: views/invoices/eu-invoice-company.php:22
 msgid "Invoice From:"
 msgstr ""
 
-#: dist/edd-eu-vat/views/invoices/eu-invoice-company.php:46
 #: views/invoices/eu-invoice-company.php:46
 msgid "Registration:"
 msgstr ""
 
-#: dist/edd-eu-vat/views/invoices/eu-invoice-company.php:56
 #: views/invoices/eu-invoice-company.php:56
 msgid "Tax/VAT:"
 msgstr ""
 
-#: dist/edd-eu-vat/views/invoices/invoice-additional-info.php:28
 #: views/invoices/invoice-additional-info.php:28
 msgid "Additional Information:"
 msgstr ""
 
-#: dist/edd-eu-vat/views/invoices/invoice-additional-info.php:37
 #: views/invoices/invoice-additional-info.php:37
 msgid "Notes:"
 msgstr ""
 
-#: dist/edd-eu-vat/views/payment-postbox-vat.php:57
 #: views/payment-postbox-vat.php:57
 msgid "VAT number:"
 msgstr ""
 
-#: dist/edd-eu-vat/views/payment-postbox-vat.php:61
 #: views/payment-postbox-vat.php:61
 msgid "Consultation number:"
 msgstr ""
 
-#: dist/edd-eu-vat/views/payment-postbox-vat.php:67
 #: views/payment-postbox-vat.php:67
 msgid "VAT number valid"
 msgstr ""
 
-#: dist/edd-eu-vat/views/payment-postbox-vat.php:77
 #: views/payment-postbox-vat.php:77
 msgid "Company name:"
 msgstr ""
 
-#: dist/edd-eu-vat/views/payment-postbox-vat.php:81
 #: views/payment-postbox-vat.php:81
 msgid "Company address:"
 msgstr ""
 
-#: dist/edd-eu-vat/views/payment-postbox-vat.php:86
 #: views/payment-postbox-vat.php:86
 msgid "Location Evidence"
 msgstr ""
 
-#: dist/edd-eu-vat/views/payment-postbox-vat.php:87
 #: views/payment-postbox-vat.php:87
 msgid "Billing country:"
 msgstr ""
 
-#: dist/edd-eu-vat/views/payment-postbox-vat.php:89
 #: views/payment-postbox-vat.php:89
 msgid "IP address:"
 msgstr ""

@@ -117,7 +117,7 @@ class Plugin extends Premium_Plugin implements Registerable, Translatable, Servi
 	 * Load textdomain.
 	 */
 	public function load_textdomain() {
-		load_plugin_textdomain( 'edd-eu-vat', false, $this->get_slug() . '/languages' );
+		load_plugin_textdomain( 'edd-eu-vat', false, dirname( plugin_basename( $this->get_file() ) ) . '/languages' );
 	}
 
 	/**

@@ -19,10 +19,10 @@ class Templates implements Template_Loader
     private $templates_loaded_once = [];
     public function __construct($theme_dir = '', $default_path = '')
     {
-        if (\function_exists('WC')) {
-            $this->template_path = $theme_dir ? \trailingslashit(\WC()->template_path() . $theme_dir) : '';
+        if (function_exists('WC')) {
+            $this->template_path = $theme_dir ? trailingslashit(WC()->template_path() . $theme_dir) : '';
         }
-        $this->default_path = $default_path ? \trailingslashit($default_path) : '';
+        $this->default_path = $default_path ? trailingslashit($default_path) : '';
     }
     /**
      * Return the HTML for the specified template.
@@ -33,7 +33,7 @@ class Templates implements Template_Loader
      */
     public function get_template($template_name, array $args = [])
     {
-        return \wc_get_template_html($this->expand_template($template_name), $args, $this->get_template_path(), $this->get_default_path());
+        return wc_get_template_html($this->expand_template($template_name), $args, $this->get_template_path(), $this->get_default_path());
     }
     /**
      * Output the HTML for the specified template.
@@ -43,7 +43,7 @@ class Templates implements Template_Loader
      */
     public function load_template($template_name, array $args = [])
     {
-        \wc_get_template($this->expand_template($template_name), $args, $this->get_template_path(), $this->get_default_path());
+        wc_get_template($this->expand_template($template_name), $args, $this->get_template_path(), $this->get_default_path());
     }
     /**
      * Output the HTML for the specified template, but only once. If this function is called multiple times with the
@@ -54,7 +54,7 @@ class Templates implements Template_Loader
      */
     public function load_template_once($template_name, array $args = [])
     {
-        if (!\in_array($template_name, $this->templates_loaded_once, \true)) {
+        if (!in_array($template_name, $this->templates_loaded_once, \true)) {
             $this->templates_loaded_once[] = $template_name;
             $this->load_template($template_name, $args);
         }
@@ -74,11 +74,11 @@ class Templates implements Template_Loader
          * terminating folder to build the full template name.
          * E.g. /my-templates/cool/ becomes /my-templates/cool/cool.php
          */
-        if ('.php' !== \substr($template_name, -4)) {
-            $template_name = \rtrim($template_name, '/ ');
-            $last_backslash = \strrpos($template_name, '/');
+        if ('.php' !== substr($template_name, -4)) {
+            $template_name = rtrim($template_name, '/ ');
+            $last_backslash = strrpos($template_name, '/');
             if (\false !== $last_backslash) {
-                $last_folder = \substr($template_name, $last_backslash + 1);
+                $last_folder = substr($template_name, $last_backslash + 1);
                 $template_name = "{$template_name}/{$last_folder}.php";
             } else {
                 $template_name = "{$template_name}/{$template_name}.php";

@@ -23,22 +23,22 @@ abstract class Scheduled_Task implements Schedulable
     public function schedule()
     {
         // Attach the action to run when the cron event is fired.
-        \add_action($this->get_cron_hook(), [$this, 'run']);
+        add_action($this->get_cron_hook(), [$this, 'run']);
         // Schedule the cron event if not already scheduled.
-        if (!\wp_next_scheduled($this->get_cron_hook())) {
-            \wp_schedule_event(\time(), $this->get_interval(), $this->get_cron_hook());
+        if (!wp_next_scheduled($this->get_cron_hook())) {
+            wp_schedule_event(time(), $this->get_interval(), $this->get_cron_hook());
         }
         // Un-schedule the event on plugin deactivation.
-        \register_deactivation_hook($this->plugin_file, [$this, 'unschedule']);
+        register_deactivation_hook($this->plugin_file, [$this, 'unschedule']);
     }
-    protected abstract function get_cron_hook();
-    protected abstract function get_interval();
+    abstract protected function get_cron_hook();
+    abstract protected function get_interval();
     public function unschedule()
     {
-        $timestamp = \wp_next_scheduled($this->get_cron_hook());
+        $timestamp = wp_next_scheduled($this->get_cron_hook());
         if ($timestamp) {
-            \wp_unschedule_event($timestamp, $this->get_cron_hook());
+            wp_unschedule_event($timestamp, $this->get_cron_hook());
         }
     }
-    public abstract function run();
+    abstract public function run();
 }

@@ -27,13 +27,13 @@ class Admin_Links implements Registerable, Service
     public function register()
     {
         // Add settings link from Plugins page.
-        \add_filter('plugin_action_links_' . $this->plugin->get_basename(), [$this, 'add_settings_link']);
+        add_filter('plugin_action_links_' . $this->plugin->get_basename(), [$this, 'add_settings_link']);
         // Add documentation link to meta info on Plugins page.
-        \add_filter('plugin_row_meta', [$this, 'add_documentation_link'], 10, 2);
+        add_filter('plugin_row_meta', [$this, 'add_documentation_link'], 10, 2);
     }
     public function add_settings_link($links)
     {
-        if (!($settings_url = $this->plugin->get_settings_page_url())) {
+        if (!$settings_url = $this->plugin->get_settings_page_url()) {
             return $links;
         }
         // Don't add link if it's a WooCommerce plugin but WooCommerce is not active.
@@ -44,7 +44,7 @@ class Admin_Links implements Registerable, Service
         if ($this->plugin->is_edd() && !Util::is_edd_active()) {
             return $links;
         }
-        \array_unshift($links, \sprintf('<a href="%1$s">%2$s</a>', \esc_url($settings_url), __('Settings', 'edd-eu-vat')));
+        array_unshift($links, sprintf('<a href="%1$s">%2$s</a>', esc_url($settings_url), __('Settings', 'edd-eu-vat')));
         return $links;
     }
     public function add_documentation_link($links, $file)
@@ -53,16 +53,16 @@ class Admin_Links implements Registerable, Service
             return $links;
         }
         // Bail if there's no documentation URL.
-        if (!($documentation_url = $this->plugin->get_documentation_url())) {
+        if (!$documentation_url = $this->plugin->get_documentation_url()) {
             return $links;
         }
-        $row_meta = ['docs' => \sprintf(
+        $row_meta = ['docs' => sprintf(
             '<a href="%1$s" aria-label="%2$s" target="_blank">%3$s</a>',
-            \esc_url($documentation_url),
+            esc_url($documentation_url),
             /* translators: %s: The plugin name */
-            \esc_attr(\sprintf(__('View %s documentation', 'edd-eu-vat'), $this->plugin->get_name())),
+            esc_attr(sprintf(__('View %s documentation', 'edd-eu-vat'), $this->plugin->get_name())),
             esc_html__('Docs', 'edd-eu-vat')
         )];
-        return \array_merge($links, $row_meta);
+        return array_merge($links, $row_meta);
     }
 }

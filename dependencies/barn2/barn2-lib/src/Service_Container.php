@@ -35,7 +35,7 @@ trait Service_Container
     }
     public function get_services()
     {
-        return \array_merge($this->core_services, $this->services);
+        return array_merge($this->core_services, $this->services);
     }
     public function get_service($id)
     {

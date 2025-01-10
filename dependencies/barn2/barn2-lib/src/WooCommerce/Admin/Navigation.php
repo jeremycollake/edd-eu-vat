@@ -25,13 +25,13 @@ class Navigation implements Registerable
     }
     public function register()
     {
-        \add_action('admin_menu', [$this, 'register_navigation_items']);
+        add_action('admin_menu', [$this, 'register_navigation_items']);
     }
     public function register_navigation_items()
     {
-        if (!\class_exists('\\Automattic\\WooCommerce\\Admin\\Features\\Navigation\\Menu')) {
+        if (!class_exists('\Automattic\WooCommerce\Admin\Features\Navigation\Menu')) {
             return;
         }
-        Menu::add_plugin_item(['id' => \is_null($this->navigation_id) ? \sanitize_title($this->plugin->get_name()) : $this->navigation_id, 'title' => \is_null($this->navigation_title) ? $this->plugin->get_name() : $this->navigation_title, 'capability' => 'manage_woocommerce', 'url' => $this->plugin->get_settings_page_url()]);
+        Menu::add_plugin_item(['id' => is_null($this->navigation_id) ? sanitize_title($this->plugin->get_name()) : $this->navigation_id, 'title' => is_null($this->navigation_title) ? $this->plugin->get_name() : $this->navigation_title, 'capability' => 'manage_woocommerce', 'url' => $this->plugin->get_settings_page_url()]);
     }
 }

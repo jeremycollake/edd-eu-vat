@@ -134,7 +134,7 @@ abstract class Step implements Pluggable
      *
      * @return array
      */
-    public abstract function setup_fields();
+    abstract public function setup_fields();
     /**
      * Get the list of defined fields for the step.
      *
@@ -285,7 +285,7 @@ abstract class Step implements Pluggable
         $values = [];
         foreach ($this->get_fields() as $key => $field) {
             $disallowed = ['title', 'heading', 'list', 'image'];
-            if (\in_array($field['type'], $disallowed)) {
+            if (in_array($field['type'], $disallowed)) {
                 continue;
             }
             if (isset($_POST[$key]) && !empty($_POST[$key])) {
@@ -299,5 +299,5 @@ abstract class Step implements Pluggable
      *
      * @return \WP_REST_Response
      */
-    public abstract function submit(array $values);
+    abstract public function submit(array $values);
 }

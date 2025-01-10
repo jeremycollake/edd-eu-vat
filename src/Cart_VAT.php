@@ -146,6 +146,10 @@ class Cart_VAT implements Registerable, Service {
 	 */
 	public function save() {
 		if ( function_exists( '\EDD' ) ) {
+			if ( ! $this->is_reverse_charged() || empty( (array) $this->get_vat_details() ) ) {
+				return;
+			}
+
 			\EDD()->session->set(
 				self::SESSION_KEY,
 				[

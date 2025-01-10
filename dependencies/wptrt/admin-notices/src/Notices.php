@@ -41,7 +41,7 @@ class Notices
     public function boot()
     {
         // Add the notice.
-        \add_action('admin_notices', [$this, 'the_notices']);
+        add_action('admin_notices', [$this, 'the_notices']);
     }
     /**
      * Add a notice.

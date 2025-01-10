@@ -1,10 +1,10 @@
 === Easy Digital Downloads - EU VAT ===
-Contributors: andykeith, barn2media
+Contributors: barn2media
 Tags: easy digital downloads, edd, vat, checkout, tax
-Requires at least: 5.0
-Tested up to: 6.4.3
+Requires at least: 6.0
+Tested up to: 6.7.1
 Requires PHP: 7.4
-Stable tag: 1.5.24
+Stable tag: 1.5.27
 License: GPL-3.0
 License URI: https://www.gnu.org/licenses/gpl.html
 
@@ -22,6 +22,27 @@ This plugin extends the Easy Digital Downloads plugin with EU VAT support.
 1. Enter your license key under Downloads -> Settings -> Extensions -> EU VAT.
 
 == Changelog ==
+
+= 1.5.27 =
+Release date 02 December 2024
+
+ * Fix: Translation compatibility issues with WordPress 6.7
+ * Dev: Updated internal libraries.
+ * Dev: Tested up to WP 6.7.1 and EDD 3.3.5
+
+= 1.5.26 =
+Release date 16 September 2024
+
+ * Fix: Removed the "Requires Plugins" section from the plugin header.
+
+= 1.5.25 =
+Release date 09 September 2024
+
+ * Tweak: VAT rate for Finland has been increased to 25.5%
+ * Tweak: No longer set session data when not reverse charged or no VAT number is present.
+ * Tweak: Added a new filter for the `insert_subscription_payment` method.
+ * Dev: Minor internal changes.
+ * Dev: Tested up to WP 6.6.1 and EDD 3.3.3
 
 = 1.5.24 =
 Release date 02 April 2024

@@ -32,21 +32,21 @@ class Settings_Util
      */
     public static function checkbox_setting_to_bool($value)
     {
-        return \in_array($value, ['yes', \true], \true);
+        return in_array($value, ['yes', \true], \true);
     }
     public static function get_checkbox_option($option, $default = \false)
     {
-        return self::checkbox_setting_to_bool(\get_option($option, $default));
+        return self::checkbox_setting_to_bool(get_option($option, $default));
     }
     public static function get_custom_attributes($field)
     {
         $custom_attributes = [];
-        if (!empty($field['custom_attributes']) && \is_array($field['custom_attributes'])) {
+        if (!empty($field['custom_attributes']) && is_array($field['custom_attributes'])) {
             foreach ($field['custom_attributes'] as $attribute => $attribute_value) {
-                $custom_attributes[] = \esc_attr($attribute) . '="' . \esc_attr($attribute_value) . '"';
+                $custom_attributes[] = esc_attr($attribute) . '="' . esc_attr($attribute_value) . '"';
             }
         }
-        return \implode(' ', $custom_attributes);
+        return implode(' ', $custom_attributes);
     }
     /**
      * Return the help links for the plugin settings page - Documentation, Support, etc.
@@ -67,12 +67,12 @@ class Settings_Util
          *   - target (optional): If the link should open in a new tab, set this to '_blank'
          * @since 1.1
          */
-        $links = \apply_filters('barn2_plugin_settings_help_links', ['doc' => ['url' => $plugin->get_documentation_url(), 'label' => __('Documentation', 'edd-eu-vat'), 'target' => '_blank'], 'support' => ['url' => $plugin->get_support_url(), 'label' => __('Support', 'edd-eu-vat'), 'target' => '_blank']], $plugin);
-        $links = \apply_filters_deprecated('barn2_plugins_title_links', [$links, $plugin], '1.1', 'barn2_plugin_settings_help_links');
-        return \implode(' | ', \array_map(function ($link) {
-            $class = !empty($link['class']) ? \sprintf(' class="%s"', \esc_attr($link['class'])) : '';
-            $target = !empty($link['target']) ? \sprintf(' target="%s"', \esc_attr($link['target'])) : '';
-            return \sprintf('<a href="%s"%s%s>%s</a>', \esc_url($link['url']), $class, $target, \esc_html($link['label']));
+        $links = apply_filters('barn2_plugin_settings_help_links', ['doc' => ['url' => $plugin->get_documentation_url(), 'label' => __('Documentation', 'edd-eu-vat'), 'target' => '_blank'], 'support' => ['url' => $plugin->get_support_url(), 'label' => __('Support', 'edd-eu-vat'), 'target' => '_blank']], $plugin);
+        $links = apply_filters_deprecated('barn2_plugins_title_links', [$links, $plugin], '1.1', 'barn2_plugin_settings_help_links');
+        return implode(' | ', array_map(function ($link) {
+            $class = !empty($link['class']) ? sprintf(' class="%s"', esc_attr($link['class'])) : '';
+            $target = !empty($link['target']) ? sprintf(' target="%s"', esc_attr($link['target'])) : '';
+            return sprintf('<a href="%s"%s%s>%s</a>', esc_url($link['url']), $class, $target, esc_html($link['label']));
         }, $links));
     }
     /**
@@ -86,8 +86,8 @@ class Settings_Util
      */
     public static function get_title_description($plugin, $description)
     {
-        \_deprecated_function(__METHOD__, '1.1', 'get_plugin_links');
-        return \sprintf('<p>%s</p><p>%s</p>', self::get_help_links($plugin), \esc_html($description));
+        _deprecated_function(__METHOD__, '1.1', 'get_plugin_links');
+        return sprintf('<p>%s</p><p>%s</p>', self::get_help_links($plugin), esc_html($description));
     }
     /**
      * Check whether the current page, tab and section match the ones the plugin uses
@@ -101,9 +101,9 @@ class Settings_Util
     public static function is_current_settings_page($page, $tab = '', $section = '')
     {
         // phpcs:disable WordPress.Security.NonceVerification.Recommended
-        $current_page = empty($_GET['page']) ? 'general' : \sanitize_title(\wp_unslash($_GET['page']));
-        $current_tab = empty($_GET['tab']) ? '' : \sanitize_title(\wp_unslash($_GET['tab']));
-        $current_section = empty($_REQUEST['section']) ? '' : \sanitize_title(\wp_unslash($_REQUEST['section']));
+        $current_page = empty($_GET['page']) ? 'general' : sanitize_title(wp_unslash($_GET['page']));
+        $current_tab = empty($_GET['tab']) ? '' : sanitize_title(wp_unslash($_GET['tab']));
+        $current_section = empty($_REQUEST['section']) ? '' : sanitize_title(wp_unslash($_REQUEST['section']));
         if (!$section) {
             $section = $current_section;
         }
