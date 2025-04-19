@@ -51,7 +51,7 @@ class Util {
 					'PT' => 23.0, // Portugal
 					'RO' => 19.0, // Romania
 					'SI' => 22.0, // Slovenia
-					'SK' => 20.0, // Slovakia
+					'SK' => 23.0, // Slovakia
 					'SE' => 25.0, // Sweden
 				]
 			);

@@ -2,9 +2,9 @@
 Contributors: barn2media
 Tags: easy digital downloads, edd, vat, checkout, tax
 Requires at least: 6.0
-Tested up to: 6.7.1
+Tested up to: 6.7.2
 Requires PHP: 7.4
-Stable tag: 1.5.27
+Stable tag: 1.6.0
 License: GPL-3.0
 License URI: https://www.gnu.org/licenses/gpl.html
 
@@ -23,8 +23,16 @@ This plugin extends the Easy Digital Downloads plugin with EU VAT support.
 
 == Changelog ==
 
+= 1.6.0 =
+Release date 04 March 2025
+
+ * New: Updated HMRC VAT validation to use the new HMRC API.
+ * Tweak: Updated Slovakia VAT rate.
+ * Fix: Recurring payments being setup with a VAT charge.
+ * Dev: Tested up to WP 6.7.2 and EDD 3.3.6
+
 = 1.5.27 =
-Release date 02 December 2024
+Release date 03 December 2024
 
  * Fix: Translation compatibility issues with WordPress 6.7
  * Dev: Updated internal libraries.

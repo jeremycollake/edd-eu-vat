@@ -141,10 +141,65 @@ class Settings implements Registerable, Service {
 					'type' => 'checkbox',
 				],
 				[
+					'id'            => 'edd_vat_address_country',
+					'name'          => __( 'Country of VAT registration', 'edd-eu-vat' ),
+					'desc'          => __( 'Select the country of your company\'s registered VAT address.', 'edd-eu-vat' ),
+					'type'          => 'select',
+					'options'       => EDD_VATUtil::get_country_list(),
+					'chosen'        => true,
+					'placeholder'   => __( 'Select a country', 'edd-eu-vat' ),
+					'tooltip_title' => __( 'Country setup', 'edd-eu-vat' ),
+					'tooltip_desc'  => __( 'Select the country that issued your company’s VAT number. If you are based in Northern Ireland and have a VAT number beginning with XI then you should select “Northern Ireland”. If your VAT number begins with EU then you should select “EU MOSS Number”', 'edd-eu-vat' ),
+					'std'           => edd_get_shop_country(),
+					'data'          => [
+						'nonce' => wp_create_nonce( 'edd-country-field-nonce' ),
+					],
+				],
+				[
 					'id'   => 'edd_vat_show_website_address',
 					'name' => __( 'Show website address?', 'edd-eu-vat' ),
 					'desc' => __( 'Check this box if you would like your website address to be shown on the invoice.', 'edd-eu-vat' ),
 					'type' => 'checkbox',
+				],
+
+				[
+					'id'   => 'edd_vat_eu_header',
+					'name' => '<h3>' . __( 'EU VAT', 'edd-eu-vat' ) . '</h3>',
+					// translators: %s is a link to the EU VAT registration guide
+					'desc' => wp_kses_post( sprintf( __( 'Enter your registration details for the <u><a href="%s" target="_blank">EU’s MOSS VAT scheme</a></u>.', 'edd-eu-vat' ), 'https://barn2.com/kb/how-to-register-for-eu-vat/' ) ),
+					'type' => 'descriptive_text',
+				],
+				[
+					'id'   => 'edd_vat_number',
+					'name' => __( 'EU VAT Number', 'edd-eu-vat' ),
+					'desc' => __( 'Enter the registered EU VAT number of your company.', 'edd-eu-vat' ),
+					'type' => 'text',
+				],
+
+				[
+					'id'   => 'edd_vat_uk_header',
+					'name' => '<h3>' . __( 'UK VAT', 'edd-eu-vat' ) . '</h3>',
+					// translators: %s is a link to the EU VAT registration guide
+					'desc' => wp_kses_post( sprintf( __( 'Enter your <u><a href="%s" target="_blank">UK VAT registration details</a></u>.', 'edd-eu-vat' ), 'https://barn2.com/kb/how-to-register-for-uk-vat/' ) ),
+					'type' => 'descriptive_text',
+				],
+				[
+					'id'   => 'edd_uk_vat_number',
+					'name' => __( 'UK VAT Number', 'edd-eu-vat' ),
+					'desc' => __( 'Enter the registered UK VAT number of your company.', 'edd-eu-vat' ),
+					'type' => 'text',
+				],
+				[
+					'id'   => 'edd_vat_hmrc_client_id',
+					'name' => __( 'HMRC Client ID', 'edd-eu-vat' ),
+					'desc' => __( 'Enter your HMRC client ID.', 'edd-eu-vat' ),
+					'type' => 'text',
+				],
+				[
+					'id'   => 'edd_vat_hmrc_client_secret',
+					'name' => __( 'HMRC Client Secret', 'edd-eu-vat' ),
+					'desc' => __( 'Enter your HMRC client secret.', 'edd-eu-vat' ),
+					'type' => 'text',
 				],
 				[
 					'id'   => 'edd_vat_address_header',
@@ -164,18 +219,7 @@ class Settings implements Registerable, Service {
 					'desc' => __( 'Enter the email address that will appear on the invoice.', 'edd-eu-vat' ),
 					'type' => 'text',
 				],
-				[
-					'id'   => 'edd_vat_number',
-					'name' => __( 'EU VAT Number', 'edd-eu-vat' ),
-					'desc' => __( 'Enter the registered EU VAT number of your company.', 'edd-eu-vat' ),
-					'type' => 'text',
-				],
-				[
-					'id'   => 'edd_uk_vat_number',
-					'name' => __( 'UK VAT Number', 'edd-eu-vat' ),
-					'desc' => __( 'Enter the registered UK VAT number of your company.', 'edd-eu-vat' ),
-					'type' => 'text',
-				],
+
 				[
 					'id'   => 'edd_vat_address_line_1',
 					'name' => __( 'Address Line 1', 'edd-eu-vat' ),
@@ -210,21 +254,6 @@ class Settings implements Registerable, Service {
 					'placeholder' => __( 'Select a country', 'edd-eu-vat' ),
 					'std'         => edd_get_shop_country(),
 					'data'        => [
-						'nonce' => wp_create_nonce( 'edd-country-field-nonce' ),
-					],
-				],
-				[
-					'id'            => 'edd_vat_address_country',
-					'name'          => __( 'Country of VAT registration', 'edd-eu-vat' ),
-					'desc'          => __( 'Select the country of your company\'s registered VAT address.', 'edd-eu-vat' ),
-					'type'          => 'select',
-					'options'       => EDD_VATUtil::get_country_list(),
-					'chosen'        => true,
-					'placeholder'   => __( 'Select a country', 'edd-eu-vat' ),
-					'tooltip_title' => __( 'Country setup', 'edd-eu-vat' ),
-					'tooltip_desc'  => __( 'Select the country that issued your company’s VAT number. If you are based in Northern Ireland and have a VAT number beginning with XI then you should select “Northern Ireland”. If your VAT number begins with EU then you should select “EU MOSS Number”', 'edd-eu-vat' ),
-					'std'           => edd_get_shop_country(),
-					'data'          => [
 						'nonce' => wp_create_nonce( 'edd-country-field-nonce' ),
 					],
 				],

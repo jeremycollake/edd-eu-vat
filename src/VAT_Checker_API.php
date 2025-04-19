@@ -146,8 +146,8 @@ class VAT_Checker_API {
 			}
 
 			edd_debug_log( 'Preparing VIES request' );
-			edd_debug_log( 'VIES requester country code: '. $requester_country_code );
-			edd_debug_log( 'VIES requester vat number: '. $requester_vat_number );
+			edd_debug_log( 'VIES requester country code: ' . $requester_country_code );
+			edd_debug_log( 'VIES requester vat number: ' . $requester_vat_number );
 
 			if ( ! empty( $requester_country_code ) && ! empty( $requester_vat_number ) ) {
 				$parameters['requesterCountryCode'] = $requester_country_code;
@@ -238,51 +238,46 @@ class VAT_Checker_API {
 	 * @return VAT_Check_Result
 	 */
 	private static function hmrc_request( $result, $vat_number ) {
-		$url = sprintf( '%1$s/%2$s/', self::HMRC_URL, $vat_number );
+		try {
+			$hmrc    = new HMRC();
+			$request = $hmrc->check_vat_number( $vat_number );
 
-		$request_args = [
-			'headers'    => [
-				'Accept'       => 'application/json',
-				'Content-type' => 'application/json',
-			],
-			'user-agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.93 Safari/537.36',
-			// HMRC API doesn't like certain user agents so we force this
-		];
-
-		$request = wp_remote_get( $url, $request_args );
-
-		if ( is_wp_error( $request ) ) {
-			$result->error = VAT_Check_Result::API_ERROR;
-			return $result;
-		}
-
-		$response_body = json_decode( wp_remote_retrieve_body( $request ), true );
-		$response_code = wp_remote_retrieve_response_code( $request );
-
-		edd_debug_log( 'HMRC request response: '. print_r( $response_body, true ) );
-
-		// We have a success with valid structure
-		if ( $response_code === 200 && isset( $response_body['target']['vatNumber'] ) ) {
-			$result->valid = true;
-
-			if ( isset( $response_body['target']['name'] ) && ! empty( $response_body['target']['name'] ) ) {
-				$result->name = $response_body['target']['name'];
+			if ( is_wp_error( $request ) ) {
+				$result->error = VAT_Check_Result::API_ERROR;
+				return $result;
 			}
 
-			if ( isset( $response_body['target']['address'] ) && ! empty( $response_body['target']['address'] ) ) {
-				$result->address = implode( apply_filters( 'edd_vat_check_result_address_separator', ', ' ), array_filter( $response_body['target']['address'] ) );
-			}
-		}
+			$response_body = json_decode( wp_remote_retrieve_body( $request ), true );
+			$response_code = wp_remote_retrieve_response_code( $request );
 
-		// HMRC API can return 404 or 400 response code for an invalid VAT number
-		if ( $response_code === 400 && isset( $response_body['code'] ) && $response_body['code'] === 'INVALID_REQUEST' ) {
-			// 'INVALID_REQUEST' here represents an invalid VAT number as opposed to 'BAD_REQUEST' for an actual bad request
-			$result->error = VAT_Check_Result::INVALID_VAT_NUMBER;
-		} elseif ( $response_code === 404 && isset( $response_body['code'] ) && $response_body['code'] === 'NOT_FOUND' ) {
-			// 'NOT_FOUND' here represents an invalid VAT number as opposed to 'MATCHING_RESOURCE_NOT_FOUND' for an actual 404
-			$result->error = VAT_Check_Result::INVALID_VAT_NUMBER;
-		} elseif ( in_array( $response_code, [ 400, 401, 403, 404, 406, 429, 500, 501, 503, 504 ], true ) ) {
-			// Handle other API errors
+			edd_debug_log( 'HMRC request response: ' . print_r( $response_body, true ) );
+
+			// We have a success with valid structure
+			if ( $response_code === 200 && isset( $response_body['target']['vatNumber'] ) ) {
+				$result->valid = true;
+
+				if ( isset( $response_body['target']['name'] ) && ! empty( $response_body['target']['name'] ) ) {
+					$result->name = $response_body['target']['name'];
+				}
+
+				if ( isset( $response_body['target']['address'] ) && ! empty( $response_body['target']['address'] ) ) {
+					$result->address = implode( apply_filters( 'edd_vat_check_result_address_separator', ', ' ), array_filter( $response_body['target']['address'] ) );
+				}
+			}
+
+			// HMRC API can return 404 or 400 response code for an invalid VAT number
+			if ( $response_code === 400 && isset( $response_body['code'] ) && $response_body['code'] === 'INVALID_REQUEST' ) {
+				// 'INVALID_REQUEST' here represents an invalid VAT number as opposed to 'BAD_REQUEST' for an actual bad request
+				$result->error = VAT_Check_Result::INVALID_VAT_NUMBER;
+			} elseif ( $response_code === 404 && isset( $response_body['code'] ) && $response_body['code'] === 'NOT_FOUND' ) {
+				// 'NOT_FOUND' here represents an invalid VAT number as opposed to 'MATCHING_RESOURCE_NOT_FOUND' for an actual 404
+				$result->error = VAT_Check_Result::INVALID_VAT_NUMBER;
+			} elseif ( in_array( $response_code, [ 400, 401, 403, 404, 406, 429, 500, 501, 503, 504 ], true ) ) {
+				// Handle other API errors
+				$result->error = VAT_Check_Result::API_ERROR;
+			}
+		} catch ( \Exception $e ) {
+			edd_debug_log( 'HMRC API error: ' . $e->getMessage() );
 			$result->error = VAT_Check_Result::API_ERROR;
 		}
 
